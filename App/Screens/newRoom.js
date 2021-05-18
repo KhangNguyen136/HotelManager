@@ -5,7 +5,7 @@ import { IconButton } from '../Components/button';
 import Card from '../Components/card';
 import AddNewRoomForm from '../Components/InputForm/newRoom'
 export default function NewRoom({ navigation, route }) {
-    const { isEdit, item } = route.params
+    const { item, isEdit } = route.params
     React.useLayoutEffect(() => {
         navigation.setOptions({
             // headerRight: () => <IconButton iconName={'notifications'}

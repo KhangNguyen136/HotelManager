@@ -9,7 +9,8 @@ export default function PickerCard({ value, onPress, placeholder }) {
     var source = ''
     switch (placeholder) {
         case 'Select room':
-            textColor = 'gray'
+            if (value == 'Select room')
+                textColor = 'gray'
             iconName = 'hotel'
             source = 'FontAwesome'
             break;

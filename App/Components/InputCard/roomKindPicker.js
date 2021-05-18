@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { GetIcon } from '../button';
 import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu';
 
 export default function TypePicker({ kind, setKind }) {
     const items = [
-        { title: 'A - Price: 150.000 VND', value: 'A' },
-        { title: 'B - Price: 170.000 VND', value: 'B' },
-        { title: 'C - Price: 200.000 VND', value: 'C' }]
+        { title: 'Category A', value: 'A' },
+        { title: 'Category B', value: 'B' },
+        { title: 'Category C', value: 'C' }]
+
     var menu = null
     const didSelectType = (newKind) => {
         hideMenu()
@@ -44,7 +45,7 @@ export default function TypePicker({ kind, setKind }) {
         )
     }
     const KindItem = ({ onPress, title }) => {
-        const color = colorType(title[0])
+        const color = colorType(title[9])
         return (
             <TouchableOpacity style={
                 {
@@ -53,15 +54,17 @@ export default function TypePicker({ kind, setKind }) {
                     backgroundColor: color
                 }} onPress={onPress}>
                 <Text style={{ fontSize: 18, marginRight: 5, alignItems: 'center' }} >{title}</Text>
-                <IsSelectedView isChoosen={title[0] == kind} paddingRight={18} iconSize={18} />
+                <IsSelectedView isChoosen={title[9] == kind} paddingRight={18} iconSize={18} />
             </TouchableOpacity>
         )
     }
+
     return (
         <View style={styles.container} >
             <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                <GetIcon iconName={'format-list-bulleted-type'} source={'MaterialCommunityIcons'} size={26} />
-                <Text style={{ marginLeft: 10, fontSize: 16 }} >Kind of room: </Text>
+                <GetKindRoomLogo size={60} kind={kind} />
+
+                <Text style={{ marginLeft: 10, fontSize: 18 }} >Kind of room: </Text>
             </View>
             <Menu ref={setMenuRef}
                 button={<Kind onPress={showMenu} value={kind} />} >
@@ -76,8 +79,6 @@ export default function TypePicker({ kind, setKind }) {
     )
 }
 
-
-
 export const IsSelectedView = ({ isChoosen, paddingRight = 0, iconSize = 24 }) => {
     if (isChoosen)
         return (
@@ -88,6 +89,19 @@ export const IsSelectedView = ({ isChoosen, paddingRight = 0, iconSize = 24 }) =
     return (
         <View style={{ width: paddingRight }} />
     )
+}
+
+export function GetKindRoomLogo({ kind, size }) {
+    switch (kind) {
+        case 'A':
+            return <Image source={require('../../source/KindRoom/A.png')} style={{ width: size, height: size }} />
+        case 'B':
+            return <Image source={require('../../source/KindRoom/B.png')} style={{ width: size, height: size }} />
+        case 'C':
+            return <Image source={require('../../source/KindRoom/C.png')} style={{ width: size, height: size }} />
+        default:
+            return <GetIcon iconName={'format-list-bulleted-type'} source={'MaterialCommunityIcons'} size={26} />
+    }
 }
 
 export function colorType(type) {
@@ -105,15 +119,15 @@ export function colorType(type) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 50,
+        height: 70,
         flexDirection: 'row',
         marginHorizontal: 10,
-        marginVertical: 5,
+        // marginVertical: 5,
         alignItems: 'center',
         borderBottomWidth: 0.25,
         borderColor: 'black',
         justifyContent: 'space-between',
-        paddingVertical: 10
+        // paddingVertical: 10
     },
     kindContainer: {
         paddingHorizontal: 5,
@@ -126,6 +140,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         flexWrap: 'wrap'
     },
-    kindContent: { fontSize: 16, fontWeight: '500' }
+    kindContent: { fontSize: 18, fontWeight: '500', marginRight: 10 }
 })
 

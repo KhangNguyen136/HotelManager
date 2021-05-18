@@ -3,8 +3,9 @@ import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
 import { globalStyles } from '../../styles/globalStyles';
 import { IconButton } from '../../Components/button';
 import Card from '../../Components/card';
+import ListForm from '../../Components/Table/listForm';
 
-export default function ListForm({ navigation }) {
+export default function ListFormSreen({ navigation }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             // headerRight: () => <IconButton iconName={'notifications'}
@@ -14,7 +15,7 @@ export default function ListForm({ navigation }) {
     return (
         <SafeAreaView style={globalStyles.container}>
             <Card>
-                <Text style={{ height: 40, fontSize: 20, textAlign: 'center' }} > List form screen</Text>
+                <ListForm navigation={navigation} />
             </Card>
         </SafeAreaView>
     )

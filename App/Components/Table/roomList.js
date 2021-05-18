@@ -3,9 +3,8 @@ import { StyleSheet, View, Text, Button, FlatList, TouchableOpacity } from 'reac
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux';
-import { colorType } from '../InputCard/typePicker';
+import { colorType } from '../InputCard/roomKindPicker';
 import { openDatabase } from 'expo-sqlite';
-import Card from '../card';
 import SearchBox from '../InputCard/searchBox';
 import { GetIcon } from '../button';
 const db = openDatabase('userDatabase.db');
@@ -63,7 +62,6 @@ export default function RoomList() {
                 }
             )
         })
-
     }
     const RoomItem = ({ item }) => {
         var color = colorType(item.kind)
@@ -76,27 +74,46 @@ export default function RoomList() {
                         })
                 }} >
                 <View
-                    style={{ width: '8%', borderColor: 'black', borderRightWidth: 0.5, padding: 2, alignItems: 'center' }} >
-                    <Text >{item.ID}</Text>
+                    style={{ ...Styles.cellTable, width: '8%', }} >
+                    <Text style={{ fontSize: 16 }} >{item.ID}</Text>
+                </View>
+                <View style={{ ...Styles.cellTable, flex: 1 }}>
+                    <Text style={{ fontSize: 16 }}>{item.roomName}</Text>
                 </View>
                 <View
-                    style={{ flex: 1, borderColor: 'black', borderRightWidth: 0.5, padding: 2, alignItems: 'center' }}>
-                    <Text>{item.roomName}</Text>
+                    style={{ ...Styles.cellTable, width: '10%' }}>
+                    <Text style={{ fontSize: 16 }}>{item.kind}</Text>
                 </View>
-                <View
-                    style={{ width: '10%', borderColor: 'black', borderRightWidth: 0.5, padding: 2, alignItems: 'center' }}>
-                    <Text>{item.kind}</Text>
+                <View style={{ ...Styles.cellTable, flex: 1 }}>
+                    <Text style={{ fontSize: 16 }}>{item.price}</Text>
                 </View>
-                <View
-                    style={{ flex: 1, borderColor: 'black', borderRightWidth: 0.5, padding: 2, alignItems: 'center' }}>
-                    <Text>{item.price}</Text>
+                <View style={{ flex: 1, padding: 2, alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16 }}>{item.note}</Text>
                 </View>
-                <View
-                    style={{ flex: 1, padding: 2, alignItems: 'center' }}>
-                    <Text>{item.note}</Text>
-                </View>
-
             </TouchableOpacity>)
+    }
+    const Title = () => {
+        return (
+            <View style={{ ...Styles.itemContainer, backgroundColor: '#ecf0f1' }} >
+                <View
+                    style={{ ...Styles.cellTable, width: '8%', }} >
+                    <Text style={{ fontSize: 16 }} >{item.ID}</Text>
+                </View>
+                <View style={{ ...Styles.cellTable, flex: 1 }}>
+                    <Text style={{ fontSize: 16 }}>{item.roomName}</Text>
+                </View>
+                <View
+                    style={{ ...Styles.cellTable, width: '10%' }}>
+                    <Text style={{ fontSize: 16 }}>{item.kind}</Text>
+                </View>
+                <View style={{ ...Styles.cellTable, flex: 1 }}>
+                    <Text style={{ fontSize: 16 }}>{item.price}</Text>
+                </View>
+                <View style={{ flex: 1, padding: 2, alignItems: 'center' }}>
+                    <Text style={{ fontSize: 16 }}>{item.note}</Text>
+                </View>
+            </View>
+        )
     }
     return (
         <View style={Styles.container} >
@@ -108,10 +125,10 @@ export default function RoomList() {
             <TouchableOpacity
                 style={{
                     flexDirection: 'row', padding: 5, marginTop: 5,
-                    alignSelf: 'flex-end', borderRadius: 5, borderWidth: 0.25,
+                    alignSelf: 'flex-end', borderRadius: 5,
                     borderColor: 'black', backgroundColor: '#81ecec'
                 }} onPress={() => navigation.navigate('NewRoom')} >
-                <GetIcon iconName={'pluscircleo'} source={'AntDesign'} size={18} />
+                <GetIcon iconName={'pluscircleo'} source={'AntDesign'} size={24} />
                 <Text style={{ marginLeft: 5, fontSize: 16, fontWeight: '500' }} >Add new room</Text>
             </TouchableOpacity>
         </View>
@@ -140,12 +157,18 @@ const Styles = StyleSheet.create({
         borderColor: 'black',
         // padding: 5
     },
+    cellTable: {
+        borderColor: 'black',
+        borderRightWidth: 0.5,
+        padding: 2,
+        alignItems: 'center',
+    }
 })
 
 const tittleItem = {
     ID: 'ID',
     roomName: "Room's name",
-    kind: 'Type',
+    kind: 'Kind',
     price: 'Price',
     note: 'Note'
 }

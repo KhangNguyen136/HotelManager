@@ -1,98 +1,130 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Formik } from 'formik';
+import { View } from 'react-native';
 import TextInputCard from '../../Components/InputCard/TextInputCard';
 import { Success, CheckInputFailed } from '../AlertMsg/messageAlert'
 import Card from '../card';
 import { BottomButton, SaveButton } from '../button';
-import { addNewRoom, deleteRoom, updateRoom } from '../../Model/roomService';
 import LoadingIndicator from '../loadingIndicator';
-import { updateListRoom } from '../../Actions/roomActions';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import PickerCard from '../InputCard/pickerCard';
 import DateTimePickerCard from '../InputCard/dateTimePicker';
 import ListGuest from '../Table/listGuest';
+import { addForm, deleteForm, updateForm } from '../../Model/formServices';
+import { resetState, setListGuest, setRoom, updateListForm } from '../../Actions/createFormActions';
+import { Formik } from 'formik';
 
 export default function CreateForm({ isEdit, item, navigation }) {
     const [loading, setLoading] = React.useState(false)
+    const [note, setNote] = React.useState('')
+    const [startDate, setStartDate] = React.useState(new Date())
+    var oldRoomID = -1
+    React.useLayoutEffect(() => {
+        if (isEdit) {
+            navigation.setOptions({ title: 'Form details' })
+        }
+    }
+    )
+    React.useEffect(() => {
+        if (isEdit) {
+            setNote(item.form.note)
+            setStartDate(new Date(item.form.date))
+            oldRoomID = item.form.roomID
+        }
+        else {
+            dispatch(resetState())
+        }
+    }, [])
     const dispatch = useDispatch()
-    console.log({ isEdit, item })
-    var initValue = { roomName: '', kind: 'A', note: '', price: 0 }
+    const roomName = useSelector(state => state.formState.room)
+    const roomID = useSelector(state => state.formState.roomID)
+    const listGuest = useSelector(state => state.formState.listGuest)
     if (isEdit) {
-        initValue = item
-        navigation.setOptions({ title: 'Room details' })
+        const values = item.form
+        // console.log(item)
+        useDispatch(setRoom(values.roomName, values.roomID))
+        useDispatch(setListGuest(values.guest))
     }
 
     const deleteItem = () => {
         setLoading(true)
-        deleteRoom(item.ID,
+        deleteForm(item.form,
             () => {
                 setLoading(false)
-                Success('Deleted room successfully')
-                dispatch(updateListRoom())
                 navigation.goBack()
+                Success('Deleted form')
+                dispatch(updateListForm())
+                dispatch(resetState())
+            }, (msg) => {
+                CheckInputFailed(msg)
+                setLoading(false)
+            })
+
+    }
+
+    const update = () => {
+        setLoading(true)
+        const values = {
+            ID: item.form.ID,
+            roomID, roomName, date: startDate, note,
+            oldRoomID: item.form.roomID
+        }
+        const newListGuest = listGuest.filter(item => item.ID != -1)
+        updateForm(values, newListGuest, item.guest, () => {
+            navigation.goBack()
+            Success('Updated form successfully')
+            dispatch(updateListForm())
+            dispatch(resetState())
+        }, (msg) => {
+            CheckInputFailed(msg)
+            setLoading(false)
+        })
+
+    }
+
+    const save = () => {
+        if (!checkInput(roomName, listGuest)) {
+            return
+        }
+        setLoading(true)
+
+        addForm({ roomID, roomName, startDate, note, listGuest },
+            () => {
+                setLoading(false)
+                Success('Added form successfully!')
+                dispatch(resetState())
+                setNote('')
+                setStartDate(new Date())
             },
             (msg) => {
                 setLoading(false)
-                CheckInputFailed('Delete room failed', msg)
-            })
-    }
-
-    const update = (values) => {
-        setLoading(true)
-        updateRoom(item.ID, values,
-            () => {
-                setLoading(false)
-                Success('Updated room successfully')
-                dispatch(updateListRoom())
-                navigation.goBack()
-            }, (msg) => {
-                setLoading(false)
-                CheckInputFailed('Update room failed', msg)
+                CheckInputFailed('Add form fail!', msg)
             })
     }
 
     return (
-        <Formik initialValues={initValue}
-            onSubmit={(values, { resetForm }) => {
-                setLoading(true)
-                if (!checkInput(values.roomName)) {
-                    setLoading(false)
-                    return
-                }
 
-                addNewRoom(values,
-                    () => {
-                        setLoading(false)
-                        Success('Added room successfully')
-                        dispatch(updateListRoom())
-                        resetForm()
-                    },
-                    (msg) => {
-                        setLoading(false)
-                        CheckInputFailed('Added room failed', msg)
-                    })
-            }} >
-            {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
-                <View>
-                    <Card>
-                        <PickerCard value={'Select room'} placeholder={'Select room'} onPress={() => navigation.navigate('SelectRoom')} />
-                        <DateTimePickerCard date={new Date()} title={'Start date: '} />
-                        <TextInputCard value={values.note} onChangeValue={handleChange('note')} onBlur={handleBlur('note')} placeholder={"Note"} />
-                        <ListGuest navigation={navigation} />
-                        <BottomButton isEditMode={isEdit} onSave={handleSubmit} onDelete={deleteItem} onUpdate={() => update(values)} />
-                    </Card>
-                    { loading &&
-                        <LoadingIndicator />}
-                </View>
-            )}
-        </Formik>
+        <View>
+            <Card>
+                <PickerCard value={roomName} placeholder={'Select room'} onPress={() => navigation.navigate('SelectRoom', { selectedRoom: roomName, oldRoomID: oldRoomID })} />
+                <DateTimePickerCard date={startDate} title={'Start date: '} onChangeDate={setStartDate} />
+                <TextInputCard value={note} onChangeValue={setNote} placeholder={"Note"} />
+                <ListGuest navigation={navigation} />
+                <BottomButton isEditMode={isEdit} onSave={save} onDelete={deleteItem} onUpdate={update} />
+            </Card>
+            { loading &&
+                <LoadingIndicator />}
+        </View>
+
     )
 }
 
-function checkInput(roomName) {
+function checkInput(roomName, listGuest) {
     if (roomName == '') {
         CheckInputFailed("Please enter room's name!")
+        return false
+    }
+    if (listGuest.length == 1) {
+        CheckInputFailed("Please add guest!")
         return false
     }
     return true

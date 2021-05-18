@@ -2074,10 +2074,10 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
-"@react-native-community/datetimepicker@^3.4.7":
-  version "3.4.7"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.4.7.tgz#84613cda2cf06315530628cdf07c77076eae5ec3"
-  integrity sha512-T5MG05ekf9iLSdpBPDbXcOUP6c9pNVhCEVCp9jfjQxj+4dpVQMiCSyLJdPM543uv9KloIZZ71vs+Um01AbwO7A==
+"@react-native-community/datetimepicker@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-3.2.0.tgz#757ae731bab4442842a4a884941239efa75f371f"
+  integrity sha512-RX4/mi2beCiJXakJJr9bJrqNSfu7wc69Q0gPw21m/PdpYM14bJplVgjmL0hm3VSedj3Eg/dErWy5DdLM8upS/A==
   dependencies:
     invariant "^2.2.4"
 
@@ -3524,7 +3524,7 @@ expo-keep-awake@~9.1.2:
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-9.1.2.tgz#b3e52c7bef0ade975ae88637a2bf980f6b573368"
   integrity sha512-CCuEOQUNLYtMA0rt0sQ9u5LlIMH7lDJG7dImoorfKMsP95yHXy8dl3oCdtaz2zbsPgggVYeom9gE+gQu+Ki4rQ==
 
-expo-sqlite@^9.1.0:
+expo-sqlite@~9.1.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/expo-sqlite/-/expo-sqlite-9.1.0.tgz#003323479b3e342ab063e12b13ffe68c76e91af3"
   integrity sha512-nr6rHm2GCm+MrMAuMoL0mGbGw8aIHT/UNg/zMDb2/QjFU1ZHj7c/lI+vmmQx0ObZ+NfJfu+tyW6HqxsdMnkeog==
@@ -5197,6 +5197,11 @@ mockdate@^3.0.2:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/mockdate/-/mockdate-3.0.5.tgz#789be686deb3149e7df2b663d2bc4392bc3284fb"
   integrity sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==
+
+moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 ms@2.0.0:
   version "2.0.0"

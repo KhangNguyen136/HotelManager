@@ -21,8 +21,8 @@ export default function BottomTab() {
                 inactiveTintColor: 'black',
             }}>
             <Tab.Screen name='Home' component={HomeStack} />
-            <Tab.Screen name='CreateForm' component={CreateFormStack} />
-            <Tab.Screen name='Statistics' component={StatisticsStack} options={{ title: 'Statistics' }} />
+            <Tab.Screen name='CreateForm' component={CreateFormStack} options={{ title: 'Create Form' }} />
+            <Tab.Screen name='Statistics' component={StatisticsStack} />
             <Tab.Screen name='Setting' component={OtherStack} options={{ title: 'Other' }} />
         </Tab.Navigator>
     );

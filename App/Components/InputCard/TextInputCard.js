@@ -6,6 +6,14 @@ export default function TextInputCard({ value, placeholder, onChangeValue, onBlu
     var iconName
     var source
     switch (placeholder) {
+        case 'Identity card':
+            iconName = 'idcard'
+            source = 'AntDesign'
+            break;
+        case 'Address':
+            iconName = 'address'
+            source = 'Entypo'
+            break;
         case "Note":
             iconName = 'text'
             source = 'Entypo'
@@ -35,7 +43,7 @@ export default function TextInputCard({ value, placeholder, onChangeValue, onBlu
 
 const styles = StyleSheet.create({
     container: {
-        height: 40,
+        height: 50,
         flexDirection: 'row',
         marginHorizontal: 10,
         marginVertical: 5,

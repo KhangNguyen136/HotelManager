@@ -16,6 +16,7 @@ export default function Other({ navigation }) {
     return (
         <SafeAreaView style={globalStyles.container}>
             <ListRoom />
+            {/* <Button title={'To other again'} onPress={() => navigation.push('Other', { param: 'alo' })} /> */}
         </SafeAreaView>
     )
 }

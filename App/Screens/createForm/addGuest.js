@@ -3,8 +3,9 @@ import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
 import { globalStyles } from '../../styles/globalStyles';
 import { IconButton } from '../../Components/button';
 import Card from '../../Components/card';
+import AddGuestForm from '../../Components/InputForm/addGuest';
 
-export default function AddGuest({ navigation }) {
+export default function AddGuest({ navigation, route }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             // headerRight: () => <IconButton iconName={'notifications'}
@@ -13,9 +14,7 @@ export default function AddGuest({ navigation }) {
     })
     return (
         <SafeAreaView style={globalStyles.container}>
-            <Card>
-                <Text style={{ height: 40, fontSize: 20, textAlign: 'center' }} > Add guest screen</Text>
-            </Card>
+            <AddGuestForm navigation={navigation} route={route} />
         </SafeAreaView>
     )
 }
