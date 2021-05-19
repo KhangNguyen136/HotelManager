@@ -9,13 +9,12 @@ export default function PickerCard({ value, onPress, placeholder }) {
     var source = ''
     switch (placeholder) {
         case 'Select room':
-            if (value == 'Select room')
-                textColor = 'gray'
             iconName = 'hotel'
             source = 'FontAwesome'
             break;
-
     }
+    if (value == placeholder)
+        textColor = 'gray'
     return (
         <TouchableOpacity style={styles.container} onPress={onPress} delayPressIn={0}>
             <GetIcon iconName={iconName} source={source} />

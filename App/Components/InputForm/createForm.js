@@ -10,13 +10,16 @@ import PickerCard from '../InputCard/pickerCard';
 import DateTimePickerCard from '../InputCard/dateTimePicker';
 import ListGuest from '../Table/listGuest';
 import { addForm, deleteForm, updateForm } from '../../Model/formServices';
-import { resetState, setListGuest, setRoom, updateListForm } from '../../Actions/createFormActions';
-import { Formik } from 'formik';
+import { resetState, setRoom, updateListForm } from '../../Actions/createFormActions';
 
 export default function CreateForm({ isEdit, item, navigation }) {
     const [loading, setLoading] = React.useState(false)
     const [note, setNote] = React.useState('')
     const [startDate, setStartDate] = React.useState(new Date())
+    const dispatch = useDispatch()
+    const roomName = useSelector(state => state.formState.room)
+    const roomID = useSelector(state => state.formState.roomID)
+    const listGuest = useSelector(state => state.formState.listGuest)
     var oldRoomID = -1
     React.useLayoutEffect(() => {
         if (isEdit) {
@@ -30,21 +33,12 @@ export default function CreateForm({ isEdit, item, navigation }) {
             setStartDate(new Date(item.form.date))
             oldRoomID = item.form.roomID
         }
-        else {
+        return () => {
             dispatch(resetState())
+            dispatch(setRoom('Select room', -1))
+
         }
     }, [])
-    const dispatch = useDispatch()
-    const roomName = useSelector(state => state.formState.room)
-    const roomID = useSelector(state => state.formState.roomID)
-    const listGuest = useSelector(state => state.formState.listGuest)
-    if (isEdit) {
-        const values = item.form
-        // console.log(item)
-        useDispatch(setRoom(values.roomName, values.roomID))
-        useDispatch(setListGuest(values.guest))
-    }
-
     const deleteItem = () => {
         setLoading(true)
         deleteForm(item.form,
@@ -53,7 +47,6 @@ export default function CreateForm({ isEdit, item, navigation }) {
                 navigation.goBack()
                 Success('Deleted form')
                 dispatch(updateListForm())
-                dispatch(resetState())
             }, (msg) => {
                 CheckInputFailed(msg)
                 setLoading(false)
@@ -73,7 +66,6 @@ export default function CreateForm({ isEdit, item, navigation }) {
             navigation.goBack()
             Success('Updated form successfully')
             dispatch(updateListForm())
-            dispatch(resetState())
         }, (msg) => {
             CheckInputFailed(msg)
             setLoading(false)
@@ -82,7 +74,7 @@ export default function CreateForm({ isEdit, item, navigation }) {
     }
 
     const save = () => {
-        if (!checkInput(roomName, listGuest)) {
+        if (!checkInput(roomName, roomID, listGuest)) {
             return
         }
         setLoading(true)
@@ -92,6 +84,7 @@ export default function CreateForm({ isEdit, item, navigation }) {
                 setLoading(false)
                 Success('Added form successfully!')
                 dispatch(resetState())
+                dispatch(setRoom('Select room', -1))
                 setNote('')
                 setStartDate(new Date())
             },
@@ -118,8 +111,8 @@ export default function CreateForm({ isEdit, item, navigation }) {
     )
 }
 
-function checkInput(roomName, listGuest) {
-    if (roomName == '') {
+function checkInput(roomName, roomID, listGuest) {
+    if (roomName == 'Select room' || roomID == -1) {
         CheckInputFailed("Please enter room's name!")
         return false
     }

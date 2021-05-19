@@ -1,4 +1,6 @@
 const initalState = {
+    room: 'Select room',
+    roomID: -1,
     listFormUpdated: false,
     listGuest: [{
         ID: -1,
@@ -8,15 +10,12 @@ const initalState = {
         address: 'Address',
         // note: ''
     }],
-    room: 'Select room',
-    roomID: -1
 }
 
 const createFormReducer = (state = initalState, action) => {
     const newFormState = state
     switch (action.type) {
         case 'updateListForm':
-            // newBillState.listBillUpdated = !state.roomState.listBillUpdated
             newFormState.listFormUpdated = !state.listFormUpdated
             return newFormState
         case 'setRoom':
