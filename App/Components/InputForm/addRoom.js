@@ -1,17 +1,16 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import TextInputCard from '../../Components/InputCard/TextInputCard';
+import TextInputCard from '../InputCard/TextInputCard';
 import { Success, CheckInputFailed } from '../AlertMsg/messageAlert'
 import Card from '../card';
-import { BottomButton, SaveButton } from '../button';
-import TypePicker from '../InputCard/roomKindPicker';
+import { BottomButton } from '../button';
+import TypePicker from '../InputCard/roomTypePicker';
 import { addNewRoom, deleteRoom, updateRoom } from '../../Model/roomService';
 import LoadingIndicator from '../loadingIndicator';
 import { updateListRoom } from '../../Actions/roomActions';
 import { useDispatch } from 'react-redux'
 import DatePickerCard from '../InputCard/datePicker';
-import PriceCard from '../InputCard/priceCard';
 import { openDatabase } from 'expo-sqlite';
 const db = openDatabase('userDatabase.db');
 
@@ -24,7 +23,8 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
         if (isEdit)
             navigation.setOptions({ title: 'Room details' })
     })
-    var initValue
+    var initValue = { roomName: '', typeID: 1, note: '', addDate: new Date() }
+
     // React.useEffect(() => {
     //     if (isEdit) {
     //         db.transaction(tx => {
@@ -47,17 +47,15 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
     // )
     if (isEdit)
         initValue = { ...item, addDate: new Date(item.addDate) }
-    else
-        initValue = { roomName: '', kind: 'A', note: '', price: 0, addDate: new Date() }
-
     const deleteItem = () => {
         setLoading(true)
-        deleteRoom(item.ID,
+        deleteRoom(item.roomID,
             () => {
                 navigation.goBack()
                 setLoading(false)
                 Success('Deleted room successfully')
                 dispatch(updateListRoom())
+                // dispatch(updateListSttRoom())
             },
             (msg) => {
                 setLoading(false)
@@ -68,7 +66,7 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
     const update = (values) => {
         console.log("update values:", values)
         setLoading(true)
-        updateRoom(item.ID, values,
+        updateRoom(item.roomID, values,
             () => {
                 navigation.goBack()
                 setLoading(false)
@@ -82,7 +80,7 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
 
     return (
         <Formik initialValues={initValue}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values) => {
                 if (!checkInput(values.roomName)) {
                     setLoading(false)
                     return
@@ -93,7 +91,8 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
                         setLoading(false)
                         Success('Added room successfully')
                         dispatch(updateListRoom())
-                        resetForm()
+                        // dispatch(upda)
+                        navigation.goBack()
                     },
                     (msg) => {
                         setLoading(false)
@@ -105,14 +104,16 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
                     <Card>
                         <TextInputCard value={values.roomName} onChangeValue={handleChange('roomName')} onBlur={handleBlur('roomName')} placeholder={"Room's name"} />
 
-                        <TypePicker kind={values.kind} setKind={(value) => setFieldValue('kind', value)} />
-                        <PriceCard kind={values.kind} />
+                        <TypePicker
+                            setType={(typeID) => {
+                                setFieldValue('typeID', typeID)
+                            }} />
                         <DatePickerCard title={'Add date: '} date={values.addDate} onChangeDate={(value) => setFieldValue('addDate', value)} />
                         <TextInputCard value={values.note} onChangeValue={handleChange('note')} onBlur={handleBlur('note')} placeholder={"Note"} />
                         {/* <SaveButton onPress={handleSubmit} /> */}
                         <BottomButton isEditMode={isEdit} onSave={handleSubmit} onDelete={deleteItem} onUpdate={() => update(values)} />
                     </Card>
-                    { loading &&
+                    {loading &&
                         <LoadingIndicator />}
                 </View>
             )}

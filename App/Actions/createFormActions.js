@@ -31,11 +31,13 @@ export const setListGuest = (listGuest) => {
     }
 }
 
-export const setRoom = (roomName, roomID) => {
+export const setRoom = (roomName, roomID, roomType, price) => {
     return {
         type: 'setRoom',
         roomName: roomName,
-        roomID: roomID
+        roomID: roomID,
+        roomType: roomType,
+        price: price
     }
 }
 
@@ -49,5 +51,12 @@ export const resetState = () => {
 export const updateListForm = () => {
     return {
         type: 'updateListForm',
+    }
+}
+
+export const setNote = (setNote) => {
+    return {
+        type: 'setNote',
+        setNote: setNote
     }
 }

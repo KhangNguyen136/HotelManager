@@ -19,8 +19,8 @@ export default function App() {
             if (user) {
                 // User is signed in.
                 // console.log('Log in')
-                setLogIn('logIn')
                 initDatabase()
+                setLogIn('logIn')
             } else {
                 // No user is signed in.
                 // console.log('Not log in')

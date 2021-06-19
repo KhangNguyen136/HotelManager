@@ -3,10 +3,11 @@ import { StyleSheet, View, Text, Button, FlatList, TouchableOpacity } from 'reac
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux';
-import { colorType } from '../InputCard/roomKindPicker';
+import { colorType } from '../InputCard/roomTypePicker';
 import { openDatabase } from 'expo-sqlite';
 import SearchBox from '../InputCard/searchBox';
 import { GetIcon } from '../button';
+import NoDataComp from '../nodata';
 const db = openDatabase('userDatabase.db');
 
 export default function RoomList() {
@@ -26,24 +27,25 @@ export default function RoomList() {
         }, [listRoomUpdated, searchKey]
     )
     const getListRoom = () => {
-        var result = [tittleItem]
-        var temp = 0
+        var result = []
         db.transaction(tx => {
             tx.executeSql(
-                'select * from roomTable', [],
+                'select * from roomTable r inner join roomTypeTable t on r.typeID = t.typeID', [],
+
                 (tx, results) => {
                     var temp = results.rows.length
                     for (let i = 0; i < temp; i++) {
                         result.push(results.rows.item(i))
                     }
                     setListRoom(result)
+                    console.log(result)
                     setTotalRoom(temp)
                 }
             )
         })
     }
     const findRoom = () => {
-        var result = [tittleItem]
+        var result = []
         var temp = 0
         db.transaction(tx => {
             tx.executeSql(
@@ -64,7 +66,7 @@ export default function RoomList() {
         })
     }
     const RoomItem = ({ item }) => {
-        var color = colorType(item.kind)
+        var color = colorType(item.typeID)
         return (
             <TouchableOpacity style={{ ...Styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
@@ -75,14 +77,14 @@ export default function RoomList() {
                 }} >
                 <View
                     style={{ ...Styles.cellTable, width: '8%', }} >
-                    <Text style={{ fontSize: 16 }} >{item.ID}</Text>
+                    <Text style={{ fontSize: 16 }} >{item.roomID}</Text>
                 </View>
                 <View style={{ ...Styles.cellTable, flex: 1 }}>
                     <Text style={{ fontSize: 16 }}>{item.roomName}</Text>
                 </View>
                 <View
-                    style={{ ...Styles.cellTable, width: '10%' }}>
-                    <Text style={{ fontSize: 16 }}>{item.kind}</Text>
+                    style={{ ...Styles.cellTable, width: '20%' }}>
+                    <Text style={{ fontSize: 16 }}>{item.type}</Text>
                 </View>
                 <View style={{ ...Styles.cellTable, flex: 1 }}>
                     <Text style={{ fontSize: 16 }}>{item.price}</Text>
@@ -97,20 +99,20 @@ export default function RoomList() {
             <View style={{ ...Styles.itemContainer, backgroundColor: '#ecf0f1' }} >
                 <View
                     style={{ ...Styles.cellTable, width: '8%', }} >
-                    <Text style={{ fontSize: 16 }} >{item.ID}</Text>
+                    <Text style={{ fontSize: 16 }} >ID</Text>
                 </View>
                 <View style={{ ...Styles.cellTable, flex: 1 }}>
-                    <Text style={{ fontSize: 16 }}>{item.roomName}</Text>
+                    <Text style={{ fontSize: 16 }}>Room name</Text>
                 </View>
                 <View
-                    style={{ ...Styles.cellTable, width: '10%' }}>
-                    <Text style={{ fontSize: 16 }}>{item.kind}</Text>
+                    style={{ ...Styles.cellTable, width: '20%' }}>
+                    <Text style={{ fontSize: 16 }}>Category</Text>
                 </View>
                 <View style={{ ...Styles.cellTable, flex: 1 }}>
-                    <Text style={{ fontSize: 16 }}>{item.price}</Text>
+                    <Text style={{ fontSize: 16 }}>Price</Text>
                 </View>
                 <View style={{ flex: 1, padding: 2, alignItems: 'center' }}>
-                    <Text style={{ fontSize: 16 }}>{item.note}</Text>
+                    <Text style={{ fontSize: 16 }}>Note</Text>
                 </View>
             </View>
         )
@@ -119,9 +121,11 @@ export default function RoomList() {
         <View style={Styles.container} >
             <Text style={{ fontSize: 16, fontWeight: '500' }} > List room: {totalRoom}</Text >
             <SearchBox value={searchKey} textChange={setSearchKey} placeholder={"Search by room's name or note"} />
+            <Title />
             <FlatList data={listRoom}
                 renderItem={RoomItem}
-                keyExtractor={item => item.roomName} />
+                keyExtractor={item => item.roomName}
+                ListEmptyComponent={NoDataComp} />
             <TouchableOpacity
                 style={{
                     flexDirection: 'row', padding: 5, marginTop: 5,
@@ -138,7 +142,7 @@ export default function RoomList() {
 const Styles = StyleSheet.create({
     container: {
         // flex: 1,
-        maxHeight: '50%',
+        maxHeight: '70%',
         borderRadius: 8,
         backgroundColor: '#fff',
         shadowOffset: { width: 1, height: 1 },
@@ -164,11 +168,3 @@ const Styles = StyleSheet.create({
         alignItems: 'center',
     }
 })
-
-const tittleItem = {
-    ID: 'ID',
-    roomName: "Room's name",
-    kind: 'Kind',
-    price: 'Price',
-    note: 'Note'
-}

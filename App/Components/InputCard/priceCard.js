@@ -2,12 +2,15 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { GetIcon } from '../button';
 
-export default function PriceCard({ kind }) {
+export default function PriceCard({ value }) {
 
     return (
         <View style={styles.container} >
             <GetIcon iconName={'price-tag'} size={26} source={'Entypo'} />
-            <Text style={styles.content} >Price: {getPrice(kind)}</Text>
+            <View style={styles.contentContainer} >
+                <Text style={styles.content} >Price: </Text>
+                <Text style={styles.content}>{value} vnđ</Text>
+            </View>
         </View>
     )
 }
@@ -26,19 +29,15 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginHorizontal: 5,
         // padding: 10,
-        flex: 1,
         fontWeight: '500',
         textAlign: 'right'
     },
+    contentContainer: {
+        flex: 1,
+        marginLeft: 10,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    }
 })
 
-
-function getPrice(kind) {
-    switch (kind) {
-        case 'A':
-            return 150000
-        case 'B':
-            return 170000
-    }
-    return 200000
-}

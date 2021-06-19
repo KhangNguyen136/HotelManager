@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { GetIcon } from '../button';
+import { colorType } from '../InputCard/roomTypePicker'
 import { useSelector, useDispatch } from 'react-redux'
-import { CheckInputFailed } from '../AlertMsg/messageAlert';
+import NoDataComp from '../nodata';
 import { openDatabase } from 'expo-sqlite';
 import LoadingIndicator from '../loadingIndicator';
 import { setListGuest, setRoom } from '../../Actions/createFormActions';
-import { useNavigation } from '@react-navigation/core';
 const db = openDatabase('userDatabase.db');
 
 export default function ListForm({ navigation }) {
@@ -20,7 +20,7 @@ export default function ListForm({ navigation }) {
         setLoading(true)
         db.transaction(tx => {
             tx.executeSql(
-                "select * from formTable",
+                "select f.formID , f.date, f.note, f.isPaid, r.roomID, r.roomName,t.typeID, t.price from formTable f inner join roomTable r on f.roomID = r.roomID inner join roomTypeTable t on r.typeID = t.typeID",
                 [], (tx, formResults) => {
                     var n = formResults.rows.length
                     console.log('Form: ', n)
@@ -44,13 +44,11 @@ export default function ListForm({ navigation }) {
 
     }, [listFormUpdated])
     const getListGuest = () => {
-        var item
         db.transaction(tx => {
             for (let i = 0; i < tempData.length; i++)
                 tx.executeSql(
-                    'select * from guestTable where formID = ?', [tempData[i].form.ID],
+                    'select * from guestTable where formID = ?', [tempData[i].form.formID],
                     (tx, guestResults) => {
-                        // console.log('List guest: ', guestResults.rows)
                         // var item
                         for (let j = 0; j < guestResults.rows.length; j++)
                             tempData[i].guest.push(guestResults.rows.item(j))
@@ -60,27 +58,18 @@ export default function ListForm({ navigation }) {
             () => {
                 console.log('Get list')
                 setData(tempData)
-                // console.log(tempData)
+                console.log(tempData)
             }
         )
     }
     const Form = ({ item }) => {
-        // var date = new Date(item.form.date)
-        var color = '#7bed9f'
-        // var ID = 'ID'
-        // if (item.type == 'Foreign')
-        //     color = '#f6e58d'
-        // if (item.type == 'Type')
-        //     color = '#ecf0f1'
-        // if (item.type != 'Type')
-        // ID = data.findIndex(i => i.IC == item.IC)
+        var color = colorType(item.form.typeID)
         return (
             <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
                     {
                         navigation.push('CreateForm', { isEdit: true, item: item })
-                        // navigation.push('CreateForm')
-                        dispatch(setRoom(item.form.roomName, item.form.roomID))
+                        dispatch(setRoom(item.form.roomName, item.form.roomID, item.form.typeID, item.form.price))
                         console.log('Go to form details')
                         dispatch(setListGuest(item.guest))
                     }
@@ -122,9 +111,12 @@ export default function ListForm({ navigation }) {
         <View>
             <Text style={{ fontSize: 18, fontWeight: '400', marginBottom: 5, marginLeft: 10 }} >List guest: </Text>
             <Title />
+
             <FlatList data={data}
                 renderItem={Form}
-                keyExtractor={item => String(item.form.ID)} />
+                keyExtractor={item => String(item.form.formID)}
+                ListEmptyComponent={NoDataComp}
+            />
             {
                 loading && <LoadingIndicator />
             }

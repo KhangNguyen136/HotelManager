@@ -11,6 +11,8 @@ import DateTimePickerCard from '../InputCard/dateTimePicker';
 import ListGuest from '../Table/listGuest';
 import { addForm, deleteForm, updateForm } from '../../Model/formServices';
 import { resetState, setRoom, updateListForm } from '../../Actions/createFormActions';
+import { updateListSttRoom } from '../../Actions/roomActions';
+import PriceCard from '../InputCard/priceCard';
 
 export default function CreateForm({ isEdit, item, navigation }) {
     const [loading, setLoading] = React.useState(false)
@@ -19,24 +21,22 @@ export default function CreateForm({ isEdit, item, navigation }) {
     const dispatch = useDispatch()
     const roomName = useSelector(state => state.formState.room)
     const roomID = useSelector(state => state.formState.roomID)
+    const price = useSelector(state => state.formState.price)
+    const roomType = useSelector(state => state.formState.roomType)
     const listGuest = useSelector(state => state.formState.listGuest)
-    var oldRoomID = -1
     React.useLayoutEffect(() => {
         if (isEdit) {
             navigation.setOptions({ title: 'Form details' })
         }
-    }
-    )
+    })
     React.useEffect(() => {
         if (isEdit) {
             setNote(item.form.note)
             setStartDate(new Date(item.form.date))
-            oldRoomID = item.form.roomID
         }
         return () => {
             dispatch(resetState())
-            dispatch(setRoom('Select room', -1))
-
+            dispatch(setRoom('Select room', -1, 0, 0))
         }
     }, [])
     const deleteItem = () => {
@@ -44,53 +44,53 @@ export default function CreateForm({ isEdit, item, navigation }) {
         deleteForm(item.form,
             () => {
                 setLoading(false)
+                dispatch(updateListForm())
+                dispatch(updateListSttRoom())
                 navigation.goBack()
                 Success('Deleted form')
-                dispatch(updateListForm())
             }, (msg) => {
                 CheckInputFailed(msg)
                 setLoading(false)
             })
-
     }
 
     const update = () => {
         setLoading(true)
         const values = {
-            ID: item.form.ID,
-            roomID, roomName, date: startDate, note,
+            formID: item.form.formID,
+            date: startDate, note,
             oldRoomID: item.form.roomID
         }
-        const newListGuest = listGuest.filter(item => item.ID != -1)
-        updateForm(values, newListGuest, item.guest, () => {
-            navigation.goBack()
-            Success('Updated form successfully')
+        updateForm(values, listGuest, item.guest, () => {
+            dispatch(updateListSttRoom())
             dispatch(updateListForm())
+            navigation.goBack()
+            Success('Update form successful')
         }, (msg) => {
-            CheckInputFailed(msg)
             setLoading(false)
+            CheckInputFailed(msg)
         })
 
     }
 
     const save = () => {
-        if (!checkInput(roomName, roomID, listGuest)) {
+        if (!checkInput(roomID, listGuest)) {
             return
         }
         setLoading(true)
-
-        addForm({ roomID, roomName, startDate, note, listGuest },
+        addForm({ roomID, startDate, note, listGuest },
             () => {
                 setLoading(false)
-                Success('Added form successfully!')
+                Success('Add form successful')
                 dispatch(resetState())
                 dispatch(setRoom('Select room', -1))
+                dispatch(updateListSttRoom())
                 setNote('')
                 setStartDate(new Date())
             },
             (msg) => {
                 setLoading(false)
-                CheckInputFailed('Add form fail!', msg)
+                CheckInputFailed('Add form failed', msg)
             })
     }
 
@@ -98,25 +98,33 @@ export default function CreateForm({ isEdit, item, navigation }) {
 
         <View>
             <Card>
-                <PickerCard value={roomName} placeholder={'Select room'} onPress={() => navigation.navigate('SelectRoom', { selectedRoom: roomName, oldRoomID: oldRoomID })} />
+                <PickerCard value={roomName} placeholder={'Select room'} type={roomType} onPress={() => {
+                    const oldRoomID = item.form != undefined ? item.form.roomID : -1
+                    // dispatch(setNote(setNote))
+                    navigation.navigate('SelectRoom', { selectedRoom: roomName, old: oldRoomID })
+                }} />
+                {
+                    roomID != -1 &&
+                    <PriceCard value={price} />
+                }
                 <DateTimePickerCard date={startDate} title={'Start date: '} onChangeDate={setStartDate} />
                 <TextInputCard value={note} onChangeValue={setNote} placeholder={"Note"} />
-                <ListGuest navigation={navigation} />
+                <ListGuest navigation={navigation} data={listGuest} />
                 <BottomButton isEditMode={isEdit} onSave={save} onDelete={deleteItem} onUpdate={update} />
             </Card>
-            { loading &&
+            {loading &&
                 <LoadingIndicator />}
         </View>
 
     )
 }
 
-function checkInput(roomName, roomID, listGuest) {
-    if (roomName == 'Select room' || roomID == -1) {
-        CheckInputFailed("Please enter room's name!")
+function checkInput(roomID, listGuest) {
+    if (roomID == -1) {
+        CheckInputFailed("Please select room!")
         return false
     }
-    if (listGuest.length == 1) {
+    if (listGuest.length == 0) {
         CheckInputFailed("Please add guest!")
         return false
     }

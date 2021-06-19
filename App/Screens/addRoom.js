@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
 import { IconButton } from '../Components/button';
 import Card from '../Components/card';
-import AddNewRoomForm from '../Components/InputForm/newRoom'
+import AddNewRoomForm from '../Components/InputForm/addRoom'
 export default function NewRoom({ navigation, route }) {
     const { item, isEdit } = route.params
     React.useLayoutEffect(() => {

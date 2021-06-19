@@ -1,15 +1,11 @@
 const initalState = {
     room: 'Select room',
     roomID: -1,
+    roomType: '',
+    price: 0,
+    // setnote: () => console.log('Nothing'),
     listFormUpdated: false,
-    listGuest: [{
-        ID: -1,
-        name: 'Name',
-        type: 'Type',
-        IC: 'Identity Card',
-        address: 'Address',
-        // note: ''
-    }],
+    listGuest: [],
 }
 
 const createFormReducer = (state = initalState, action) => {
@@ -21,6 +17,8 @@ const createFormReducer = (state = initalState, action) => {
         case 'setRoom':
             newFormState.room = action.roomName
             newFormState.roomID = action.roomID
+            newFormState.roomType = action.roomType
+            newFormState.price = action.price
             return newFormState
         case 'deleteGuest':
             var newListGuest = state.listGuest.filter(item => item.IC != action.IC)
@@ -42,10 +40,23 @@ const createFormReducer = (state = initalState, action) => {
             action.success()
             newListGuest.push(action.newGuest)
             return { ...state, listGuest: newListGuest }
+        // var newListGuest = state.listGuest
+        // if (!checkNewGuest(action.newGuest, newListGuest.filter(item => item.IC == action.oldGuest))) {
+        //     action.fail()
+        //     return state
+        // }
+        // const id = state.listGuest.findIndex(i => i.IC == action.oldGuest.IC)
+        // newListGuest[id] = action.newGuest
+        // console.log(newListGuest)
+        // action.success()
+        // return { ...state, listGuest: newListGuest }
         case 'setListGuest':
-            newListGuest = initalState.listGuest.concat(action.listGuest)
+            newListGuest = action.listGuest
             // console.log('New list guest: ', newListGuest)
             return { ...state, listGuest: newListGuest }
+        // case 'setNote':
+        //     newFormState.setnote = action.setNote
+        //     return newFormState
         case 'resetForm':
             console.log('reset form')
             return initalState

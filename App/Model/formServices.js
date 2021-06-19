@@ -5,13 +5,13 @@ export function addForm(values, success, fail) {
     // console.log('add form: ', values)
     db.transaction(tx => {
         tx.executeSql(
-            'insert into formTable(roomID, roomName ,date, note, isPaid) values (?,?,?,?,?)',
-            [values.roomID, values.roomName, values.startDate.toString(), values.note, 0],
+            'insert into formTable(roomID ,date, note, isPaid) values (?,?,?,?)',
+            [values.roomID, values.startDate.toString(), values.note, 0],
             (tx, results) => {
                 const formID = results.insertId
                 console.log(formID)
                 const listGuest = values.listGuest
-                for (let i = 1; i < listGuest.length; i++) {
+                for (let i = 0; i < listGuest.length; i++) {
                     const item = listGuest[i]
                     tx.executeSql(
                         'insert into guestTable(formID, name, type, IC, address) values (?,?,?,?,?)',
@@ -23,7 +23,6 @@ export function addForm(values, success, fail) {
                 }
             }
         )
-
     }, (error) => {
         console.log(error)
         fail(error.message)
@@ -31,7 +30,7 @@ export function addForm(values, success, fail) {
         success()
         db.transaction(tx => {
             tx.executeSql(
-                'update roomTable set stateRoom = ? where ID = ?', ['occupied', values.roomID]
+                'update roomTable set stateRoom = ? where roomID = ?', ['occupied', values.roomID]
             )
         })
     }
@@ -49,44 +48,19 @@ function findByID(list, ID) {
 
 function updateListGuest(newList, oldList, formID) {
     // console.log('list: ', newList, oldList)
-    var i
     db.transaction(tx => {
-        if (newList.length == oldList.length) {
-            // console.log('case 1')
-            for (i in newList) {
-                tx.executeSql(
-                    'update guestTable set name = ?, type = ?, IC = ?, address = ? where ID = ?',
-                    [newList[i].name, newList[i].type, newList[i].IC, newList[i].address, newList[i].ID]
-                )
-            }
+        for (let i in newList) {
+            tx.executeSql(
+                'insert into guestTable(formID, name, type, IC, address) values (?,?,?,?,?)',
+                [formID, newList[i].name, newList[i].type, newList[i].IC, newList[i].address]
+            )
         }
-        else if (newList.length < oldList.length) {
-            // console.log('Case 2')
-            for (i in oldList) {
-                var id = findByID(newList, oldList[i].ID)
-                if (id != -1)
-                    tx.executeSql(
-                        'update guestTable set name = ?, type = ?, IC = ?, address = ? where ID = ?', [newList[id].name, newList[id].type, newList[id].IC, newList[id].address, newList[id].ID]
-                    )
-                else
-                    tx.executeSql(
-                        'delete from guestTable where ID = ?', [oldList[i].ID]
-                    )
-            }
+        for (let j = 0; j < oldList.length; j++) {
+            tx.executeSql(
+                'delete from guestTable where guestID = ?', [oldList[j].guestID]
+            )
         }
-        else
-            for (i in newList) {
-                var id = findByID(oldList, newList[i].ID)
-                // console.log('case 3')
-                if (id != -1)
-                    tx.executeSql(
-                        'update guestTable set name = ?, type = ?, IC = ?, address = ? where ID = ?', [newList[i].name, newList[i].type, newList[i].IC, newList[i].address, newList[i].ID]
-                    )
-                else
-                    tx.executeSql(
-                        'insert into guestTable(formID, name, type, IC, address) values (?,?,?,?,?)', [formID, newList[i].name, newList[i].type, newList[i].IC, newList[i].address]
-                    )
-            }
+
     }, (error) => console.log(error.message),
         () => console.log('Update list guest successfully'))
 }
@@ -95,14 +69,14 @@ export function deleteForm(values, success, fail) {
     console.log('Values :', values)
     db.transaction(tx => {
         tx.executeSql(
-            'delete from formTable where ID = ?', [values.ID],
+            'delete from formTable where formID = ?', [values.formID],
         )
         if (values.isPaid == 0)
             tx.executeSql(
-                'update roomTable set stateRoom =  ? where ID = ? ', ['empty', values.roomID]
+                'update roomTable set stateRoom =  ? where roomID = ? ', ['available', values.roomID]
             )
         tx.executeSql(
-            'delete from guestTable where formID = ?', [values.ID]
+            'delete from guestTable where formID = ?', [values.formID]
         )
     }, (error) => {
         fail(error.message)
@@ -110,24 +84,24 @@ export function deleteForm(values, success, fail) {
 }
 
 export function updateForm(values, listGuest, oldListGuest, success, fail) {
-    // console.log('update form: ', values)
+    console.log({ values, listGuest, oldListGuest })
     db.transaction(tx => {
         tx.executeSql(
-            'update formTable set roomID = ?, roomName = ?, date = ?, note = ? where ID = ? ',
-            [values.roomID, values.roomName, values.date.toString(), values.note, values.ID],
+            'update formTable set roomID = ?, date = ?, note = ? where formID = ? ',
+            [values.roomID, values.date.toString(), values.note, values.formID],
             (tx, results) => {
                 console.log(results.rowsAffected)
             }
         )
         if (values.roomID != values.oldRoomID) {
             tx.executeSql(
-                'update roomTable set stateRoom = ? where ID = ?', ['empty', values.oldRoomID]
+                'update roomTable set stateRoom = ? where roomID = ?', ['available', values.oldRoomID]
             )
             tx.executeSql(
-                'update roomTable set stateRoom = ? where ID = ?', ['occupied', values.roomID]
+                'update roomTable set stateRoom = ? where roomID = ?', ['occupied', values.roomID]
             )
         }
-        updateListGuest(listGuest, oldListGuest, values.ID)
+        updateListGuest(listGuest, oldListGuest, values.formID)
     }, (error) => {
         console.log(error)
         fail(error.message)

@@ -4,7 +4,7 @@ import { globalStyles } from '../../styles/globalStyles';
 import Card from '../../Components/card';
 import { useDispatch, useSelector } from 'react-redux';
 import { openDatabase } from 'expo-sqlite'
-import { GetKindRoomLogo, IsSelectedView } from '../../Components/InputCard/roomKindPicker'
+import { GetKindRoomLogo, IsSelectedView, colorType } from '../../Components/InputCard/roomTypePicker'
 import SearchBox from '../../Components/InputCard/searchBox';
 import { GetIcon } from '../../Components/button';
 import { setRoom } from '../../Actions/createFormActions';
@@ -15,8 +15,8 @@ export default function RoomPicker({ navigation, route }) {
     const [listRoom, setListRoom] = React.useState([])
     const dispatch = useDispatch()
     const listRoomUpdated = useSelector(state => state.roomState.listRoomUpdated)
-    const { selectedRoom, oldRoomID } = route.params
-
+    const { selectedRoom, old } = route.params
+    const setNote = useSelector(state => state.formState.setNote)
     React.useEffect(() => {
         if (searchKey == '')
             getListRoom()
@@ -25,11 +25,11 @@ export default function RoomPicker({ navigation, route }) {
     }, [searchKey, listRoomUpdated])
 
     const getListRoom = () => {
-        console.log(oldRoomID)
+        console.log(old, selectedRoom)
         var result = [tittleItem]
         db.transaction(tx => {
             tx.executeSql(
-                'select * from roomTable where stateRoom = ? or ID = ?', ['empty', oldRoomID],
+                'select * from roomTable r inner join roomTypeTable t on r.typeID = t.typeID  where r.stateRoom = ? or r.roomID = ?', ['available', old],
                 (tx, results) => {
                     var temp = results.rows.length
                     for (let i = 0; i < temp; i++) {
@@ -45,12 +45,12 @@ export default function RoomPicker({ navigation, route }) {
         var result = [tittleItem]
         db.transaction(tx => {
             tx.executeSql(
-                'select * from roomTable where stateRoom', ['empty'],
+                'select * from roomTable r inner join roomTypeTable t on r.typeID = t.typeID  where r.stateRoom = ? or r.roomID = ?', ['available', old],
                 (tx, results) => {
                     for (let i = 0; i < results.rows.length; i++) {
                         const item = results.rows.item(i)
 
-                        if (item.roomName.toLowerCase().includes(searchKey) || item.note.toLowerCase().includes(searchKey)) {
+                        if (item.roomName.toLowerCase().includes(searchKey.toLocaleLowerCase()) || item.note.toLowerCase().includes(searchKey.toLocaleLowerCase())) {
                             result.push(item)
                         }
                     }
@@ -61,22 +61,24 @@ export default function RoomPicker({ navigation, route }) {
     }
 
     const Room = ({ item }) => {
+        const color = colorType(item.typeID)
         return (
-            <TouchableOpacity style={styles.itemContainer}
+            <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
                     if (item.ID == -1)
                         return
                     navigation.goBack()
                     if (item.roomName == selectedRoom)
                         return
-                    dispatch(setRoom(item.roomName, item.ID));
+                    dispatch(setRoom(item.roomName, item.roomID, item.typeID, item.price));
+                    // setNote('Form ' + item.roomName)
                 }} >
-                <GetKindRoomLogo kind={item.kind} size={32} />
-                <View style={{ padding: 2, marginLeft: 10, flex: 1 }}>
+                <GetKindRoomLogo kind={item.typeID} size={32} />
+                <View style={{ padding: 2, marginLeft: 15, flex: 1 }}>
                     <Text  >{item.roomName}</Text>
                 </View>
                 <View style={{ padding: 2, width: '10%', alignItems: 'center' }}>
-                    <Text  >{item.kind}</Text>
+                    <Text  >{item.type}</Text>
                 </View>
                 <View style={{ marginLeft: 10, flex: 1, alignItems: 'center' }}>
                     <Text >{item.price}</Text>

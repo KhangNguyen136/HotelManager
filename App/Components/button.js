@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Touchable } from 'react-native';
-import { MaterialIcons, Ionicons, MaterialCommunityIcons, FontAwesome5, FontAwesome, AntDesign, Entypo, Fontisto } from '@expo/vector-icons';
-import Card from './card';
+import {
+    MaterialIcons, Ionicons, MaterialCommunityIcons, FontAwesome5, FontAwesome,
+    AntDesign, Entypo, Fontisto, Feather, Octicons
+} from '@expo/vector-icons';
 
 export function IconButton({ iconName, onPress, source, size, color = 'black' }) {
     return (
@@ -29,6 +31,10 @@ export function GetIcon({ iconName, source, size = 24, color = 'black' }) {
             return (<MaterialCommunityIcons name={iconName} size={size} color={color} />)
         case 'MaterialIcons':
             return (<MaterialIcons name={iconName} size={size} color={color} />)
+        case 'Feather':
+            return (<Feather name={iconName} size={size} color={color} />)
+        case 'Octicons':
+            return (<Octicons name={iconName} size={size} color={color} />)
         default:
             return (<Ionicons name={iconName} size={size} color={color} />)
     }
@@ -39,6 +45,23 @@ export function SaveButton({ onPress, width = '69%' }) {
         <TouchableOpacity style={{ ...styles.SaveButtonContainer, width: width }} onPress={onPress} >
             <GetIcon iconName={'save'} source={'Entypo'} size={26} color={'white'} />
             <Text style={styles.saveBtnContent} > Save </Text>
+        </TouchableOpacity>
+    )
+}
+
+export function MyIconButton({ onPress, title, width = 200, color = '#0be881', iconName, iconSource, iconSize = 22, iconColor = 'black' }) {
+    return (
+        <TouchableOpacity style={{ ...styles.MyButtonCotainer, width: width, backgroundColor: color }} onPress={onPress} >
+            <GetIcon iconName={iconName} source={iconSource} size={iconSize} color={iconColor} />
+            <Text style={styles.MyButtonContent} > {title} </Text>
+        </TouchableOpacity>
+    )
+}
+
+export function MyButton({ onPress, title, width = 200 }) {
+    return (
+        <TouchableOpacity style={{ ...styles.MyButtonCotainer, width: width }} onPress={onPress} >
+            <Text style={styles.saveBtnContent} > {title} </Text>
         </TouchableOpacity>
     )
 }
@@ -81,6 +104,21 @@ const styles = StyleSheet.create(
             paddingVertical: 5,
             paddingHorizontal: 5,
             justifyContent: 'center',
+        },
+        MyButtonCotainer: {
+            margin: 5,
+            // minWidth: '40%',
+            alignSelf: 'center',
+            flexDirection: 'row',
+            padding: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#0be881',
+            borderRadius: 8
+        },
+        MyButtonContent: {
+            fontSize: 16,
+            fontWeight: '600'
         },
         SaveButtonContainer: {
             margin: 10,

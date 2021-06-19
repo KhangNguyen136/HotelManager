@@ -4,29 +4,25 @@ import { GetIcon } from '../button';
 import { useSelector } from 'react-redux'
 import { CheckInputFailed } from '../AlertMsg/messageAlert';
 
-export default function ListGuest({ navigation }) {
-    const data = useSelector(state => state.formState.listGuest)
+export default function ListGuest({ navigation, isEdit = true, data }) {
+    // const data = useSelector(state => state.formState.listGuest)
     // React.useEffect(() => {
     //     console.log('List guest change')
     // }, [data])
-    var id = 0
+    var id = 1
     const Guest = ({ item }) => {
         var color = '#7bed9f'
-        var ID = 'ID'
         if (item.type == 'Foreign')
             color = '#f6e58d'
-        if (item.type == 'Type')
-            color = '#ecf0f1'
-        if (item.type != 'Type')
-            ID = data.findIndex(i => i.IC == item.IC)
+        const ID = data.findIndex(i => i.IC == item.IC)
         return (
             <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
-                    if (item.type != 'Type')
-                        navigation.navigate('AddGuest', { isEdit: true, item: item })
-                }} >
+                    navigation.navigate('AddGuest', { isEdit: true, item: item })
+                }}
+                accessible={isEdit} >
                 <View style={{ ...styles.cellTbale, width: 25 }} >
-                    <Text style={{ fontSize: 16 }} >{ID}</Text>
+                    <Text style={{ fontSize: 16 }} >{ID + 1}</Text>
                 </View>
                 <View style={{ ...styles.cellTbale, flex: 1 }} >
                     <Text style={{ fontSize: 16 }}>{item.name}</Text>
@@ -44,11 +40,32 @@ export default function ListGuest({ navigation }) {
         )
     }
     const toAddGuest = () => {
-        if (data.length == 4) {
-            CheckInputFailed('A room can only have 3 people!')
+        if (data.length == 3) {
+            CheckInputFailed('A room can only have 3 people')
             return
         }
         navigation.navigate('AddGuest')
+    }
+    const Title = () => {
+        return (
+            <View style={{ ...styles.itemContainer, backgroundColor: "#ecf0f1" }} >
+                <View style={{ ...styles.cellTbale, width: 25 }} >
+                    <Text style={{ fontSize: 16 }} >ID</Text>
+                </View>
+                <View style={{ ...styles.cellTbale, flex: 1 }} >
+                    <Text style={{ fontSize: 16 }}>Name</Text>
+                </View>
+                <View style={{ ...styles.cellTbale, width: 65 }} >
+                    <Text style={{ fontSize: 16 }}>Type</Text>
+                </View>
+                <View style={{ ...styles.cellTbale, flex: 1 }} >
+                    <Text style={{ fontSize: 16 }}>Identity Card</Text>
+                </View>
+                <View style={{ ...styles.cellTbale, flex: 1 }} >
+                    <Text style={{ fontSize: 16 }}>Address</Text>
+                </View>
+            </View>
+        )
     }
     return (
         <View>
@@ -56,6 +73,8 @@ export default function ListGuest({ navigation }) {
             <FlatList data={data}
                 renderItem={Guest}
                 keyExtractor={item => item.IC}
+                ListEmptyComponent={() => <View />}
+                ListHeaderComponent={Title}
             />
             <TouchableOpacity
                 style={{

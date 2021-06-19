@@ -5,7 +5,6 @@ import CreateFormStack from './Stack/createFormStack';
 import StatisticsStack from '../Screens/statistics';
 import OtherStack from './Stack/otherStack';
 import { GetIcon } from '../Components/button'
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +19,7 @@ export default function BottomTab() {
                 activeTintColor: '#3399ff',
                 inactiveTintColor: 'black',
             }}>
-            <Tab.Screen name='Home' component={HomeStack} />
+            <Tab.Screen name='Dashboard' component={HomeStack} />
             <Tab.Screen name='CreateForm' component={CreateFormStack} options={{ title: 'Create Form' }} />
             <Tab.Screen name='Statistics' component={StatisticsStack} />
             <Tab.Screen name='Setting' component={OtherStack} options={{ title: 'Other' }} />

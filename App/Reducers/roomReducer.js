@@ -9,10 +9,12 @@ const roomReducer = (state = initalState, action) => {
     switch (action.type) {
         case 'listRoomUpdated':
             newRoomState.listRoomUpdated = !state.listRoomUpdated
+            newRoomState.listRoomSttUpdate = !state.listRoomSttUpdate
+            console.log(newRoomState)
             return newRoomState
-        case 'listRoomSttUpdated':
-            newRoomState.listRoomSttUpdated = !state.listRoomSttUpdated
-            return { ...state, roomState: newRoomState }
+        case 'listSttRoomUpdated':
+            newRoomState.listRoomSttUpdate = !state.listRoomSttUpdate
+            return newRoomState
     }
     return state;
 }

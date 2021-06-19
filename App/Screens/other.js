@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
 import { IconButton } from '../Components/button';
 import Card from '../Components/card';
-import ListRoom from '../Components/Table/roomList'
+import ListRoom from '../Components/Table/listRoom'
 export default function Other({ navigation }) {
 
     React.useLayoutEffect(() => {

@@ -20,7 +20,6 @@ export default function AddGuest({ navigation, route }) {
     const dispatch = useDispatch()
     var initValue = { name: '', type: 'Local', IC: '', address: '', note: '' }
     if (isEdit) {
-        console.log(item)
         initValue = item
     }
 
@@ -32,17 +31,16 @@ export default function AddGuest({ navigation, route }) {
 
     const update = (values) => {
         setLoading(true)
-        console.log(values)
         const newGuest = {
             name: values.name, type: values.type, IC: values.IC, note: values.note
         }
         dispatch(updateGuest(item, values,
             () => {
-                Success('Updated successfully!')
+                Success('Update successful')
                 navigation.goBack()
             },
             () => {
-                CheckInputFailed("Same identity cards")
+                CheckInputFailed("Same identity card")
                 setLoading(false)
             }
         ))
@@ -58,11 +56,11 @@ export default function AddGuest({ navigation, route }) {
                 }
                 dispatch(addGuest(values,
                     () => {
-                        Success('Added guest successfully!')
+                        Success('Add guest successful')
                         navigation.goBack()
                     },
                     () => {
-                        CheckInputFailed("Same identity cards")
+                        CheckInputFailed("Same identity card")
                         setLoading(false)
                     }))
                 // setLoading(false)
@@ -78,7 +76,7 @@ export default function AddGuest({ navigation, route }) {
                         <TextInputCard value={values.note} onChangeValue={handleChange('note')} onBlur={handleBlur('note')} placeholder={"Note"} />
                         <BottomButton isEditMode={isEdit} onSave={handleSubmit} onDelete={deleteItem} onUpdate={() => update(values)} />
                     </Card>
-                    { loading &&
+                    {loading &&
                         <LoadingIndicator />}
                 </View>
             )}

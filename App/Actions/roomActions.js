@@ -3,3 +3,9 @@ export const updateListRoom = () => {
         type: 'listRoomUpdated',
     }
 }
+
+export const updateListSttRoom = () => {
+    return {
+        type: 'listSttRoomUpdated',
+    }
+}
