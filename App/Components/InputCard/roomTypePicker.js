@@ -80,7 +80,7 @@ export default function TypePicker({ setType }) {
         <View>
             <View style={styles.container} >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                    <GetKindRoomLogo size={60} typeID={value.typeID} />
+                    <GetRoomTypeLogo size={60} typeID={value.typeID} />
                     <Text style={{ marginLeft: 10, fontSize: 18 }} >Room type: </Text>
                 </View>
                 <Menu ref={setMenuRef}
@@ -110,7 +110,7 @@ export const IsSelectedView = ({ isChoosen, paddingRight = 0, iconSize = 24 }) =
     )
 }
 
-export function GetKindRoomLogo({ typeID, size }) {
+export function GetRoomTypeLogo({ typeID, size }) {
     switch (typeID) {
         case 1:
             return <Image source={require('../../source/KindRoom/A.png')} style={{ width: size, height: size }} />

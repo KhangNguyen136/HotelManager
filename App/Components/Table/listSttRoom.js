@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         flex: 1,
         // backgroundColor: 'red'
+
     },
     itemContainer: {
         // flexDirection: 'row',

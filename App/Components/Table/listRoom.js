@@ -38,7 +38,7 @@ export default function RoomList() {
                         result.push(results.rows.item(i))
                     }
                     setListRoom(result)
-                    console.log(result)
+                    // console.log(result)
                     setTotalRoom(temp)
                 }
             )
@@ -141,8 +141,8 @@ export default function RoomList() {
 
 const Styles = StyleSheet.create({
     container: {
-        // flex: 1,
-        maxHeight: '70%',
+        flex: 1,
+        // maxHeight: '70%',
         borderRadius: 8,
         backgroundColor: '#fff',
         shadowOffset: { width: 1, height: 1 },
@@ -150,20 +150,21 @@ const Styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 2,
         marginHorizontal: 4,
-        marginVertical: 6,
+        marginVertical: 4,
         padding: 5,
     }
     ,
     itemContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderWidth: 0.5,
+        borderBottomWidth: 0.5,
         borderColor: 'black',
-        // padding: 5
+        padding: 5,
+        // borderRadius: 2
     },
     cellTable: {
         borderColor: 'black',
-        borderRightWidth: 0.5,
+        // borderRightWidth: 0.5,
         padding: 2,
         alignItems: 'center',
     }

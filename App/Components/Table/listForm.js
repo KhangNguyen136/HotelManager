@@ -96,7 +96,7 @@ export default function ListForm({ navigation }) {
                     <Text style={{ fontSize: 16 }} >Room</Text>
                 </View>
                 <View style={{ ...styles.cellTbale, flex: 1.5 }} >
-                    <Text style={{ fontSize: 16 }}>Date</Text>
+                    <Text style={{ fontSize: 16 }}>Start date</Text>
                 </View>
                 <View style={{ ...styles.cellTbale, flex: 1 }} >
                     <Text style={{ fontSize: 16 }}>Note</Text>
@@ -109,7 +109,7 @@ export default function ListForm({ navigation }) {
     }
     return (
         <View>
-            <Text style={{ fontSize: 18, fontWeight: '400', marginBottom: 5, marginLeft: 10 }} >List guest: </Text>
+            {/* <Text style={{ fontSize: 18, fontWeight: '400', marginBottom: 5, marginLeft: 10 }} >List guest: </Text> */}
             <Title />
 
             <FlatList data={data}
@@ -132,12 +132,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderColor: 'black',
-        borderWidth: 0.25,
-        // padding: 5
+        borderBottomWidth: 0.25,
+        padding: 5,
+        margin: 3
     },
     cellTbale: {
         borderColor: 'black',
-        borderRightWidth: 0.5,
+        // borderRightWidth: 0.5,
         padding: 3,
         alignItems: 'center',
     }

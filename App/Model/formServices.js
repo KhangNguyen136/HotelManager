@@ -37,15 +37,6 @@ export function addForm(values, success, fail) {
     )
 }
 
-// function 
-
-function findByID(list, ID) {
-    for (let i = 0; i < list.length; i++)
-        if (list[i].ID == ID)
-            return i
-    return -1
-}
-
 function updateListGuest(newList, oldList, formID) {
     // console.log('list: ', newList, oldList)
     db.transaction(tx => {

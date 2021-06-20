@@ -96,12 +96,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderColor: 'black',
-        borderWidth: 0.25,
+        borderBottomWidth: 0.25,
         // padding: 5
     },
     cellTbale: {
         borderColor: 'black',
-        borderRightWidth: 0.5,
+        // borderRightWidth: 0.5,
         padding: 3,
         alignItems: 'center',
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { GetIcon } from '../button';
 
-export default function TextInputCard({ value, placeholder, onChangeValue, onBlur }) {
+export default function TextInputCard({ value, placeholder, onChangeValue, onBlur, keyboardType = 'default', isEdit = true }) {
     var iconName
     var source
     switch (placeholder) {
@@ -18,10 +18,17 @@ export default function TextInputCard({ value, placeholder, onChangeValue, onBlu
             iconName = 'text'
             source = 'Entypo'
             break;
+        case 'Enter price':
+            iconName = 'price-tag'
+            source = 'Entypo'
+            break;
         case 'Phone number or Email':
             iconName = 'user-circle-o'
             source = 'FontAwesome'
             break;
+        // case 'Enter room name':
+        //     iconName =
+        //     source = 
         default:
             iconName = 'pencil-square-o'
             source = 'FontAwesome'
@@ -35,6 +42,8 @@ export default function TextInputCard({ value, placeholder, onChangeValue, onBlu
                     onChangeText={onChangeValue}
                     placeholder={placeholder}
                     onBlur={onBlur}
+                    keyboardType={keyboardType}
+                    editable={isEdit}
                 />
             </View>
         </View>
@@ -52,6 +61,7 @@ const styles = StyleSheet.create({
         borderColor: 'black'
     },
     content: {
+        flex: 1,
         fontSize: 18,
     },
     contentArea: {

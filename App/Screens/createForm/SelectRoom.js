@@ -4,7 +4,7 @@ import { globalStyles } from '../../styles/globalStyles';
 import Card from '../../Components/card';
 import { useDispatch, useSelector } from 'react-redux';
 import { openDatabase } from 'expo-sqlite'
-import { GetKindRoomLogo, IsSelectedView, colorType } from '../../Components/InputCard/roomTypePicker'
+import { GetRoomTypeLogo, IsSelectedView, colorType } from '../../Components/InputCard/roomTypePicker'
 import SearchBox from '../../Components/InputCard/searchBox';
 import { GetIcon } from '../../Components/button';
 import { setRoom } from '../../Actions/createFormActions';
@@ -22,6 +22,7 @@ export default function RoomPicker({ navigation, route }) {
             getListRoom()
         else
             findRoom()
+        // getListRoo
     }, [searchKey, listRoomUpdated])
 
     const getListRoom = () => {
@@ -33,8 +34,11 @@ export default function RoomPicker({ navigation, route }) {
                 (tx, results) => {
                     var temp = results.rows.length
                     for (let i = 0; i < temp; i++) {
+                        // if (item.roomName.toLowerCase().includes(searchKey.toLocaleLowerCase()) || item.note.toLowerCase().includes(searchKey.toLocaleLowerCase())) {
                         result.push(results.rows.item(i))
+                        // }
                     }
+                    // console.log(result)
                     setListRoom(result)
                 }
             )
@@ -67,17 +71,18 @@ export default function RoomPicker({ navigation, route }) {
                 onPress={() => {
                     if (item.ID == -1)
                         return
-                    navigation.goBack()
                     if (item.roomName == selectedRoom)
                         return
                     dispatch(setRoom(item.roomName, item.roomID, item.typeID, item.price));
                     // setNote('Form ' + item.roomName)
+                    navigation.goBack()
+
                 }} >
-                <GetKindRoomLogo kind={item.typeID} size={32} />
+                <GetRoomTypeLogo kind={item.typeID} size={32} />
                 <View style={{ padding: 2, marginLeft: 15, flex: 1 }}>
                     <Text  >{item.roomName}</Text>
                 </View>
-                <View style={{ padding: 2, width: '10%', alignItems: 'center' }}>
+                <View style={{ padding: 2, flex: 1, alignItems: 'center' }}>
                     <Text  >{item.type}</Text>
                 </View>
                 <View style={{ marginLeft: 10, flex: 1, alignItems: 'center' }}>
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
 const tittleItem = {
     ID: -1,
     roomName: 'Room',
-    kind: 'Kind ',
+    type: 'Room type ',
     price: 'Price',
     note: 'Note'
 }

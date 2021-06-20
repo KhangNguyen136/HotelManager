@@ -23,7 +23,7 @@ export function ContentCard({ content, textColor = 'black', icon, source, size =
         <View style={styles.container} >
             <GetIcon iconName={icon} size={size} source={source} color={color} />
             <View style={styles.contentArea} >
-                <TextInput style={{ color: textColor }} editable={false} value={content} />
+                <TextInput style={{ color: textColor, fontSize: 18 }} editable={false} value={content} />
             </View>
         </View>
     )
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 2,
         marginHorizontal: 4,
-        marginVertical: 6,
+        marginVertical: 4,
         padding: 5,
     },
     container: {

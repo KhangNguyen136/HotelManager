@@ -1,11 +1,23 @@
 export const updateListRoom = () => {
     return {
-        type: 'listRoomUpdated',
+        type: 'updateListRoom',
     }
 }
 
 export const updateListSttRoom = () => {
     return {
-        type: 'listSttRoomUpdated',
+        type: 'updateListSttRoom',
+    }
+}
+
+export const updateRoomType = () => {
+    return {
+        type: 'updateRoomType',
+    }
+}
+
+export const updateRule = () => {
+    return {
+        type: 'updateRule',
     }
 }

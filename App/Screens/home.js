@@ -1,13 +1,18 @@
 import React from 'react';
 import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
+import { useSelector } from 'react-redux'
 import ListSttRoom from '../Components/Table/listSttRoom';
 import { openDatabase } from 'expo-sqlite';
 import { CheckInputFailed } from '../Components/AlertMsg/messageAlert';
+import LoadingIndicator from '../Components/loadingIndicator'
 const db = openDatabase('userDatabase.db');
 // import SearchBox from 
 export default function Home({ navigation }) {
     const [source, setSource] = React.useState([])
+    const [loading, setLoading] = React.useState(true)
+    const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
+    const listSttRoomUpdated = useSelector(state => state.roomState.listRoomSttUpdate)
     React.useEffect(() => {
         const temp = []
         db.transaction(tx => {
@@ -25,9 +30,10 @@ export default function Home({ navigation }) {
         }, () => {
             // console.log(temp)
             setSource(temp)
+            setLoading(false)
         }
         )
-    }, [])
+    }, [roomTypeUpdated, listSttRoomUpdated])
     React.useLayoutEffect(() => {
         navigation.setOptions({
             // headerRight: () => <IconButton iconName={'notifications'}
@@ -44,10 +50,22 @@ export default function Home({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <FlatList data={source}
-                renderItem={TypeSection}
-                keyExtractor={item => item.type} />
-
+            {!loading &&
+                <View style={{ flex: 1 }} >
+                    <View style={styles.listContainer}>
+                        <ListSttRoom navigation={navigation} type={source[0].type} typeID={source[0].typeID} />
+                    </View>
+                    <View style={styles.listContainer}>
+                        <ListSttRoom navigation={navigation} type={source[1].type} typeID={source[1].typeID} />
+                    </View>
+                    <View style={styles.listContainer}>
+                        <ListSttRoom navigation={navigation} type={source[2].type} typeID={source[2].typeID} />
+                    </View>
+                </View>
+            }
+            {loading &&
+                <LoadingIndicator />
+            }
         </SafeAreaView>
     )
 }
@@ -61,7 +79,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         height: '33%',
-        flex: 1,
+        // flex: 1,
         // maxHeight: '33%',
         borderRadius: 8,
         backgroundColor: '#fff',

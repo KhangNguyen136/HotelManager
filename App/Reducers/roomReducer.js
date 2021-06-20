@@ -1,19 +1,29 @@
 const initalState = {
+    roomTypeUpdated: false,
+    ruleUpdated: false,
     listRoomUpdated: false,
-    listRoomSttUpdate: false
+    listRoomSttUpdated: false
 }
 
 const roomReducer = (state = initalState, action) => {
     const newRoomState = state
     // console.log(state)
     switch (action.type) {
-        case 'listRoomUpdated':
+        case 'updateListRoom':
             newRoomState.listRoomUpdated = !state.listRoomUpdated
-            newRoomState.listRoomSttUpdate = !state.listRoomSttUpdate
+            newRoomState.listRoomSttUpdated = !state.listRoomSttUpdated
             console.log(newRoomState)
             return newRoomState
-        case 'listSttRoomUpdated':
-            newRoomState.listRoomSttUpdate = !state.listRoomSttUpdate
+        case 'updateListSttRoom':
+            newRoomState.listRoomSttUpdated = !state.listRoomSttUpdated
+            return newRoomState
+        case 'updateRoomType':
+            newRoomState.roomTypeUpdated = !state.roomTypeUpdated
+            newRoomState.listRoomUpdated = !state.listRoomUpdated
+            newRoomState.listRoomSttUpdated = !state.listRoomSttUpdated
+            return newRoomState
+        case 'updateRule':
+            newRoomState.ruleUpdated = !state.ruleUpdated
             return newRoomState
     }
     return state;
