@@ -56,7 +56,9 @@ export default function EditRule({ navigation, route }) {
         source = 'FontAwesome'
     }
     const save = () => {
-        console.log('save')
+        // console.log('save')
+        if (!checkInput())
+            return
         db.transaction(
             tx => {
                 if (type == 'roomType')
@@ -85,6 +87,25 @@ export default function EditRule({ navigation, route }) {
                 navigation.goBack()
             }
         )
+    }
+
+    const checkInput = () => {
+        if (type == 'roomType') {
+            if (name == '') {
+                CheckInputFailed('Please enter room type!')
+                return false
+            }
+            if (value <= 0) {
+                CheckInputFailed('Invalid price!')
+                return false
+            }
+            return true
+        }
+        if (value < 1) {
+            CheckInputFailed('Invalid surcharge!')
+            return false
+        }
+        return true
     }
 
     return (

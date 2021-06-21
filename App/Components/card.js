@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput, Text } from 'react-native';
 import { GetIcon } from './button';
 
 export default function Card(props) {
@@ -18,12 +18,13 @@ export function FlexCard(props) {
     )
 }
 
-export function ContentCard({ content, textColor = 'black', icon, source, size = 24, color = 'black' }) {
+export function ContentCard({ title, content, textColor = 'black', icon, source, size = 24, color = 'black' }) {
     return (
         <View style={styles.container} >
             <GetIcon iconName={icon} size={size} source={source} color={color} />
             <View style={styles.contentArea} >
-                <TextInput style={{ color: textColor, fontSize: 18 }} editable={false} value={content} />
+                <Text style={{ color: textColor, fontSize: 18 }}>{title}</Text>
+                <Text style={{ color: textColor, fontSize: 18 }}>{content} </Text>
             </View>
         </View>
     )
@@ -54,6 +55,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         padding: 10,
         flex: 1,
+        justifyContent: 'space-between',
+        flexDirection: 'row'
     },
     content: {
         fontSize: 18,

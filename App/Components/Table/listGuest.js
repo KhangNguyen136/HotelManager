@@ -76,15 +76,17 @@ export default function ListGuest({ navigation, isEdit = true, data }) {
                 ListEmptyComponent={() => <View />}
                 ListHeaderComponent={Title}
             />
-            <TouchableOpacity
-                style={{
-                    flexDirection: 'row', padding: 5, marginTop: 5,
-                    alignSelf: 'flex-end', borderRadius: 5,
-                    borderColor: 'black', backgroundColor: '#81ecec'
-                }} onPress={toAddGuest} >
-                <GetIcon iconName={'pluscircleo'} source={'AntDesign'} size={18} />
-                <Text style={{ marginLeft: 5, fontSize: 16, fontWeight: '500' }} >Add new guest</Text>
-            </TouchableOpacity>
+            {isEdit &&
+                <TouchableOpacity
+                    style={{
+                        flexDirection: 'row', padding: 5, marginTop: 5,
+                        alignSelf: 'flex-end', borderRadius: 5,
+                        borderColor: 'black', backgroundColor: '#81ecec'
+                    }} onPress={toAddGuest} >
+                    <GetIcon iconName={'pluscircleo'} source={'AntDesign'} size={18} />
+                    <Text style={{ marginLeft: 5, fontSize: 16, fontWeight: '500' }} >Add new guest</Text>
+                </TouchableOpacity>
+            }
         </View>
     )
 

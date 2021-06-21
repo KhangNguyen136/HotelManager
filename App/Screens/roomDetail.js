@@ -1,17 +1,17 @@
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView, Text, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import Card from '../Components/card'
 import { MyButton, MyIconButton } from '../Components/button';
-import ListGuest from '../Components/Table/listGuest';
 import { globalStyles } from '../styles/globalStyles';
 import { setListGuest, resetState } from '../Actions/createFormActions';
 import { useDispatch } from 'react-redux'
 import { changeStt } from '../Model/roomService';
 import { CheckInputFailed, Success } from '../Components/AlertMsg/messageAlert';
 import { updateListSttRoom } from '../Actions/roomActions';
+import { setRoom } from '../Actions/createFormActions';
 import { ContentCard } from '../Components/card';
-import { StyleSheet } from 'react-native';
+
 
 export default function RoomDetail({ navigation, route }) {
     const data = route.params.data
@@ -34,14 +34,19 @@ export default function RoomDetail({ navigation, route }) {
     })
     const checkOut = () => {
         console.log('Check out')
+        navigation.navigate('CheckOut', { data: data, diffDays: diffDays })
     }
 
     const editInfor = () => {
         navigation.navigate('CreateForm')
+
     }
 
     const CreateRentalForm = () => {
         console.log('Create rental form')
+        navigation.navigate('CreateForm')
+        navigation.navigate('CreateForm')
+        setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price)
     }
 
     const changeStateRoom = (type) => {
@@ -61,10 +66,11 @@ export default function RoomDetail({ navigation, route }) {
                 return (
                     <View style={{ width: '100%' }} >
                         {/* <ContentCard icon={'room'} source={'Fontisto'} content={'Occupied'} /> */}
-                        <ContentCard icon={'note'} source={'Octicons'} content={"Note: " + data.infor.formNote} />
-                        <ContentCard icon={'calendar'} source={'AntDesign'} content={'Start date: ' + data.infor.startDate} />
-                        <ContentCard icon={guestIcon.icon} source={guestIcon.source} content={'Number of guest: ' + data.guest.length} />
-                        <ContentCard icon={'clockcircleo'} source={'AntDesign'} content={diffDays + days} />
+                        <ContentCard icon={'note'} source={'Octicons'} title={'Note: '} content={data.infor.formNote} />
+                        <ContentCard icon={'calendar'} source={'AntDesign'} title={'Start date: '} content={data.infor.date.substring(0, 15)} />
+                        <ContentCard icon={guestIcon.icon} source={guestIcon.source} title={'Number of guest: '} content={data.guest.length} />
+
+                        <ContentCard icon={'clockcircleo'} source={'AntDesign'} title={'Number of day: '} content={diffDays + days} />
                         <View style={styles.ButtonContainer} >
                             <MyIconButton title={'Check out'} onPress={checkOut} width={'33%'}
                                 iconName={'payment'} iconSource={'MaterialIcons'} iconColor={'black'} />
@@ -76,7 +82,7 @@ export default function RoomDetail({ navigation, route }) {
             case 'available':
                 return (
                     <View>
-                        <ContentCard icon={'checksquareo'} source={'AntDesign'} content={'Availabel'} />
+                        <ContentCard icon={'checksquareo'} source={'AntDesign'} title={'Room status: '} content={'Availabel'} />
                         <View style={styles.ButtonContainer} >
                             <MyIconButton title={'Repair room'} onPress={() => changeStateRoom('repairing')}
                                 width={'36%'} iconName={'tools'} iconSource={'Entypo'} iconColor={'#2c3e50'} iconSize={20} />
@@ -91,7 +97,7 @@ export default function RoomDetail({ navigation, route }) {
             case 'repairing':
                 return (
                     <View>
-                        <ContentCard icon={'checksquareo'} source={'AntDesign'} content={'Repairing'} />
+                        <ContentCard icon={'checksquareo'} source={'AntDesign'} title={'Room status: '} content={'Repairing'} />
                         <MyIconButton title={'Repaired'} onPress={() => changeStateRoom('available')} width={'69%'}
                             iconColor={'#3498db'} iconSource={'MaterialCommunityIcons'} iconName={'toolbox'} />
                     </View>
@@ -99,7 +105,7 @@ export default function RoomDetail({ navigation, route }) {
             case 'cleaning':
                 return (
                     <View>
-                        <ContentCard icon={'checksquareo'} source={'AntDesign'} content={'Cleaning'} />
+                        <ContentCard icon={'checksquareo'} source={'AntDesign'} title={'Room status: '} content={'Cleaning'} />
                         <MyIconButton title={'Cleanned'} onPress={() => changeStateRoom('available')}
                             width={'69%'} iconSource={'MaterialCommunityIcons'} iconName={'clipboard-check-outline'} iconColor={'black'} />
                     </View>
@@ -111,10 +117,10 @@ export default function RoomDetail({ navigation, route }) {
     return (
         <SafeAreaView style={globalStyles.container} >
             <Card>
-                <ContentCard icon={'hotel'} source={'FontAwesome'} content={"Room: " + data.infor.roomName} />
-                <ContentCard icon={'category'} source={'MaterialIcons'} content={"Room class: " + data.infor.type} />
-                <ContentCard icon={'price-tag'} source={'Entypo'} content={"Price: " + data.infor.price} />
-                <ContentCard icon={'note'} source={'Octicons'} content={"Room note: " + data.infor.roomNote} />
+                <ContentCard icon={'hotel'} source={'FontAwesome'} title={'Room: '} content={data.infor.roomName} />
+                <ContentCard icon={'category'} source={'MaterialIcons'} title={'Room type: '} content={data.infor.type} />
+                <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={data.infor.price} />
+                <ContentCard icon={'note'} source={'Octicons'} title={"Room note: "} content={data.infor.roomNote} />
 
                 <Content />
             </Card>

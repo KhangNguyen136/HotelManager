@@ -52,7 +52,7 @@ export default function ListSttRoom({ navigation, type, typeID }) {
         }, (error) => console.log(error),
             () => {
                 setData(tempData)
-                console.log(tempData)
+                // console.log(tempData)
             }
         )
     }
