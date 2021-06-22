@@ -10,13 +10,20 @@ const roomReducer = (state = initalState, action) => {
     // console.log(state)
     switch (action.type) {
         case 'updateListRoom':
-            newRoomState.listRoomUpdated = !state.listRoomUpdated
-            newRoomState.listRoomSttUpdated = !state.listRoomSttUpdated
-            console.log(newRoomState)
-            return newRoomState
+            // newRoomState.listRoomUpdated = !state.listRoomUpdated
+            // newRoomState.listRoomSttUpdated = !state.listRoomSttUpdated
+            // return newRoomState
+            const newListRoomUpdated = !state.listRoomUpdated
+            const newListRoomSttUpdated = !state.listRoomSttUpdated
+            console.log("Update list room: " + newRoomState)
+            return { ...state, listRoomUpdated: newListRoomUpdated, listRoomSttUpdated: newListRoomSttUpdated }
         case 'updateListSttRoom':
-            newRoomState.listRoomSttUpdated = !state.listRoomSttUpdated
-            return newRoomState
+            // newRoomState.listRoomSttUpdated = !state.listRoomSttUpdated
+            // return newRoomState
+            const newListRoomSttUpdated1 = !state.listRoomSttUpdated
+            console.log("Update list stt room: " + newRoomState)
+
+            return { ...state, listRoomSttUpdated: newListRoomSttUpdated1 }
         case 'updateRoomType':
             newRoomState.roomTypeUpdated = !state.roomTypeUpdated
             newRoomState.listRoomUpdated = !state.listRoomUpdated

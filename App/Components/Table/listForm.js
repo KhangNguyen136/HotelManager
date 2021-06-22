@@ -36,9 +36,7 @@ export default function ListForm({ navigation }) {
             )
         }, (error) => console.log(error),
             () => {
-                console.log('Get list form successfully')
                 getListGuest()
-                setLoading(false)
             }
         )
 
@@ -56,9 +54,11 @@ export default function ListForm({ navigation }) {
                 )
         }, (error) => console.log(error),
             () => {
-                console.log('Get list')
+                // console.log('Get list')
                 setData(tempData)
-                console.log(tempData)
+                console.log('Get list form')
+                setLoading(false)
+                // console.log(tempData)
             }
         )
     }

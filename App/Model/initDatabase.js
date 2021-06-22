@@ -3,11 +3,13 @@ const db = openDatabase('userDatabase.db');
 import * as Files from 'expo-file-system'
 import { documentDirectory } from 'expo-file-system';
 
-export default async function () {
+export default async function (success) {
     db.transaction(tx => {
         // tx.executeSql('drop table if exists roomTable')
         // tx.executeSql('drop table if exists formTable')
         // tx.executeSql('drop table if exists guestTable')
+        tx.executeSql('drop table if exists billTable')
+
         // create roomType table
         tx.executeSql(
             'create table if not exists roomTypeTable(typeID integer primary key autoincrement, type text, price real, imgURL text)'
@@ -27,18 +29,18 @@ export default async function () {
             'create table if not exists guestTable(guestID integer primary key autoincrement, formID integer not null, name text, type text, IC text, address text, foreign key(formID) references formTable(ID))'
         )
         tx.executeSql(
-            'create table if not exists billTable(billID integer primary key autoincrement, formID integer not null, paidTime text,surcharge real,foreignSurcharge real, amount real, note text, foreign key(formID) references formTable(ID))'
+            'create table if not exists billTable(billID integer primary key autoincrement, formID integer not null, paidTime text,nday integer,surchargeThird real,surchargeForeign real, totalAmount real, note text, foreign key(formID) references formTable(ID))'
         )
 
 
     }, (error) => {
         console.log(error.message);
     }, () => {
-        initData()
+        initData(success)
     })
 }
 
-function initData() {
+function initData(success) {
     db.transaction(
         tx => {
             //check roomType
@@ -79,6 +81,7 @@ function initData() {
         () => {
             console.log('Init database successfully!')
             Files.getInfoAsync(`${documentDirectory}SQLite/userDatabase.db`).then(result => console.log(result.uri))
+            success()
         }
     )
 }

@@ -12,8 +12,9 @@ const createFormReducer = (state = initalState, action) => {
     const newFormState = state
     switch (action.type) {
         case 'updateListForm':
-            newFormState.listFormUpdated = !state.listFormUpdated
-            return newFormState
+            // newFormState.listFormUpdated = !state.listFormUpdated
+            const newListFormUpdated = !state.listFormUpdated
+            return { ...state, listFormUpdated: newListFormUpdated }
         case 'setRoom':
             newFormState.room = action.roomName
             newFormState.roomID = action.roomID
@@ -40,23 +41,11 @@ const createFormReducer = (state = initalState, action) => {
             action.success()
             newListGuest.push(action.newGuest)
             return { ...state, listGuest: newListGuest }
-        // var newListGuest = state.listGuest
-        // if (!checkNewGuest(action.newGuest, newListGuest.filter(item => item.IC == action.oldGuest))) {
-        //     action.fail()
-        //     return state
-        // }
-        // const id = state.listGuest.findIndex(i => i.IC == action.oldGuest.IC)
-        // newListGuest[id] = action.newGuest
-        // console.log(newListGuest)
-        // action.success()
-        // return { ...state, listGuest: newListGuest }
         case 'setListGuest':
             newListGuest = action.listGuest
-            // console.log('New list guest: ', newListGuest)
+            console.log('Set list guest')
             return { ...state, listGuest: newListGuest }
-        // case 'setNote':
-        //     newFormState.setnote = action.setNote
-        //     return newFormState
+
         case 'resetForm':
             console.log('reset form')
             return initalState

@@ -16,9 +16,9 @@ export function addForm(values, success, fail) {
                     tx.executeSql(
                         'insert into guestTable(formID, name, type, IC, address) values (?,?,?,?,?)',
                         [formID, item.name, item.type, item.IC, item.address],
-                        (tx, results) => {
-                            console.log(results)
-                        }
+                        // (tx, results) => {
+                        //     console.log(results)
+                        // }
                     )
                 }
             }
@@ -80,9 +80,9 @@ export function updateForm(values, listGuest, oldListGuest, success, fail) {
         tx.executeSql(
             'update formTable set roomID = ?, date = ?, note = ? where formID = ? ',
             [values.roomID, values.date.toString(), values.note, values.formID],
-            (tx, results) => {
-                console.log(results.rowsAffected)
-            }
+            // (tx, results) => {
+            //     console.log(results.rowsAffected)
+            // }
         )
         if (values.roomID != values.oldRoomID) {
             tx.executeSql(

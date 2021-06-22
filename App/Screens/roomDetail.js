@@ -22,9 +22,8 @@ export default function RoomDetail({ navigation, route }) {
     var diffDays = Math.ceil(diffTime / 86400000 - 0.1)
     diffDays = diffDays > 1 ? diffDays : 1
     const days = diffDays > 1 ? ' days' : ' day'
-    console.log(data)
     React.useEffect(() => {
-        dispatch(setListGuest(data.guest))
+        // dispatch(setListGuest(data.guest))
         return () => {
             dispatch(resetState())
         }
@@ -45,8 +44,8 @@ export default function RoomDetail({ navigation, route }) {
     const CreateRentalForm = () => {
         console.log('Create rental form')
         navigation.navigate('CreateForm')
-        navigation.navigate('CreateForm')
-        setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price)
+        console.log(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price)
+        // setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price)
     }
 
     const changeStateRoom = (type) => {
@@ -74,7 +73,7 @@ export default function RoomDetail({ navigation, route }) {
                         <View style={styles.ButtonContainer} >
                             <MyIconButton title={'Check out'} onPress={checkOut} width={'33%'}
                                 iconName={'payment'} iconSource={'MaterialIcons'} iconColor={'black'} />
-                            <MyIconButton title={'Edit infor'} onPress={editInfor} width={'33%'}
+                            <MyIconButton title={'Edit infor'} onPress={editInfor} width={'33%'} color={'#ffeaa7'}
                                 iconName={'edit'} iconSource={'Feather'} iconColor={'black'} />
                         </View>
                     </View>
@@ -84,13 +83,13 @@ export default function RoomDetail({ navigation, route }) {
                     <View>
                         <ContentCard icon={'checksquareo'} source={'AntDesign'} title={'Room status: '} content={'Availabel'} />
                         <View style={styles.ButtonContainer} >
-                            <MyIconButton title={'Repair room'} onPress={() => changeStateRoom('repairing')}
+                            <MyIconButton title={'Repair room'} onPress={() => changeStateRoom('repairing')} color={'#ff7675'}
                                 width={'36%'} iconName={'tools'} iconSource={'Entypo'} iconColor={'#2c3e50'} iconSize={20} />
                             <MyIconButton title={'Clean room'} onPress={() => changeStateRoom('cleaning')} width={'36%'}
-                                iconName={'cleaning-services'} iconSource={'MaterialIcons'} />
+                                iconName={'cleaning-services'} iconSource={'MaterialIcons'} color={'#81ecec'} />
 
                         </View>
-                        <MyIconButton title={'Add rental form'} onPress={() => CreateRentalForm()} width={'69%'}
+                        <MyIconButton title={'Add rental form'} onPress={() => CreateRentalForm()} width={'69%'} color={'#ffeaa7'}
                             iconColor={'black'} iconSource={'AntDesign'} iconName={'form'} />
                     </View>
                 )
@@ -98,15 +97,15 @@ export default function RoomDetail({ navigation, route }) {
                 return (
                     <View>
                         <ContentCard icon={'checksquareo'} source={'AntDesign'} title={'Room status: '} content={'Repairing'} />
-                        <MyIconButton title={'Repaired'} onPress={() => changeStateRoom('available')} width={'69%'}
-                            iconColor={'#3498db'} iconSource={'MaterialCommunityIcons'} iconName={'toolbox'} />
+                        <MyIconButton title={'Repaired'} onPress={() => changeStateRoom('available')} width={'69%'} color={'#81ecec'}
+                            iconColor={'#ff7675'} iconSource={'MaterialCommunityIcons'} iconName={'toolbox'} />
                     </View>
                 )
             case 'cleaning':
                 return (
                     <View>
                         <ContentCard icon={'checksquareo'} source={'AntDesign'} title={'Room status: '} content={'Cleaning'} />
-                        <MyIconButton title={'Cleanned'} onPress={() => changeStateRoom('available')}
+                        <MyIconButton title={'Cleanned'} onPress={() => changeStateRoom('available')} color={'#81ecec'}
                             width={'69%'} iconSource={'MaterialCommunityIcons'} iconName={'clipboard-check-outline'} iconColor={'black'} />
                     </View>
                 )

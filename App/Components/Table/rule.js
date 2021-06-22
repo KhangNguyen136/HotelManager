@@ -58,6 +58,7 @@ export default function RuleTable({ navigation }) {
             <FlatList data={data}
                 renderItem={Item}
                 keyExtractor={item => item.ruleName}
+                scrollEnabled={false}
             />
         </Card>
     )

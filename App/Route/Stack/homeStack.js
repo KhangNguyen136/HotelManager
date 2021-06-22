@@ -4,6 +4,7 @@ import Home from '../../Screens/home';
 import CheckOut from '../../Screens/checkOut'
 import RoomDetail from '../../Screens/roomDetail';
 import CreateForm from '../../Screens/createForm/createForm';
+import ListBill from '../../Screens/listBill';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,8 @@ function HomeStack({ navigation }) {
             <Stack.Screen name="RoomDetail" component={RoomDetail} options={{ title: 'Room detail' }} />
             <Stack.Screen name="FormDetail" component={CreateForm} options={{ title: 'Form detail' }} />
             <Stack.Screen name="CheckOut" component={CheckOut} options={{ title: 'Check out' }} />
+            <Stack.Screen name="ListBill" component={ListBill} options={{ title: 'List bill' }} />
+
         </Stack.Navigator>
     );
 }

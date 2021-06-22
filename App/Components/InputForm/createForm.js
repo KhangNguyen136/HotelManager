@@ -59,7 +59,8 @@ export default function CreateForm({ isEdit, item, navigation }) {
         const values = {
             formID: item.form.formID,
             date: startDate, note,
-            oldRoomID: item.form.roomID
+            oldRoomID: item.form.roomID,
+            roomID: roomID
         }
         updateForm(values, listGuest, item.guest, () => {
             dispatch(updateListSttRoom())

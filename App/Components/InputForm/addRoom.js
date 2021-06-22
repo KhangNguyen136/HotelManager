@@ -25,26 +25,6 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
     })
     var initValue = { roomName: '', typeID: 1, note: '', addDate: new Date() }
 
-    // React.useEffect(() => {
-    //     if (isEdit) {
-    //         db.transaction(tx => {
-    //             tx.executeSql(
-    //                 'select * from roomTable where ID = ?', [itemID],
-    //                 (tx, results) => {
-    //                     const item = results.rows.item(0)
-    //                     console.log({ ...item, addDate: new Date(item.addDate) })
-    //                     setInitValue({ ...item, addDate: new Date(item.addDate) })
-    //                     console.log('detail values:', initValue)
-    //                 }
-    //             )
-    //         }, (error) => CheckInputFailed('Get room information failed', error.message),
-    //             () => {
-    //                 console.log(initValue)
-    //             }
-    //         )
-    //     }
-    // }, []
-    // )
     if (isEdit)
         initValue = { ...item, addDate: new Date(item.addDate) }
     const deleteItem = () => {
@@ -64,7 +44,7 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
     }
 
     const update = (values) => {
-        console.log("update values:", values)
+        // console.log("update values:", values)
         setLoading(true)
         updateRoom(item.roomID, values,
             () => {
@@ -91,7 +71,6 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
                         setLoading(false)
                         Success('Added room successfully')
                         dispatch(updateListRoom())
-                        // dispatch(upda)
                         navigation.goBack()
                     },
                     (msg) => {

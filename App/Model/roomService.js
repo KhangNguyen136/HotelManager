@@ -1,4 +1,5 @@
 import { openDatabase } from 'expo-sqlite';
+import { deleteForm } from './formServices'
 const db = openDatabase('userDatabase.db');
 
 export function addNewRoom(values, success, fail) {
@@ -24,9 +25,9 @@ export function updateRoom(ID, values, success, fail) {
         tx.executeSql(
             'update roomTable set roomName = ?, typeID =?, note = ?, addDate =?  where roomID = ? ',
             [values.roomName, values.typeID, values.note, values.addDate.toString(), ID],
-            (tx, results) => {
-                console.log(results.rowsAffected)
-            }
+            // (tx, results) => {
+            //     console.log(results.rowsAffected)
+            // }
         )
     }, (error) => fail(error.message),
         success)
@@ -35,12 +36,29 @@ export function updateRoom(ID, values, success, fail) {
 export function deleteRoom(ID, success, fail) {
     db.transaction(tx => {
         tx.executeSql(
+            'select formID from formTable where roomID = ?', [ID],
+            (tx, result) => {
+                const n = result.rows.length
+                for (let i = 0; i < n; i++) {
+                    const formID = result.rows.item(i).formID
+                    console.log(formID)
+                    tx.executeSql(
+                        'delete from formTable where formID = ?', [formID],
+                    )
+                    tx.executeSql(
+                        'delete from guestTable where formID = ?', [formID]
+                    )
+                }
+            }
+        )
+        tx.executeSql(
             'delete from roomTable where roomID = ? ',
             [ID],
             // (tx, results) => {
             //     console.log(results.rowsAffected)
             // }
         )
+
     }, (error) => fail(error.message),
         success)
 }

@@ -11,11 +11,12 @@ const db = openDatabase('userDatabase.db');
 export default function ListSttRoom({ navigation, type, typeID }) {
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(false)
-    const listSttRoomUpdated = useSelector(state => state.roomState.listRoomSttUpdate)
+    const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     var tempData = []
     React.useEffect(() => {
         setLoading(true)
         db.transaction(tx => {
+            console.log('Get list stt room typeID: ' + type)
             tx.executeSql(
                 "select r.roomID, r.roomName,r.stateRoom, r.note roomNote, t.typeID, t.type, t.price, f.formID, f.date, f.note formNote from roomTable r inner join roomTypeTable t on r.typeID = t.typeID left join formTable f on r.roomID = f.roomID AND f.isPaid = 0 where r.typeID = ?",
                 [typeID], (tx, formResults) => {
@@ -38,7 +39,7 @@ export default function ListSttRoom({ navigation, type, typeID }) {
                 setLoading(false)
             }
         )
-    }, [listSttRoomUpdated])
+    }, [listRoomSttUpdated])
     const getListGuest = () => {
         db.transaction(tx => {
             for (let i = 0; i < tempData.length; i++)
@@ -92,14 +93,15 @@ export default function ListSttRoom({ navigation, type, typeID }) {
                 iconSource = 'MaterialIcons'
                 iconName = 'room-preferences'
                 color = "#ff7675"
+                iconColor = '#2d3436'
                 break;
             case 'cleaning':
                 stt = 'Not available'
                 title = 'Cleaning'
                 iconSource = 'MaterialIcons'
                 iconName = 'cleaning-services'
-                color = "#2e86de"
-                iconColor = "#f1c40f"
+                color = "#81ecec"
+                iconColor = "#2d3436"
                 break;
         }
 
@@ -110,7 +112,7 @@ export default function ListSttRoom({ navigation, type, typeID }) {
                 </View>
                 <View style={styles.item2} >
                     <GetIcon iconName={iconName} source={iconSource} size={18} color={iconColor} />
-                    <Text style={{ marginLeft: 3 }} >{title}</Text>
+                    <Text style={{ marginLeft: 3, fontWeight: "500" }} >{title}</Text>
                 </View>
                 <View style={{ backgroundColor: 'white' }} >
                     <Text style={{ fontSize: 12, fontWeight: "500", margin: 4 }} >{stt}</Text>

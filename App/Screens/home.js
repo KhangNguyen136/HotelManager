@@ -1,6 +1,6 @@
 import React from 'react';
-import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
+import { FlatList, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { GetIcon } from '../Components/button';
 import { useSelector } from 'react-redux'
 import ListSttRoom from '../Components/Table/listSttRoom';
 import { openDatabase } from 'expo-sqlite';
@@ -9,10 +9,10 @@ import LoadingIndicator from '../Components/loadingIndicator'
 const db = openDatabase('userDatabase.db');
 // import SearchBox from 
 export default function Home({ navigation }) {
-    const [source, setSource] = React.useState([])
+    const [source, setSource] = React.useState(initRoomType)
     const [loading, setLoading] = React.useState(true)
     const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
-    const listSttRoomUpdated = useSelector(state => state.roomState.listRoomSttUpdate)
+    const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     React.useEffect(() => {
         const temp = []
         db.transaction(tx => {
@@ -25,33 +25,40 @@ export default function Home({ navigation }) {
                 }
             )
 
+        }, (error) => {
+            CheckInputFailed('Database error', error.message)
         }, () => {
-            CheckInputFailed('Database error')
-        }, () => {
-            // console.log(temp)
+            console.log('Dashboard loaded data')
             setSource(temp)
             setLoading(false)
         }
         )
-    }, [roomTypeUpdated, listSttRoomUpdated])
+    }, [roomTypeUpdated, listRoomSttUpdated])
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            // headerRight: () => <IconButton iconName={'notifications'}
-            // onPress={() => { navigation.navigate('Notification') }} />
+            headerRight: () => {
+                return (
+                    <TouchableOpacity onPress={() => { navigation.navigate('ListBill') }}
+                        style={{
+                            flexDirection: 'row',
+                            marginHorizontal: 10,
+                            flex: 1,
+                            alignItems: 'center'
+                        }} >
+                        <GetIcon iconName={'history'} source={'MaterialIcons'}
+                        />
+                        <Text style={{ fontSize: 14, fontWeight: '500' }} >List bill</Text>
+                    </TouchableOpacity>
+                )
+            }
         })
     })
-    const TypeSection = ({ item }) => {
-        return (
-            <View style={styles.listContainer} >
-                <ListSttRoom navigation={navigation} type={item.type} typeID={item.typeID} />
-            </View>
-        )
-    }
 
     return (
         <SafeAreaView style={styles.container}>
             {!loading &&
                 <View style={{ flex: 1 }} >
+
                     <View style={styles.listContainer}>
                         <ListSttRoom navigation={navigation} type={source[0].type} typeID={source[0].typeID} />
                     </View>
@@ -93,3 +100,19 @@ const styles = StyleSheet.create({
         padding: 5,
     }
 })
+
+const initRoomType = [
+    {
+        typeID: 1,
+        type: 'A'
+    },
+    {
+        typeID: 2,
+        type: 'B'
+    },
+    {
+        typeID: 3,
+        type: 'C'
+    },
+
+]

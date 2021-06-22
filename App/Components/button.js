@@ -40,11 +40,11 @@ export function GetIcon({ iconName, source, size = 24, color = 'black' }) {
     }
 }
 
-export function SaveButton({ onPress, width = '69%' }) {
+export function SaveButton({ onPress, width = '69%', title = 'Save' }) {
     return (
         <TouchableOpacity style={{ ...styles.SaveButtonContainer, width: width }} onPress={onPress} >
             <GetIcon iconName={'save'} source={'Entypo'} size={26} color={'white'} />
-            <Text style={styles.saveBtnContent} > Save </Text>
+            <Text style={styles.saveBtnContent} > {title} </Text>
         </TouchableOpacity>
     )
 }
@@ -83,17 +83,17 @@ export function DeleteButton({ onPress }) {
     )
 }
 
-export function BottomButton({ isEditMode, onSave, onUpdate, onDelete = null }) {
+export function BottomButton({ isEditMode, onSave, onUpdate, onDelete = null, saveTitle = 'Save' }) {
     if (isEditMode == true)
         return (
             <View style={styles.BottomBtnContainer}>
-                <SaveButton onPress={onUpdate} width={'40%'} />
+                <SaveButton onPress={onUpdate} width={'40%'} title={saveTitle} />
                 <DeleteButton onPress={onDelete} />
             </View>
         )
     else
         return (
-            <SaveButton onPress={onSave} width={'69%'} />
+            <SaveButton onPress={onSave} width={'69%'} title={saveTitle} />
         )
 }
 
@@ -114,7 +114,11 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: '#0be881',
-            borderRadius: 8
+            borderRadius: 8,
+            shadowColor: '#333',
+            shadowOpacity: 0.1,
+            shadowOffset: { width: 1, height: 1 },
+
         },
         MyButtonContent: {
             fontSize: 16,
@@ -129,7 +133,10 @@ const styles = StyleSheet.create(
             alignItems: 'flex-end',
             justifyContent: 'center',
             backgroundColor: '#3399ff',
-            borderRadius: 8
+            borderRadius: 8,
+            shadowColor: '#333',
+            shadowOpacity: 0.1,
+            shadowOffset: { width: 1, height: 1 },
         },
         saveBtnContent: {
             color: 'white',

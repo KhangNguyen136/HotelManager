@@ -71,8 +71,10 @@ export default function RoomPicker({ navigation, route }) {
                 onPress={() => {
                     if (item.ID == -1)
                         return
-                    if (item.roomName == selectedRoom)
+                    if (item.roomName == selectedRoom) {
+                        navigation.goBack()
                         return
+                    }
                     dispatch(setRoom(item.roomName, item.roomID, item.typeID, item.price));
                     // setNote('Form ' + item.roomName)
                     navigation.goBack()

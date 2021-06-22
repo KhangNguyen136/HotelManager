@@ -19,8 +19,7 @@ export default function App() {
             if (user) {
                 // User is signed in.
                 // console.log('Log in')
-                initDatabase()
-                setLogIn('logIn')
+                initDatabase(success)
             } else {
                 // No user is signed in.
                 // console.log('Not log in')
@@ -29,6 +28,10 @@ export default function App() {
         });
     }, [])
 
+    const success = () => {
+        setLogIn('logIn')
+
+    }
     switch (logIn) {
         case 'logIn':
             return (

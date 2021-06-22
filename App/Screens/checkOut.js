@@ -1,44 +1,50 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
+import { SafeAreaView, ScrollView, View } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
 import TextInputCard from '../Components/InputCard/TextInputCard';
 import { updateListSttRoom } from '../Actions/roomActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { openDatabase } from 'expo-sqlite';
-import Card, { ContentCard } from '../Components/card';
-import ListGuest from '../Components/Table/listGuest';
+import Card, { ContentCard, FlexCard } from '../Components/card';
+import { ListGuestView } from '../Components/Table/listGuest';
+import { BottomButton } from '../Components/button';
+import { AddBill } from '../Model/billServices';
+import { Success, CheckInputFailed } from '../Components/AlertMsg/messageAlert';
 const db = openDatabase('userDatabase.db');
 export default function CheckOut({ navigation, route }) {
-    const { data, diffDays } = route.params
+    const { data, diffDays, isEdit } = route.params
+    const dispatch = useDispatch()
     const [surchargeForeign, setSurchargeForeign] = React.useState(1)
     const [surchargeThird, setSurchargeThird] = React.useState(1)
     const [note, setNote] = React.useState('')
     const [total, setTotal] = React.useState(0)
     const ruleUpated = useSelector(state => state.roomState.ruleUpated)
     const isThreeGuest = data.guest.length == 3
-    const haveForeignGuest = data.guest.find(item => item.type == 'Foreign') == -1
+    const haveForeignGuest = data.guest.findIndex(item => item.type == 'Foreign') != -1
     React.useEffect(() => {
-        console.log(data)
+        // console.log(data)
+        var temp1 = 1
+        var temp2 = 1
         db.transaction(tx => {
             tx.executeSql(
                 'select * from ruleTable', [],
                 (tx, result) => {
                     for (let i = 0; i < 2; i++) {
                         const temp = result.rows.item(i)
+                        console.log(temp)
                         if (temp.ruleName == 'foreign')
-                            setSurchargeForeign(temp.value)
+                            temp1 = haveForeignGuest ? temp.value : 1
                         else
-                            setSurchargeThird(temp.value)
+                            temp2 = isThreeGuest ? temp.value : 1
                     }
                 }
             )
         }, (error) => console.log(error.message)
             , () => {
-                const tempSurChargeThird = isThreeGuest ? surchargeThird : 1
-                const tempSurChargeForeign = haveForeignGuest ? surchargeForeign : 1
-                const temp = data.infor.price * diffDays * tempSurChargeForeign * tempSurChargeThird
+                const temp = data.infor.price * diffDays * (1 + (temp1 - 1) + (temp2 - 1))
                 setTotal(temp)
-                console.log('Total: ' + temp)
+                setSurchargeForeign(temp1)
+                setSurchargeThird(temp2)
             })
 
     }, [ruleUpated])
@@ -49,26 +55,63 @@ export default function CheckOut({ navigation, route }) {
         })
     })
 
+    const save = () => {
+        const values = {
+            formID: data.infor.formID,
+            paidTime: new Date(),
+            nday: diffDays,
+            surchargeThird: surchargeThird,
+            surchargeForeign: surchargeForeign,
+            totalAmount: total,
+            note: note,
+            roomID: data.infor.roomID
+        }
+        AddBill(values,
+            (msg) => {
+                CheckInputFailed('Action failed!', msg)
+            },
+            () => {
+                Success('Action successful')
+                dispatch(updateListSttRoom())
+                navigation.popToTop()
+            }
+        )
+
+    }
+    const update = () => {
+
+    }
+
+    const onDelete = () => {
+
+    }
+
     return (
-        <SafeAreaView style={globalStyles.container}>
-            <Card>
+        <FlexCard>
+            <ScrollView>
                 <ContentCard icon={'hotel'} source={'FontAwesome'} title={'Room: '} content={data.infor.roomName} />
                 <ContentCard icon={'category'} source={'MaterialIcons'} title={'Room type: '} content={data.infor.type} />
                 <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={data.infor.price} />
                 <ContentCard icon={'calendar'} source={'AntDesign'} title={'Start date: '} content={data.infor.date.substring(0, 15)} />
-                <ListGuest isEdit={false} data={data.guest} />
-
                 <ContentCard icon={'clockcircleo'} source={'AntDesign'} title={'Number of day: '} content={diffDays} />
-                <ContentCard icon={'attach-money'} source={'MaterialIcons'} title={'Amount: '} content={data.infor.price * diffDays} />
+                <View>
+                    <ListGuestView data={data.guest} />
+                </View>
+                <View>
+                    <ContentCard icon={'attach-money'} source={'MaterialIcons'} title={'Amount: '} content={data.infor.price * diffDays} />
+                </View>
                 {isThreeGuest &&
                     <ContentCard icon={'persons'} source={'Fontisto'} title={'Surcharge for third guest: '} content={surchargeThird * 100 + '%'} />
                 }
                 {haveForeignGuest &&
                     <ContentCard icon={'globe'} source={'FontAwesome'} title={'Surcharge for foreign guest: '} content={surchargeForeign * 100 + '%'} />
                 }
-                <ContentCard icon={'money-bill'} source={'FontAwesome5'} title={'Total: '} content={total} />
                 <TextInputCard value={note} placeholder={'Note'} onChangeValue={setNote} />
-            </Card>
-        </SafeAreaView>
+            </ScrollView>
+            <ContentCard icon={'money-bill'} source={'FontAwesome5'} title={'Total: '} content={total} />
+            <BottomButton saveTitle={'Paid'} onSave={save} onUpdate={update} onDelete={onDelete} />
+
+        </FlexCard>
+
     )
 }

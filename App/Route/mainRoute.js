@@ -19,10 +19,10 @@ export default function BottomTab() {
                 activeTintColor: '#3399ff',
                 inactiveTintColor: 'black',
             }}>
-            <Tab.Screen name='Dashboard' component={HomeStack} />
-            <Tab.Screen name='CreateForm' component={CreateFormStack} options={{ title: 'Create Form' }} />
-            <Tab.Screen name='Statistics' component={StatisticsStack} />
-            <Tab.Screen name='Setting' component={OtherStack} options={{ title: 'Other' }} />
+            <Tab.Screen name='DashboardStack' component={HomeStack} />
+            <Tab.Screen name='CreateFormStack' component={CreateFormStack} options={{ title: 'Create Form' }} />
+            <Tab.Screen name='StatisticsStack' component={StatisticsStack} />
+            <Tab.Screen name='OtherStack' component={OtherStack} options={{ title: 'Other' }} />
         </Tab.Navigator>
     );
 }
@@ -30,13 +30,13 @@ export default function BottomTab() {
 function TabBarIcon({ focused, routeName, color, size }) {
     let iconName;
     switch (routeName) {
-        case 'Home':
+        case 'DashboardStack':
             iconName = focused ? 'home' : 'home-outline';
             break;
-        case 'CreateForm':
+        case 'CreateFormStack':
             iconName = focused ? 'document-text' : 'document-text-outline';
             break;
-        case 'Statistics':
+        case 'StatisticsStack':
             iconName = focused ? 'bar-chart-sharp' : 'bar-chart-outline';
             break;
         default:

@@ -51,6 +51,7 @@ export default function RoomTypeTable({ navigation }) {
             <FlatList data={data}
                 renderItem={Item}
                 keyExtractor={item => item.type}
+                scrollEnabled={false}
             />
         </Card>
     )
