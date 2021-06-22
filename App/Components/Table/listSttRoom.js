@@ -14,6 +14,7 @@ export default function ListSttRoom({ navigation, type, typeID }) {
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     var tempData = []
     React.useEffect(() => {
+        tempData = []
         setLoading(true)
         db.transaction(tx => {
             console.log('Get list stt room typeID: ' + type)

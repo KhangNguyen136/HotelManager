@@ -23,21 +23,19 @@ export function addForm(values, success, fail) {
                 }
             }
         )
+        tx.executeSql(
+            'update roomTable set stateRoom = ? where roomID = ?', ['occupied', values.roomID]
+        )
     }, (error) => {
         console.log(error)
         fail(error.message)
     }, () => {
         success()
-        db.transaction(tx => {
-            tx.executeSql(
-                'update roomTable set stateRoom = ? where roomID = ?', ['occupied', values.roomID]
-            )
-        })
     }
     )
 }
 
-function updateListGuest(newList, oldList, formID) {
+function updateListGuest(newList, oldList, formID, success) {
     // console.log('list: ', newList, oldList)
     db.transaction(tx => {
         for (let i in newList) {
@@ -53,7 +51,7 @@ function updateListGuest(newList, oldList, formID) {
         }
 
     }, (error) => console.log(error.message),
-        () => console.log('Update list guest successfully'))
+        success)
 }
 
 export function deleteForm(values, success, fail) {
@@ -96,5 +94,5 @@ export function updateForm(values, listGuest, oldListGuest, success, fail) {
     }, (error) => {
         console.log(error)
         fail(error.message)
-    }, success)
+    })
 }

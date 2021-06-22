@@ -14,7 +14,7 @@ export function AddBill(values, fail, success) {
                 ['cleaning', values.roomID]
             )
             tx.executeSql(
-                'update formTable set isPaid = ? where formID = ?', [values.formID]
+                'update formTable set isPaid = ? where formID = ?', [1, values.formID]
             )
         }, (error) => fail(error.message)
         , success
@@ -25,8 +25,8 @@ export function UpdateBill(values, fail, success) {
     db.transaction(
         tx => {
             tx.executeSql(
-                'update billTable set paidTime = ?, nday = ?, surchargeThird = ?, surchargeForeign = ?, totalAmount = ?, note = ? where billID = ?',
-                [values.paidTime.toString(), values.nday, values.surchargeThird, values.surchargeForeign, values.totalAmout, values.note, values.billID]
+                'update billTable set paidTime = ?, nday = ?, surchargeThird = ?, surchargeForeign = ?, totalAmount = ?, note = ? where ID = ?',
+                [values.paidTime.toString(), values.nday, values.surchargeThird, values.surchargeForeign, values.totalAmout, values.note, values.ID]
             )
         }, (error) => fail(error.message)
         , success
@@ -37,7 +37,7 @@ export function deleteBill(ID, fail, success) {
     db.transaction(
         tx => {
             tx.executeSql(
-                'delete from billTable where billID = ?', [ID]
+                'delete from billTable where ID = ?', [ID]
             )
         }, (error) => fail(error.message)
         , success

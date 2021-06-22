@@ -8,7 +8,7 @@ export default async function (success) {
         // tx.executeSql('drop table if exists roomTable')
         // tx.executeSql('drop table if exists formTable')
         // tx.executeSql('drop table if exists guestTable')
-        tx.executeSql('drop table if exists billTable')
+        // tx.executeSql('drop table if exists billTable')
 
         // create roomType table
         tx.executeSql(
@@ -29,7 +29,7 @@ export default async function (success) {
             'create table if not exists guestTable(guestID integer primary key autoincrement, formID integer not null, name text, type text, IC text, address text, foreign key(formID) references formTable(ID))'
         )
         tx.executeSql(
-            'create table if not exists billTable(billID integer primary key autoincrement, formID integer not null, paidTime text,nday integer,surchargeThird real,surchargeForeign real, totalAmount real, note text, foreign key(formID) references formTable(ID))'
+            'create table if not exists billTable(ID integer primary key autoincrement, formID integer not null, paidTime text,nday integer,surchargeThird real,surchargeForeign real, totalAmount real, note text, foreign key(formID) references formTable(ID))'
         )
 
 
