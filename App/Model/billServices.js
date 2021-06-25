@@ -25,8 +25,8 @@ export function UpdateBill(values, fail, success) {
     db.transaction(
         tx => {
             tx.executeSql(
-                'update billTable set paidTime = ?, nday = ?, surchargeThird = ?, surchargeForeign = ?, totalAmount = ?, note = ? where ID = ?',
-                [values.paidTime.toString(), values.nday, values.surchargeThird, values.surchargeForeign, values.totalAmout, values.note, values.ID]
+                'update billTable set paidTime = ?,  note = ?, totalAmount = ? where ID = ?',
+                [values.paidTime.toString(), values.note, values.total, values.ID]
             )
         }, (error) => fail(error.message)
         , success

@@ -87,7 +87,7 @@ export function BottomButton({ isEditMode, onSave, onUpdate, onDelete = null, sa
     if (isEditMode == true)
         return (
             <View style={styles.BottomBtnContainer}>
-                <SaveButton onPress={onUpdate} width={'40%'} title={saveTitle} />
+                <SaveButton onPress={onUpdate} width={'40%'} />
                 <DeleteButton onPress={onDelete} />
             </View>
         )

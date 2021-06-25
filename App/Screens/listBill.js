@@ -12,8 +12,9 @@ export default function ListBill({ navigation }) {
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(true)
     var tempData = []
-    const listBillUpdated = useSelector(state => state.formState.listBillUpdated)
+    const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
     React.useEffect(() => {
+        tempData = []
         db.transaction(
             tx => {
                 tx.executeSql(
@@ -63,8 +64,10 @@ export default function ListBill({ navigation }) {
             infor: item, guest: []
         }
         const itemDate = new Date(item.paidTime)
+        const itemDateString = itemDate.toString().substring(0, 15)
         for (let i = 0; i < tempData.length; i++) {
-            if (tempData[i].date.getTime() === itemDate.getTime()) {
+            const tempDateString = tempData[i].date.toString().substring(0, 15)
+            if (tempDateString == itemDateString) {
                 tempData[i].items.push(tempItem)
                 tempData[i].total += item.totalAmount
                 return
@@ -84,6 +87,7 @@ export default function ListBill({ navigation }) {
     }
     const Bill = ({ item }) => {
         const color = colorType(item.infor.typeID)
+        console.log(item.ID)
         return (
             <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => navigation.navigate('CheckOut', { isEdit: true, data: item, diffDays: item.infor.nday })}>
@@ -114,7 +118,7 @@ export default function ListBill({ navigation }) {
                 </View>
                 <FlatList data={item.items}
                     renderItem={Bill}
-                    keyExtractor={item => String(item.ID)}
+                    keyExtractor={item => String(item.infor.ID)}
                 />
             </View>
         )

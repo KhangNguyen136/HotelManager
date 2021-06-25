@@ -8,6 +8,7 @@ export function CheckInputFailed(title, message) {
             text1: title,
             text2: message,
             topOffset: 50,
+            visibilityTime: 0.1
         })
     )
 }
@@ -18,7 +19,8 @@ export function Success(title, message) {
             type: 'success',
             text1: title,
             text2: message,
-            topOffset: 50
+            topOffset: 50,
+            visibilityTime: 0.0
         })
     )
 }

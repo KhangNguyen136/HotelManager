@@ -5,7 +5,6 @@ const initalState = {
     price: 0,
     // setnote: () => console.log('Nothing'),
     listFormUpdated: false,
-    listBillUpdated: false,
     listGuest: [],
 }
 
@@ -16,11 +15,6 @@ const createFormReducer = (state = initalState, action) => {
             // newFormState.listFormUpdated = !state.listFormUpdated
             const newListFormUpdated = !state.listFormUpdated
             return { ...state, listFormUpdated: newListFormUpdated }
-        case 'updateListBill':
-            // newFormState.listFormUpdated = !state.listFormUpdated
-            newFormState.listBillUpdated = !state.listBillUpdated
-            newFormState.listFormUpdated = !state.listFormUpdated
-            return newFormState
         case 'setRoom':
             newFormState.room = action.roomName
             newFormState.roomID = action.roomID

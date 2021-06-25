@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { GetIcon } from '../button';
 
-export default function DateTimePickerCard({ date, onChangeDate, title }) {
+export default function DateTimePickerCard({ date, onChangeDate, title, minimumDate = undefined }) {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         // setShow(Platform.OS === 'ios');
@@ -20,6 +20,7 @@ export default function DateTimePickerCard({ date, onChangeDate, title }) {
                         is24Hour={true}
                         display="default"
                         onChange={onChange}
+                        minimumDate={minimumDate}
                     />
                 </View>
                 <View style={{ width: 100 }} >
@@ -30,6 +31,7 @@ export default function DateTimePickerCard({ date, onChangeDate, title }) {
                         is24Hour={true}
                         display="default"
                         onChange={onChange}
+                        minimumDate={minimumDate}
                     />
                 </View>
             </View>

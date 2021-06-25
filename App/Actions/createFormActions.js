@@ -54,11 +54,7 @@ export const updateListForm = () => {
     }
 }
 
-export const updateListBill = () => {
-    return {
-        type: 'updateListBill',
-    }
-}
+
 
 export const setNote = (setNote) => {
     return {
