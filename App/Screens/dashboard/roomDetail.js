@@ -1,16 +1,16 @@
 import React from 'react';
 import { SafeAreaView, Text, StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import Card from '../Components/card'
-import { MyButton, MyIconButton } from '../Components/button';
-import { globalStyles } from '../styles/globalStyles';
-import { setListGuest, resetState } from '../Actions/createFormActions';
+import Card from '../../Components/card'
+import { MyButton, MyIconButton } from '../../Components/button';
+import { globalStyles } from '../../styles/globalStyles';
+import { setListGuest, resetState } from '../../Actions/createFormActions';
 import { useDispatch } from 'react-redux'
-import { changeStt } from '../Model/roomService';
-import { CheckInputFailed, Success } from '../Components/AlertMsg/messageAlert';
-import { updateListSttRoom } from '../Actions/roomActions';
-import { setRoom } from '../Actions/createFormActions';
-import { ContentCard } from '../Components/card';
+import { changeStt } from '../../Model/roomService';
+import { CheckInputFailed, Success } from '../../Components/AlertMsg/messageAlert';
+import { updateListSttRoom } from '../../Actions/roomActions';
+import { setRoom } from '../../Actions/createFormActions';
+import { ContentCard } from '../../Components/card';
 
 
 export default function RoomDetail({ navigation, route }) {
@@ -37,15 +37,17 @@ export default function RoomDetail({ navigation, route }) {
     }
 
     const editInfor = () => {
-        navigation.navigate('CreateForm')
+        // navigation.navigate('CreateFormStack')
+        navigation.navigate('CreateForm', { isEdit: true, item: data })
 
     }
 
     const CreateRentalForm = () => {
         console.log('Create rental form')
-        navigation.navigate('CreateForm')
         console.log(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price)
-        // setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price)
+        dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
+        navigation.navigate('CreateFormStack')
+        // navigation.navigate('CreateForm')
     }
 
     const changeStateRoom = (type) => {
@@ -73,7 +75,7 @@ export default function RoomDetail({ navigation, route }) {
                         <View style={styles.ButtonContainer} >
                             <MyIconButton title={'Check out'} onPress={checkOut} width={'33%'}
                                 iconName={'payment'} iconSource={'MaterialIcons'} iconColor={'black'} />
-                            <MyIconButton title={'Edit infor'} onPress={editInfor} width={'33%'} color={'#ffeaa7'}
+                            <MyIconButton title={'Edit form'} onPress={editInfor} width={'33%'} color={'#ffeaa7'}
                                 iconName={'edit'} iconSource={'Feather'} iconColor={'black'} />
                         </View>
                     </View>

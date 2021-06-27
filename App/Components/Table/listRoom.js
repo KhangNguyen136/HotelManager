@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux';
 import { colorType } from '../InputCard/roomTypePicker';
 import { openDatabase } from 'expo-sqlite';
+import Card from '../card';
 import SearchBox from '../InputCard/searchBox';
 import { GetIcon } from '../button';
 import NoDataComp from '../nodata';
@@ -126,14 +127,19 @@ export default function RoomList() {
                 renderItem={RoomItem}
                 keyExtractor={item => item.roomName}
                 ListEmptyComponent={NoDataComp} />
+
             <TouchableOpacity
                 style={{
                     flexDirection: 'row', padding: 5, marginTop: 5,
                     alignSelf: 'flex-end', borderRadius: 5,
-                    borderColor: 'black', backgroundColor: '#81ecec'
+                    borderColor: 'black', backgroundColor: '#2ecc71',
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: '#333',
+                    shadowOpacity: 0.3, shadowRadius: 2,
                 }} onPress={() => navigation.navigate('NewRoom')} >
+
                 <GetIcon iconName={'pluscircleo'} source={'AntDesign'} size={24} />
-                <Text style={{ marginLeft: 5, fontSize: 16, fontWeight: '500' }} >Add new room</Text>
+                <Text style={{ marginLeft: 5, fontSize: 16, fontWeight: '500' }} >New room</Text>
             </TouchableOpacity>
         </View>
     )

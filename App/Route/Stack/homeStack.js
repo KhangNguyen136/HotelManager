@@ -1,10 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import Home from '../../Screens/home';
-import CheckOut from '../../Screens/checkOut'
-import RoomDetail from '../../Screens/roomDetail';
-import CreateForm from '../../Screens/createForm/createForm';
-import ListBill from '../../Screens/listBill';
+import Home from '../../Screens/dashboard/home'
+import CheckOut from '../../Screens/dashboard/checkOut'
+import RoomDetail from '../../Screens/dashboard/roomDetail'
+import ListBill from '../../Screens/dashboard/listBill'
+import CreateForm from '../../Components/InputForm/createForm';
 
 const Stack = createStackNavigator();
 

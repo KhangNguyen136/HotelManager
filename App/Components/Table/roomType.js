@@ -37,7 +37,7 @@ export default function RoomTypeTable({ navigation }) {
                 <View style={{ ...styles.typeContainer, backgroundColor: color }} >
                     <GetRoomTypeLogo typeID={item.typeID} />
                     <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }} >
-                        <Text style={styles.typeContent} >{item.type} </Text>
+                        <Text style={styles.typeContent} >Type name: {item.type} </Text>
                         <Text style={styles.typeContent} >Price: {item.price}</Text>
                     </View>
                     <IconButton iconName={'edit'} source={'Feather'} size={24} onPress={() => navigation.navigate('EditRule', { type: 'roomType', ID: item.typeID })} />

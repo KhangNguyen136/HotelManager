@@ -1,11 +1,11 @@
 import React from 'react';
 import { FlatList, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { GetIcon } from '../Components/button';
+import { GetIcon } from '../../Components/button';
 import { useSelector } from 'react-redux'
-import ListSttRoom from '../Components/Table/listSttRoom';
+import ListSttRoom from '../../Components/Table/listSttRoom';
 import { openDatabase } from 'expo-sqlite';
-import { CheckInputFailed } from '../Components/AlertMsg/messageAlert';
-import LoadingIndicator from '../Components/loadingIndicator'
+import { CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
+import LoadingIndicator from '../../Components/loadingIndicator'
 const db = openDatabase('userDatabase.db');
 // import SearchBox from 
 export default function Home({ navigation }) {
@@ -17,7 +17,7 @@ export default function Home({ navigation }) {
         const temp = []
         db.transaction(tx => {
             tx.executeSql(
-                'select typeID, type from roomTypeTable', [],
+                'select typeID, type, price from roomTypeTable', [],
                 (tx, result) => {
                     const n = result.rows.length
                     for (let i = 0; i < n; i++)
@@ -60,13 +60,13 @@ export default function Home({ navigation }) {
                 <View style={{ flex: 1 }} >
 
                     <View style={styles.listContainer}>
-                        <ListSttRoom navigation={navigation} type={source[0].type} typeID={source[0].typeID} />
+                        <ListSttRoom navigation={navigation} type={source[0].type} typeID={source[0].typeID} price={source[0].price} />
                     </View>
                     <View style={styles.listContainer}>
-                        <ListSttRoom navigation={navigation} type={source[1].type} typeID={source[1].typeID} />
+                        <ListSttRoom navigation={navigation} type={source[1].type} typeID={source[1].typeID} price={source[1].price} />
                     </View>
                     <View style={styles.listContainer}>
-                        <ListSttRoom navigation={navigation} type={source[2].type} typeID={source[2].typeID} />
+                        <ListSttRoom navigation={navigation} type={source[2].type} typeID={source[2].typeID} price={source[2].price} />
                     </View>
                 </View>
             }

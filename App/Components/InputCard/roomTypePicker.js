@@ -126,7 +126,7 @@ export function GetRoomTypeLogo({ typeID, size }) {
 export function colorType(typeID) {
     switch (typeID) {
         case 1:
-            return '#dff9fb';
+            return '#48dbfb';
         case 2:
             return '#7bed9f';
         case 3:

@@ -1,0 +1,165 @@
+import React from 'react';
+import { StyleSheet, TouchableOpacity, Text, SafeAreaView, Dimensions, FlatList, View } from 'react-native';
+import { GetIcon } from '../../Components/button';
+import Card, { ContentCard } from '../../Components/card';
+import TimeButton from '../../Components/TimeFilterButton';
+import { useSelector, useDispatch } from 'react-redux';
+import { PieChart } from 'react-native-chart-kit';
+import { colorType, GetRoomTypeLogo } from '../../Components/InputCard/roomTypePicker'
+import LoadingIndicator from '../../Components/loadingIndicator';
+import { openDatabase } from 'expo-sqlite';
+const db = openDatabase('userDatabase.db')
+
+export default function RevenueStatistics({ navigation }) {
+    const [loading, setLoading] = React.useState(true)
+    const [data, setData] = React.useState([])
+    console.log(data)
+    const [total, setTotal] = React.useState(0)
+    const [title, setTitle] = React.useState('')
+    const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
+    var tempData
+    React.useEffect(() => {
+        tempData = {
+            total: 0,
+            data: []
+        }
+        db.transaction(
+            tx => {
+                tx.executeSql(
+                    'select * from roomTypeTable', [],
+                    (tx, result) => {
+                        for (let i = 0; i < 3; i++) {
+                            const item = result.rows.item(i)
+                            tempData.data.push({
+                                name: item.type,
+                                total: 0,
+                                color: colorType(item.typeID),
+                                legendFontColor: "#7F7F7F",
+                                legendFontSize: 15
+                            })
+                        }
+                    }
+                )
+            }, (error) => console.log(error.message),
+            GetData
+        )
+
+    }, [listBillUpdated]
+    )
+    const GetData = () => {
+        db.transaction(
+            tx => {
+                tx.executeSql(
+                    'select b.totalAmount, t.typeID, t.type, b.paidTime from billTable b inner join formTable f on b.formID = f.formID inner join roomTable r on f.roomID = r.roomID inner join roomTypeTable t on r.typeID = t.typeID', [],
+                    (tx, result) => {
+                        const n = result.rows.length
+                        for (let i = 0; i < n; i++)
+                            Insert(result.rows.item(i))
+                    }
+                )
+            },
+            (error) => console.log(error.message)
+            , () => {
+                var tempTotal = 0
+                for (let i = 0; i < 3; i++)
+                    tempTotal += tempData.data[i].total
+                setTotal(tempTotal)
+                setData(tempData.data)
+                // console.log(tempData.data)
+                setLoading(false)
+            }
+        )
+    }
+    const CheckDate = (date) => {
+        setTitle("This month's revenue")
+        return true
+    }
+    const Insert = (item) => {
+        if (!CheckDate(item.paidTime))
+            return
+        for (let i = 0; i < 3; i++) {
+            // console.log(tempData.data[i])
+            if (item.type == tempData.data[i].name) {
+                tempData.data[i].total += item.totalAmount
+            }
+        }
+    }
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            // headerRight: () => <IconButton iconName={'notifications'}
+            // onPress={() => { navigation.navigate('Notification') }} />
+        })
+    })
+    const Item = ({ item }) => {
+        return (
+            <Card>
+                <ContentCard icon={'category'} source={'MaterialIcons'} size={22} title={'Room type: '} content={item.name} />
+                <ContentCard icon={'attach-money'} source={'MaterialIcons'} size={22} title={'Total revenue: '} content={item.total} />
+                <ContentCard icon={'label-percent-outline'} source={'MaterialCommunityIcons'} size={22} title={'Percent: '} content={String(parseFloat(item.total / total * 100).toFixed(2)) + "%"} />
+            </Card>
+        )
+    }
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <TimeButton title={'This month'} />
+            <Card>
+                <PieChart data={data}
+                    width={Dimensions.get('window').width}
+                    height={200}
+                    accessor={'total'}
+                    backgroundColor={'transparent'}
+                    avoidFalseZero={true}
+                    chartConfig={chartConfig}
+                    paddingLeft={"15"}
+                    absolute={true}
+                />
+                <Text style={{
+                    textAlign: 'center',
+                    fontSize: 18, fontWeight: '500'
+                }}> Total: {total}</Text>
+            </Card>
+
+            <FlatList renderItem={Item}
+                data={data}
+                keyExtractor={item => item.name}
+            />
+            {
+                loading &&
+                <LoadingIndicator />
+            }
+        </SafeAreaView>
+    )
+}
+
+const chartConfig = {
+    backgroundGradientFrom: "#1E2923",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#08130D",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+};
+
+const styles = StyleSheet.create({
+    container: {
+        // flex: 'row',
+        justifyContent: 'space-between',
+        padding: 5,
+        flex: 1,
+    },
+    ButtonContainer: {
+        width: '60%',
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: '#333',
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        padding: 10
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: '600'
+    }
+})

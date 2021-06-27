@@ -1,11 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
-import { IconButton } from '../Components/button';
-import Card from '../Components/card';
-import NoDataComp from '../Components/nodata';
-export default function Statistics({ navigation }) {
-
+import { globalStyles } from '../../styles/globalStyles';
+import AddNewRoomForm from '../../Components/InputForm/addRoom'
+export default function NewRoom({ navigation, route }) {
+    const { item, isEdit } = route.params
     React.useLayoutEffect(() => {
         navigation.setOptions({
             // headerRight: () => <IconButton iconName={'notifications'}
@@ -15,10 +13,8 @@ export default function Statistics({ navigation }) {
 
     return (
         <SafeAreaView style={globalStyles.container}>
-            <Card>
-                <Text style={{ height: 40, fontSize: 20, textAlign: 'center' }} > Statistics</Text>
-            </Card>
-            <NoDataComp height={80} />
+            <AddNewRoomForm item={item} isEdit={isEdit} navigation={navigation} />
+
         </SafeAreaView>
     )
 }

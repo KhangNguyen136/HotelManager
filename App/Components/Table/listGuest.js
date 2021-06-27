@@ -55,10 +55,11 @@ export default function ListGuest({ navigation, isEdit = false, data }) {
                 style={{
                     flexDirection: 'row', padding: 5, marginTop: 5,
                     alignSelf: 'flex-end', borderRadius: 5,
-                    borderColor: 'black', backgroundColor: '#81ecec'
+                    borderColor: 'black', backgroundColor: '#81ecec', shadowOffset: { width: 1, height: 1 },
+                    shadowColor: '#333', shadowOpacity: 0.3, shadowRadius: 2,
                 }} onPress={toAddGuest} >
                 <GetIcon iconName={'pluscircleo'} source={'AntDesign'} size={18} />
-                <Text style={{ marginLeft: 5, fontSize: 16, fontWeight: '500' }} >Add new guest</Text>
+                <Text style={{ marginLeft: 5, fontSize: 16, fontWeight: '500' }} >Add guest</Text>
             </TouchableOpacity>
         </View>
     )

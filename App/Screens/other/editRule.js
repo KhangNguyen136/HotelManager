@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
-import { IconButton, SaveButton } from '../Components/button';
-import Card, { ContentCard } from '../Components/card';
-import TextInputCard from '../Components/InputCard/TextInputCard'
+import { globalStyles } from '../../styles/globalStyles';
+import { IconButton, SaveButton } from '../../Components/button';
+import Card, { ContentCard } from '../../Components/card';
+// import Card from '../../Components/card';
+import TextInputCard from '../../Components/InputCard/TextInputCard'
 import { openDatabase } from 'expo-sqlite'
 import { useDispatch } from 'react-redux';
-import { updateRoomType, updateRule } from '../Actions/roomActions';
-import { Success, CheckInputFailed } from '../Components/AlertMsg/messageAlert';
+import { updateRoomType, updateRule } from '../../Actions/roomActions';
+import { Success, CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
 const db = openDatabase('userDatabase.db');
 
 export default function EditRule({ navigation, route }) {

@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
-import Card from '../Components/card';
+import { globalStyles } from '../../styles/globalStyles';
+import Card from '../../Components/card';
 import { useSelector } from 'react-redux';
-import LoadingIndicator from '../Components/loadingIndicator';
-import { colorType } from '../Components/InputCard/roomTypePicker';
-import NoDataComp from '../Components/nodata';
+import { GetIcon } from '../../Components/button';
+import LoadingIndicator from '../../Components/loadingIndicator';
+import { colorType } from '../../Components/InputCard/roomTypePicker';
+import NoDataComp from '../../Components/nodata';
 import { openDatabase } from 'expo-sqlite';
 const db = openDatabase('userDatabase.db')
 export default function ListBill({ navigation }) {
@@ -13,6 +14,9 @@ export default function ListBill({ navigation }) {
     const [loading, setLoading] = React.useState(true)
     var tempData = []
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
+    const listRoomUpdated = useSelector(state => state.roomState.listRoomUpdated)
+    const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
+
     React.useEffect(() => {
         tempData = []
         db.transaction(
@@ -30,7 +34,7 @@ export default function ListBill({ navigation }) {
                 getListGuest()
             })
 
-    }, [listBillUpdated])
+    }, [listBillUpdated, listRoomUpdated, roomTypeUpdated])
     const getListGuest = () => {
         for (let s = 0; s < tempData.length; s++) {
             const section = tempData[s]
@@ -49,7 +53,7 @@ export default function ListBill({ navigation }) {
                     }, (error) => console.log(error.message)
                     , () => {
                         setData(tempData)
-                        console.log(tempData)
+                        // console.log(tempData)
                         setLoading(false)
                     }
                 )
@@ -86,27 +90,52 @@ export default function ListBill({ navigation }) {
 
     }
     const Bill = ({ item }) => {
+        const day = item.infor.nday > 1 ? 'days' : 'day'
         const color = colorType(item.infor.typeID)
-        console.log(item.ID)
+        var guestIcon = 'md-person-circle-sharp'
+        var guestSource = 'Ionicons'
+        const nGuest = item.guest.length
+        switch (nGuest) {
+            case 2:
+                guestIcon = 'people-circle'
+                break;
+            case 3:
+                guestIcon = 'persons'
+                guestSource = 'Fontisto'
+                break;
+        }
         return (
             <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => navigation.navigate('CheckOut', { isEdit: true, data: item, diffDays: item.infor.nday })}>
-                <View style={{ ...styles.cellTbale, flex: 1.5 }} >
-                    <Text style={{ fontSize: 16 }} >Room:{item.infor.roomName}</Text>
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row', padding: 2, }}>
+                    <View style={{ marginLeft: 5, flex: 2, flexDirection: 'row', alignItems: 'center' }} >
+                        <GetIcon iconName={'room'} source={'Fontisto'} size={16} />
+                        <Text style={{ fontSize: 16, marginLeft: 5 }} >Room: {item.infor.roomName}</Text>
+                    </View>
+                    <View style={{ width: 150, flexDirection: 'row', alignItems: 'center' }} >
+                        <GetIcon iconName={'date-range'} source={'MaterialIcons'} size={16} />
+                        <Text style={{ fontSize: 16, marginLeft: 1 }}>Number of day: {item.infor.nday} </Text>
+                    </View>
+
                 </View>
-                <View style={{ ...styles.cellTbale, width: 60 }} >
-                    <Text style={{ fontSize: 16 }}>{item.infor.paidTime.substring(16, 21)}</Text>
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row', padding: 2, alignItems: 'flex-start' }} >
+                    <View style={{ flexDirection: 'row', marginLeft: 3, flex: 1.5, alignItems: 'center' }} >
+                        <GetIcon iconName={'attach-money'} source={'MaterialIcons'} size={16} />
+                        <Text style={{ fontSize: 16 }}>Total: {item.infor.totalAmount}</Text>
+                    </View>
+                    <View style={{ width: 90, flexDirection: 'row', alignItems: 'center' }} >
+                        <GetIcon iconName={guestIcon} source={guestSource} size={16} />
+                        <Text style={{ marginLeft: 3, fontSize: 16 }}>Guest: {nGuest}</Text>
+                    </View>
+                    {
+                        item.infor.note !== '' &&
+                        <View style={{ marginLeft: 5, alignItems: 'flex-start', flex: 1, flexDirection: 'row' }} >
+                            <GetIcon iconName={'edit'} source={'AntDesign'} size={16} />
+                            <Text style={{ fontSize: 16, marginLeft: 5, flex: 1 }}>Note: {item.infor.note}</Text>
+                        </View>
+                    }
                 </View>
-                <View style={{ ...styles.cellTbale, flex: 1.5 }} >
-                    <Text style={{ fontSize: 16 }}>{item.infor.totalAmount}</Text>
-                </View>
-                <View style={{ ...styles.cellTbale, width: 60 }} >
-                    <Text style={{ fontSize: 16 }}>Guest: {item.guest.length}</Text>
-                </View>
-                <View style={{ ...styles.cellTbale, flex: 1 }} >
-                    <Text style={{ fontSize: 16 }}>Note: {item.infor.note}</Text>
-                </View>
-            </TouchableOpacity>
+            </TouchableOpacity >
         )
     }
     const Section = ({ item }) => {
@@ -114,7 +143,7 @@ export default function ListBill({ navigation }) {
             <View >
                 <View style={styles.sectionContainer}>
                     <Text style={{ fontSize: 16 }} >{item.date.toString().substring(0, 15)}</Text>
-                    <Text style={{ fontSize: 16, color: '#55efc4' }}>{item.total}</Text>
+                    <Text style={{ fontSize: 16, color: '#27ae60' }}>{item.total}</Text>
                 </View>
                 <FlatList data={item.items}
                     renderItem={Bill}
@@ -168,8 +197,7 @@ const styles = StyleSheet.create({
 
     },
     itemContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         borderColor: 'black',
         borderBottomWidth: 0.25,
         padding: 5,

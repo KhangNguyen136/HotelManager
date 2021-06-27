@@ -1,18 +1,18 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
-import TextInputCard from '../Components/InputCard/TextInputCard';
-import { updateListSttRoom } from '../Actions/roomActions';
+import TextInputCard from '../../Components/InputCard/TextInputCard';
+import { updateListSttRoom } from '../../Actions/roomActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { openDatabase } from 'expo-sqlite';
-import Card, { ContentCard, FlexCard } from '../Components/card';
-import { ListGuestView } from '../Components/Table/listGuest';
-import { BottomButton } from '../Components/button';
-import { updateListForm } from '../Actions/createFormActions'
-import { updateListBill } from '../Actions/billActions';
-import { AddBill, deleteBill, UpdateBill } from '../Model/billServices';
-import DateTimePicker from '../Components/InputCard/dateTimePicker';
-import LoadingIndicator from '../Components/loadingIndicator';
-import { Success, CheckInputFailed } from '../Components/AlertMsg/messageAlert';
+import Card, { ContentCard, FlexCard } from '../../Components/card';
+import { ListGuestView } from '../../Components/Table/listGuest';
+import { BottomButton } from '../../Components/button';
+import { updateListForm } from '../../Actions/createFormActions'
+import { updateListBill } from '../../Actions/billActions';
+import { AddBill, deleteBill, UpdateBill } from '../../Model/billServices';
+import DateTimePicker from '../../Components/InputCard/dateTimePicker';
+import LoadingIndicator from '../../Components/loadingIndicator';
+import { Success, CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
 const db = openDatabase('userDatabase.db');
 export default function CheckOut({ navigation, route }) {
     const { data, isEdit } = route.params
@@ -43,7 +43,6 @@ export default function CheckOut({ navigation, route }) {
             setNote(data.infor.note)
             setLoading(false)
         }
-
         else
             db.transaction(tx => {
                 tx.executeSql(
@@ -108,7 +107,7 @@ export default function CheckOut({ navigation, route }) {
     const update = () => {
         setLoading(true)
         const values = {
-            paidTime, total, ID: data.infor.ID, nday: diffDays
+            paidTime, total, ID: data.infor.ID, nday: diffDays, note: note
         }
         console.log(values)
         UpdateBill(values,

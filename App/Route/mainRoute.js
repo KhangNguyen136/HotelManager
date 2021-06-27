@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeStack from './Stack/homeStack';
 import CreateFormStack from './Stack/createFormStack';
-import StatisticsStack from '../Screens/statistics';
+import StatisticsStack from './Stack/statisticsStack';
 import OtherStack from './Stack/otherStack';
 import { GetIcon } from '../Components/button'
 

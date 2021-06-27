@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import Other from '../../Screens/other';
-import AddRoom from '../../Screens/addRoom'
-import EditRule from '../../Screens/editRule'
+import Other from '../../Screens/other/other';
+import AddRoom from '../../Screens/other/addRoom'
+import EditRule from '../../Screens/other/editRule'
 const Stack = createStackNavigator();
 
 function OtherStack({ navigation }) {

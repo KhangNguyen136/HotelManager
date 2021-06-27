@@ -8,7 +8,7 @@ import LoadingIndicator from '../loadingIndicator';
 import NoDataComp from '../nodata';
 const db = openDatabase('userDatabase.db');
 
-export default function ListSttRoom({ navigation, type, typeID }) {
+export default function ListSttRoom({ navigation, type, typeID, price }) {
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(false)
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
@@ -125,7 +125,7 @@ export default function ListSttRoom({ navigation, type, typeID }) {
 
     return (
         <View style={styles.container} >
-            <Text style={{ fontSize: 18, fontWeight: '500', marginBottom: 5, marginLeft: 10 }} >Room type {type}: </Text>
+            <Text style={{ fontSize: 18, fontWeight: '500', marginBottom: 5, marginLeft: 10 }} >Room type {type}: {price}</Text>
             <FlatList data={data}
                 renderItem={Item}
                 keyExtractor={item => item.infor.roomName}
