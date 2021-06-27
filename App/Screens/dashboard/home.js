@@ -33,7 +33,7 @@ export default function Home({ navigation }) {
             setLoading(false)
         }
         )
-    }, [roomTypeUpdated, listRoomSttUpdated])
+    }, [roomTypeUpdated])
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => {

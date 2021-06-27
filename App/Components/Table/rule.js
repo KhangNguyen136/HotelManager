@@ -32,7 +32,7 @@ export default function RuleTable({ navigation }) {
         var source = 'FontAwesome'
         var value = (item.value * 100) + "%"
         var title = 'Surcharge for foreign guest: '
-        if (item.ruleName == 'foreign') {
+        if (item.ruleName != 'foreign') {
             icon = 'persons'
             source = 'Fontisto'
             value = (item.value * 100) + "%"

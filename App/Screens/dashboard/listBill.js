@@ -31,7 +31,10 @@ export default function ListBill({ navigation }) {
                 )
             }, (error) => console.log(error.message),
             () => {
-                getListGuest()
+                if (tempData.length != 0)
+                    getListGuest()
+                else
+                    setLoading(false)
             })
 
     }, [listBillUpdated, listRoomUpdated, roomTypeUpdated])

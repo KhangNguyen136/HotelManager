@@ -3,7 +3,7 @@ import { deleteForm } from './formServices'
 const db = openDatabase('userDatabase.db');
 
 export function addNewRoom(values, success, fail) {
-    console.log("add values:", values)
+    // console.log("add values:", values)
     db.transaction(tx => {
         tx.executeSql(
             'insert into roomTable(roomName, typeID, note, addDate,stateRoom) values (?,?,?,?,?)',

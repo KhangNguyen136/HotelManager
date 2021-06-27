@@ -54,9 +54,7 @@ export default function ListForm({ navigation }) {
                 )
         }, (error) => console.log(error),
             () => {
-                // console.log('Get list')
                 setData(tempData)
-                console.log('Get list form')
                 setLoading(false)
                 // console.log(tempData)
             }
