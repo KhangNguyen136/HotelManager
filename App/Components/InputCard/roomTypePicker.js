@@ -120,7 +120,7 @@ export function GetRoomTypeLogo({ typeID, size }) {
         case 3:
             return <Image source={require('../../source/KindRoom/C.png')} style={{ width: size, height: size }} />
         default:
-            return <GetIcon iconName={'format-list-bulleted-type'} source={'MaterialCommunityIcons'} size={26} />
+            return <GetIcon iconName={'format-list-bulleted-type'} source={'MaterialCommunityIcons'} size={size} />
     }
 }
 

@@ -25,7 +25,7 @@ export default function CheckOut({ navigation, route }) {
     const [note, setNote] = React.useState('')
     const [paidTime, setPaidTime] = React.useState(new Date())
     const startDate = new Date(data.infor.date)
-    const diffTime = paidTime - startDate
+    const diffTime = Math.abs(paidTime - startDate)
     var diffDays = Math.ceil(diffTime / 86400000 - 0.02)
     diffDays = diffDays > 1 ? diffDays : 1
     const ruleUpated = useSelector(state => state.roomState.ruleUpated)
@@ -84,7 +84,7 @@ export default function CheckOut({ navigation, route }) {
     const save = () => {
         const values = {
             formID: data.infor.formID,
-            paidTime: new Date(),
+            paidTime: paidTime,
             nday: diffDays,
             surchargeThird: surchargeThird,
             surchargeForeign: surchargeForeign,

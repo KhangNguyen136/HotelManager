@@ -22,13 +22,6 @@ export default function RoomDetail({ navigation, route }) {
     var diffDays = Math.ceil(diffTime / 86400000 - 0.05)
     diffDays = diffDays > 1 ? diffDays : 1
     const days = diffDays > 1 ? ' days' : ' day'
-    // var firstFlag = true
-    // React.useEffect(() => {
-    //     if (!firstFlag)
-    //         navigation.goBack()
-    //     firstFlag = false
-
-    // }, [listRoomSttUpdated])
     React.useLayoutEffect(() => {
         navigation.setOptions({ title: data.infor.roomName })
     })
@@ -45,9 +38,9 @@ export default function RoomDetail({ navigation, route }) {
 
     const CreateRentalForm = () => {
         console.log('Create rental form')
-        navigation.goBack()
-        dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
-        navigation.navigate('CreateFormStack')
+        // navigation.goBack()
+        // dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
+        // navigation.navigate('CreateFormStack')
         // navigation.navigate('CreateForm')
     }
 

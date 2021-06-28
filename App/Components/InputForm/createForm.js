@@ -107,7 +107,7 @@ export default function CreateForm({ isEdit, item, navigation }) {
                 }} />
                 {
                     roomID != -1 &&
-                    <PriceCard value={formatAmount.format(price)} />
+                    <PriceCard value={formatAmount(price)} />
                 }
                 <DateTimePickerCard date={startDate} title={'Start date: '} onChangeDate={setStartDate} />
                 <TextInputCard value={note} onChangeValue={setNote} placeholder={"Note"} />

@@ -79,7 +79,7 @@ export default function RoomPicker({ navigation, route }) {
                     navigation.goBack()
 
                 }} >
-                <GetRoomTypeLogo kind={item.typeID} size={32} />
+                <GetRoomTypeLogo typeID={item.typeID} size={30} />
                 <View style={{ padding: 2, marginLeft: 15, flex: 1 }}>
                     <Text  >{item.roomName}</Text>
                 </View>
@@ -115,7 +115,7 @@ const SelectedView = ({ isSelected, ID }) => {
     if (ID == -1)
         return <View style={{ width: 26 }} />
     if (isSelected)
-        return <GetIcon size={26} iconName={'checkcircle'} source={'AntDesign'} color={'blue'} />
+        return <GetIcon size={24} iconName={'checkcircle'} source={'AntDesign'} color={'blue'} />
     return <GetIcon iconName={'right'} source={'AntDesign'} />
 
 }
@@ -124,11 +124,11 @@ const Title = () => {
     return (
         <View style={{ ...styles.itemContainer, backgroundColor: '#ecf0f1' }}
         >
-            <GetRoomTypeLogo kind={-1} size={32} />
+            <GetRoomTypeLogo typeID={-1} size={30} />
             <View style={{ padding: 2, marginLeft: 15, flex: 1 }}>
                 <Text  >Room</Text>
             </View>
-            <View style={{ padding: 2, flex: 1, alignItems: 'center' }}>
+            <View style={{ padding: 2, width: 80, alignItems: 'center' }}>
                 <Text  >Room type</Text>
             </View>
             <View style={{ marginLeft: 10, flex: 1, alignItems: 'center' }}>
@@ -137,6 +137,7 @@ const Title = () => {
             <View style={{ marginLeft: 10, flex: 1 }}>
                 <Text >Note</Text>
             </View>
+            <View style={{ width: 24 }} />
         </View>)
 }
 

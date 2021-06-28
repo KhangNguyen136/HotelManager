@@ -120,7 +120,7 @@ export default function EditRule({ navigation, route }) {
             {
                 type != 'roomType' &&
                 <Card>
-                    <ContentCard icon={icon} source={source} content={title} />
+                    <ContentCard icon={icon} source={source} title={title} />
                     <TextInputCard value={value.toString()} onChangeValue={setValue} placeholder={title} keyboardType={'numeric'} />
                 </Card>
             }
