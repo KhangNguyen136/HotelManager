@@ -15,15 +15,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        width: '96%',
+        width: '99%',
         justifyContent: 'center',
         shadowOffset: { width: 1, height: 1 },
         shadowColor: '#333',
         shadowOpacity: 0.3,
         shadowRadius: 2,
         padding: 5,
-        borderRadius: 8,
-        backgroundColor: '#f5f6fa',
+        borderRadius: 6,
+        backgroundColor: '#fff',
         margin: 4
 
     },

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { GetIcon, IconButton } from '../button';
-import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu';
+import { formatAmount } from '../../styles/globalStyles';
 import Card from '../card';
 import { useSelector } from 'react-redux'
 import { openDatabase } from 'expo-sqlite';
@@ -31,14 +31,14 @@ export default function RoomTypeTable({ navigation }) {
     }, [roomTypeUpdated])
     const Item = ({ item }) => {
         const color = colorType(item.typeID)
-
+        const amount = formatAmount.format(item.price)
         return (
             <View>
                 <View style={{ ...styles.typeContainer, backgroundColor: color }} >
                     <GetRoomTypeLogo typeID={item.typeID} />
                     <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }} >
                         <Text style={styles.typeContent} >Type name: {item.type} </Text>
-                        <Text style={styles.typeContent} >Price: {item.price}</Text>
+                        <Text style={styles.typeContent} >Price: {amount}</Text>
                     </View>
                     <IconButton iconName={'edit'} source={'Feather'} size={24} onPress={() => navigation.navigate('EditRule', { type: 'roomType', ID: item.typeID })} />
                 </View>

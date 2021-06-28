@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
-import { globalStyles } from '../../styles/globalStyles';
+import { formatAmount, globalStyles } from '../../styles/globalStyles';
 import Card from '../../Components/card';
 import { useSelector } from 'react-redux';
 import { GetIcon } from '../../Components/button';
@@ -124,7 +124,7 @@ export default function ListBill({ navigation }) {
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', padding: 2, alignItems: 'flex-start' }} >
                     <View style={{ flexDirection: 'row', marginLeft: 3, flex: 1.5, alignItems: 'center' }} >
                         <GetIcon iconName={'attach-money'} source={'MaterialIcons'} size={16} />
-                        <Text style={{ fontSize: 16 }}>Total: {item.infor.totalAmount}</Text>
+                        <Text style={{ fontSize: 16 }}>Total: {formatAmount.format(item.infor.totalAmount)}</Text>
                     </View>
                     <View style={{ width: 90, flexDirection: 'row', alignItems: 'center' }} >
                         <GetIcon iconName={guestIcon} source={guestSource} size={16} />
@@ -146,7 +146,7 @@ export default function ListBill({ navigation }) {
             <View >
                 <View style={styles.sectionContainer}>
                     <Text style={{ fontSize: 16 }} >{item.date.toString().substring(0, 15)}</Text>
-                    <Text style={{ fontSize: 16, color: '#27ae60' }}>{item.total}</Text>
+                    <Text style={{ fontSize: 16, color: '#27ae60' }}>{formatAmount.format(item.total)}</Text>
                 </View>
                 <FlatList data={item.items}
                     renderItem={Bill}

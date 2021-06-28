@@ -13,6 +13,7 @@ import { AddBill, deleteBill, UpdateBill } from '../../Model/billServices';
 import DateTimePicker from '../../Components/InputCard/dateTimePicker';
 import LoadingIndicator from '../../Components/loadingIndicator';
 import { Success, CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
+import { formatAmount } from '../../styles/globalStyles';
 const db = openDatabase('userDatabase.db');
 export default function CheckOut({ navigation, route }) {
     const { data, isEdit } = route.params
@@ -141,14 +142,14 @@ export default function CheckOut({ navigation, route }) {
             <ScrollView>
                 <ContentCard icon={'hotel'} source={'FontAwesome'} title={'Room: '} content={data.infor.roomName} />
                 <ContentCard icon={'category'} source={'MaterialIcons'} title={'Room type: '} content={data.infor.type} />
-                <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={data.infor.price} />
+                <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={formatAmount.format(data.infor.price)} />
                 <ContentCard icon={'calendar'} source={'AntDesign'} title={'Start date: '} content={data.infor.date.substring(0, 21)} />
                 <ContentCard icon={'clockcircleo'} source={'AntDesign'} title={'Number of day: '} content={diffDays} />
                 <View>
                     <ListGuestView data={data.guest} />
                 </View>
                 <View>
-                    <ContentCard icon={'attach-money'} source={'MaterialIcons'} title={'Amount: '} content={data.infor.price * diffDays} />
+                    <ContentCard icon={'attach-money'} source={'MaterialIcons'} title={'Amount: '} content={formatAmount.format(data.infor.price * diffDays)} />
                 </View>
                 {isThreeGuest &&
                     <ContentCard icon={'persons'} source={'Fontisto'} title={'Surcharge for third guest: '} content={surchargeThird * 100 + '%'} />
@@ -159,7 +160,7 @@ export default function CheckOut({ navigation, route }) {
                 <DateTimePicker title={"Paid time: "} date={paidTime} onChangeDate={setPaidTime} minimumDate={startDate} />
                 <TextInputCard value={note} placeholder={'Note'} onChangeValue={setNote} />
             </ScrollView>
-            <ContentCard icon={'money-bill'} source={'FontAwesome5'} title={'Total: '} content={total} />
+            <ContentCard icon={'money-bill'} source={'FontAwesome5'} title={'Total: '} content={formatAmount.format(total)} />
             <BottomButton saveTitle={'Paid'} onSave={save} onUpdate={update} onDelete={onDelete} isEditMode={isEdit} />
             {
                 loading &&

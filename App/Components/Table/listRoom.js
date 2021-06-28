@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux';
 import { colorType } from '../InputCard/roomTypePicker';
 import { openDatabase } from 'expo-sqlite';
+import { formatAmount } from '../../styles/globalStyles';
 import Card from '../card';
 import SearchBox from '../InputCard/searchBox';
 import { GetIcon } from '../button';
@@ -68,6 +69,7 @@ export default function RoomList() {
     }
     const RoomItem = ({ item }) => {
         var color = colorType(item.typeID)
+        const amount = formatAmount.format(item.price)
         return (
             <TouchableOpacity style={{ ...Styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
@@ -88,7 +90,7 @@ export default function RoomList() {
                     <Text style={{ fontSize: 16 }}>{item.type}</Text>
                 </View>
                 <View style={{ ...Styles.cellTable, flex: 1 }}>
-                    <Text style={{ fontSize: 16 }}>{item.price}</Text>
+                    <Text style={{ fontSize: 16 }}>{amount}</Text>
                 </View>
                 <View style={{ flex: 1, padding: 2, alignItems: 'center' }}>
                     <Text style={{ fontSize: 16 }}>{item.note}</Text>

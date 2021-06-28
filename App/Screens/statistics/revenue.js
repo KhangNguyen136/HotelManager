@@ -8,6 +8,7 @@ import { PieChart } from 'react-native-chart-kit';
 import { colorType, GetRoomTypeLogo } from '../../Components/InputCard/roomTypePicker'
 import LoadingIndicator from '../../Components/loadingIndicator';
 import { openDatabase } from 'expo-sqlite';
+import { formatAmount } from '../../styles/globalStyles';
 const db = openDatabase('userDatabase.db')
 
 export default function RevenueStatistics({ navigation }) {
@@ -17,6 +18,7 @@ export default function RevenueStatistics({ navigation }) {
     const [total, setTotal] = React.useState(0)
     const [title, setTitle] = React.useState('')
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
+    const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
     var tempData
     React.useEffect(() => {
         tempData = {
@@ -44,7 +46,7 @@ export default function RevenueStatistics({ navigation }) {
             GetData
         )
 
-    }, [listBillUpdated]
+    }, [listBillUpdated, roomTypeUpdated]
     )
     const GetData = () => {
         db.transaction(
@@ -91,11 +93,14 @@ export default function RevenueStatistics({ navigation }) {
         })
     })
     const Item = ({ item }) => {
+        var percent = parseFloat(item.total / total * 100).toFixed(2)
+        if (percent == 'NaN')
+            percent = 0
         return (
             <Card>
                 <ContentCard icon={'category'} source={'MaterialIcons'} size={22} title={'Room type: '} content={item.name} />
-                <ContentCard icon={'attach-money'} source={'MaterialIcons'} size={22} title={'Total revenue: '} content={item.total} />
-                <ContentCard icon={'label-percent-outline'} source={'MaterialCommunityIcons'} size={22} title={'Percent: '} content={String(parseFloat(item.total / total * 100).toFixed(2)) + "%"} />
+                <ContentCard icon={'attach-money'} source={'MaterialIcons'} size={22} title={'Total revenue: '} content={formatAmount.format(item.total)} />
+                <ContentCard icon={'label-percent-outline'} source={'MaterialCommunityIcons'} size={22} title={'Percent: '} content={percent + " %"} />
             </Card>
         )
     }
@@ -108,6 +113,7 @@ export default function RevenueStatistics({ navigation }) {
                     width={Dimensions.get('window').width}
                     height={200}
                     accessor={'total'}
+
                     backgroundColor={'transparent'}
                     avoidFalseZero={true}
                     chartConfig={chartConfig}
@@ -117,7 +123,7 @@ export default function RevenueStatistics({ navigation }) {
                 <Text style={{
                     textAlign: 'center',
                     fontSize: 18, fontWeight: '500'
-                }}> Total: {total}</Text>
+                }}> Total: {formatAmount.format(total)}</Text>
             </Card>
 
             <FlatList renderItem={Item}

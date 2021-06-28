@@ -36,6 +36,21 @@ export default function Home({ navigation }) {
     }, [roomTypeUpdated])
     React.useLayoutEffect(() => {
         navigation.setOptions({
+            // headerLeft: () => {
+            //     return (
+            //         <TouchableOpacity onPress={() => { navigation.navigate('Other') }}
+            //             style={{
+            //                 flexDirection: 'row',
+            //                 marginHorizontal: 10,
+            //                 flex: 1,
+            //                 alignItems: 'center'
+            //             }} >
+            //             <GetIcon iconName={'history'} source={'MaterialIcons'}
+            //             />
+            //             <Text style={{ fontSize: 14, fontWeight: '500' }} >Add room</Text>
+            //         </TouchableOpacity>
+            //     )
+            // },
             headerRight: () => {
                 return (
                     <TouchableOpacity onPress={() => { navigation.navigate('ListBill') }}

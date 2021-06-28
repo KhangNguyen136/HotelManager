@@ -6,6 +6,7 @@ import { CheckInputFailed } from '../AlertMsg/messageAlert';
 import { openDatabase } from 'expo-sqlite';
 import LoadingIndicator from '../loadingIndicator';
 import NoDataComp from '../nodata';
+import { formatAmount } from '../../styles/globalStyles';
 const db = openDatabase('userDatabase.db');
 
 export default function ListSttRoom({ navigation, type, typeID, price }) {
@@ -44,13 +45,14 @@ export default function ListSttRoom({ navigation, type, typeID, price }) {
     const getListGuest = () => {
         db.transaction(tx => {
             for (let i = 0; i < tempData.length; i++)
-                tx.executeSql(
-                    'select * from guestTable where formID = ?', [tempData[i].infor.formID],
-                    (tx, guestResults) => {
-                        for (let j = 0; j < guestResults.rows.length; j++)
-                            tempData[i].guest.push(guestResults.rows.item(j))
-                    }
-                )
+                if (tempData[i].infor.formID != undefined)
+                    tx.executeSql(
+                        'select * from guestTable where formID = ?', [tempData[i].infor.formID],
+                        (tx, guestResults) => {
+                            for (let j = 0; j < guestResults.rows.length; j++)
+                                tempData[i].guest.push(guestResults.rows.item(j))
+                        }
+                    )
         }, (error) => console.log(error),
             () => {
                 setData(tempData)
@@ -125,7 +127,7 @@ export default function ListSttRoom({ navigation, type, typeID, price }) {
 
     return (
         <View style={styles.container} >
-            <Text style={{ fontSize: 18, fontWeight: '500', marginBottom: 5, marginLeft: 10 }} >Room type {type}: {price}</Text>
+            <Text style={{ fontSize: 18, fontWeight: '500', marginBottom: 5, marginLeft: 10 }} >Room type {type} - Price: {formatAmount.format(price)}</Text>
             <FlatList data={data}
                 renderItem={Item}
                 keyExtractor={item => item.infor.roomName}

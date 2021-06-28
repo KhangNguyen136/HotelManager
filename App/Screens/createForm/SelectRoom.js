@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
-import { globalStyles } from '../../styles/globalStyles';
+import { formatAmount, globalStyles } from '../../styles/globalStyles';
 import Card from '../../Components/card';
 import { useDispatch, useSelector } from 'react-redux';
 import { openDatabase } from 'expo-sqlite'
@@ -66,6 +66,7 @@ export default function RoomPicker({ navigation, route }) {
 
     const Room = ({ item }) => {
         const color = colorType(item.typeID)
+        const amount = formatAmount.format(item.price)
         return (
             <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
@@ -88,7 +89,7 @@ export default function RoomPicker({ navigation, route }) {
                     <Text  >{item.type}</Text>
                 </View>
                 <View style={{ marginLeft: 10, flex: 1, alignItems: 'center' }}>
-                    <Text >{item.price}</Text>
+                    <Text >{amount}</Text>
                 </View>
                 <View style={{ marginLeft: 10, flex: 1 }}>
                     <Text >{item.note}</Text>

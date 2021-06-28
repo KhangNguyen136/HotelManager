@@ -13,6 +13,7 @@ import { addForm, deleteForm, updateForm } from '../../Model/formServices';
 import { resetState, setRoom, updateListForm } from '../../Actions/createFormActions';
 import { updateListSttRoom } from '../../Actions/roomActions';
 import PriceCard from '../InputCard/priceCard';
+import { formatAmount } from '../../styles/globalStyles';
 
 export default function CreateForm({ isEdit, item, navigation }) {
     const [loading, setLoading] = React.useState(false)
@@ -106,7 +107,7 @@ export default function CreateForm({ isEdit, item, navigation }) {
                 }} />
                 {
                     roomID != -1 &&
-                    <PriceCard value={price} />
+                    <PriceCard value={formatAmount.format(price)} />
                 }
                 <DateTimePickerCard date={startDate} title={'Start date: '} onChangeDate={setStartDate} />
                 <TextInputCard value={note} onChangeValue={setNote} placeholder={"Note"} />

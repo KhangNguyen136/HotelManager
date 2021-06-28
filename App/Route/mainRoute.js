@@ -21,7 +21,7 @@ export default function BottomTab() {
             }}>
             <Tab.Screen name='DashboardStack' component={HomeStack} />
             <Tab.Screen name='CreateFormStack' component={CreateFormStack} options={{ title: 'Create Form' }} />
-            <Tab.Screen name='StatisticsStack' component={StatisticsStack} />
+            <Tab.Screen name='StatisticsStack' component={StatisticsStack} options={{ title: 'Statistics' }} />
             <Tab.Screen name='OtherStack' component={OtherStack} options={{ title: 'Other' }} />
         </Tab.Navigator>
     );

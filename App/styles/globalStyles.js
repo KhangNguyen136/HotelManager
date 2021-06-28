@@ -35,3 +35,11 @@ export const globalStyles = StyleSheet.create(
 export const myHeaderStyle = {
     headerTitleAlgin: 'center',
 }
+
+export const formatAmount = new Intl.NumberFormat(
+    'en-US', {
+    style: 'currency',
+    currency: 'VND',
+    // currencyDisplay: 'code'
+}
+)

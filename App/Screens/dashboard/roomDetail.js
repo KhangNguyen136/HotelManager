@@ -3,7 +3,7 @@ import { SafeAreaView, Text, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import Card from '../../Components/card'
 import { MyButton, MyIconButton } from '../../Components/button';
-import { globalStyles } from '../../styles/globalStyles';
+import { formatAmount, globalStyles } from '../../styles/globalStyles';
 import { setListGuest, resetState } from '../../Actions/createFormActions';
 import { useDispatch } from 'react-redux'
 import { changeStt } from '../../Model/roomService';
@@ -19,7 +19,7 @@ export default function RoomDetail({ navigation, route }) {
     const today = new Date()
     const startDate = new Date(data.infor.date)
     const diffTime = Math.abs(today - startDate)
-    var diffDays = Math.ceil(diffTime / 86400000 - 0.1)
+    var diffDays = Math.ceil(diffTime / 86400000 - 0.05)
     diffDays = diffDays > 1 ? diffDays : 1
     const days = diffDays > 1 ? ' days' : ' day'
     React.useEffect(() => {
@@ -38,15 +38,14 @@ export default function RoomDetail({ navigation, route }) {
 
     const editInfor = () => {
         // navigation.navigate('CreateFormStack')
-        navigation.navigate('CreateForm', { isEdit: true, item: data })
+        // navigation.navigate('CreateForm', { isEdit: true, item: data })
 
     }
 
     const CreateRentalForm = () => {
         console.log('Create rental form')
-        console.log(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price)
-        dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
-        navigation.navigate('CreateFormStack')
+        // dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
+        // navigation.navigate('CreateFormStack')
         // navigation.navigate('CreateForm')
     }
 
@@ -120,7 +119,7 @@ export default function RoomDetail({ navigation, route }) {
             <Card>
                 <ContentCard icon={'hotel'} source={'FontAwesome'} title={'Room: '} content={data.infor.roomName} />
                 <ContentCard icon={'category'} source={'MaterialIcons'} title={'Room type: '} content={data.infor.type} />
-                <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={data.infor.price} />
+                <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={formatAmount.format(data.infor.price)} />
                 <ContentCard icon={'note'} source={'Octicons'} title={"Room note: "} content={data.infor.roomNote} />
 
                 <Content />
