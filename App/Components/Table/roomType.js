@@ -31,7 +31,7 @@ export default function RoomTypeTable({ navigation }) {
     }, [roomTypeUpdated])
     const Item = ({ item }) => {
         const color = colorType(item.typeID)
-        const amount = formatAmount.format(item.price)
+        const amount = formatAmount(item.price)
         return (
             <View>
                 <View style={{ ...styles.typeContainer, backgroundColor: color }} >
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.25,
         borderColor: 'gray',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 4,
         flexWrap: 'wrap',
     },
     typeContent: {

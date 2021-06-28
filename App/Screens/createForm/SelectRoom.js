@@ -27,7 +27,7 @@ export default function RoomPicker({ navigation, route }) {
 
     const getListRoom = () => {
         console.log(old, selectedRoom)
-        var result = [tittleItem]
+        var result = []
         db.transaction(tx => {
             tx.executeSql(
                 'select * from roomTable r inner join roomTypeTable t on r.typeID = t.typeID  where r.stateRoom = ? or r.roomID = ?', ['available', old],
@@ -66,12 +66,10 @@ export default function RoomPicker({ navigation, route }) {
 
     const Room = ({ item }) => {
         const color = colorType(item.typeID)
-        const amount = formatAmount.format(item.price)
+        const amount = formatAmount(item.price, false)
         return (
             <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
-                    if (item.ID == -1)
-                        return
                     if (item.roomName == selectedRoom) {
                         navigation.goBack()
                         return
@@ -106,6 +104,7 @@ export default function RoomPicker({ navigation, route }) {
                 <FlatList data={listRoom}
                     renderItem={Room}
                     keyExtractor={item => item.roomName}
+                    ListHeaderComponent={Title}
                 />
             </Card>
         </SafeAreaView >
@@ -121,6 +120,26 @@ const SelectedView = ({ isSelected, ID }) => {
 
 }
 
+const Title = () => {
+    return (
+        <View style={{ ...styles.itemContainer, backgroundColor: '#ecf0f1' }}
+        >
+            <GetRoomTypeLogo kind={-1} size={32} />
+            <View style={{ padding: 2, marginLeft: 15, flex: 1 }}>
+                <Text  >Room</Text>
+            </View>
+            <View style={{ padding: 2, flex: 1, alignItems: 'center' }}>
+                <Text  >Room type</Text>
+            </View>
+            <View style={{ marginLeft: 10, flex: 1, alignItems: 'center' }}>
+                <Text >Price</Text>
+            </View>
+            <View style={{ marginLeft: 10, flex: 1 }}>
+                <Text >Note</Text>
+            </View>
+        </View>)
+}
+
 const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
@@ -129,14 +148,7 @@ const styles = StyleSheet.create({
         borderBottomColor: 'black',
         borderBottomWidth: 0.5,
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        borderRadius: 4
     }
 })
-
-const tittleItem = {
-    ID: -1,
-    roomName: 'Room',
-    type: 'Room type ',
-    price: 'Price',
-    note: 'Note'
-}

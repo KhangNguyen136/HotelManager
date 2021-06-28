@@ -1,50 +1,32 @@
 import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { GetIcon } from '../button';
+import { formatAmount } from '../../styles/globalStyles';
 
-export default function TextInputCard({ value, placeholder, onChangeValue, onBlur, keyboardType = 'default', isEdit = true }) {
+export default function AmountInputCard({ value, placeholder, onChangeValue, onBlur }) {
+    const [amount, setAmount] = React.useState(formatAmount.format(value))
     var iconName
     var source
     switch (placeholder) {
-        case 'Identity card':
-            iconName = 'idcard'
-            source = 'AntDesign'
-            break;
-        case 'Address':
-            iconName = 'address'
-            source = 'Entypo'
-            break;
-        case "Note":
-            iconName = 'text'
-            source = 'Entypo'
-            break;
         case 'Enter price':
             iconName = 'price-tag'
             source = 'Entypo'
             break;
-        case 'Phone number or Email':
-            iconName = 'user-circle-o'
-            source = 'FontAwesome'
-            break;
-        // case 'Enter room name':
-        //     iconName =
-        //     source = 
-        default:
-            iconName = 'pencil-square-o'
-            source = 'FontAwesome'
+    }
+    const onChangeAmount = ({ newAmount }) => {
+        onChangeValue(newAmount)
+        setAmount(formatAmount.format(newAmount))
     }
     return (
         <View style={styles.container} >
             <GetIcon iconName={iconName} size={26} source={source} />
             <View style={styles.contentArea}>
                 <TextInput style={styles.content}
-                    value={value}
-                    onChangeText={onChangeValue}
+                    value={amount}
+                    onChangeText={onChangeAmount}
                     placeholder={placeholder}
                     onBlur={onBlur}
-                    keyboardType={keyboardType}
-                    editable={isEdit}
-
+                    keyboardType={'numeric'}
                 />
             </View>
         </View>

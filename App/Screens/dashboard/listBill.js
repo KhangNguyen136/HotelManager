@@ -124,7 +124,7 @@ export default function ListBill({ navigation }) {
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', padding: 2, alignItems: 'flex-start' }} >
                     <View style={{ flexDirection: 'row', marginLeft: 3, flex: 1.5, alignItems: 'center' }} >
                         <GetIcon iconName={'attach-money'} source={'MaterialIcons'} size={16} />
-                        <Text style={{ fontSize: 16 }}>Total: {formatAmount.format(item.infor.totalAmount)}</Text>
+                        <Text style={{ fontSize: 16 }}>Total: {formatAmount(item.infor.totalAmount, false)}</Text>
                     </View>
                     <View style={{ width: 90, flexDirection: 'row', alignItems: 'center' }} >
                         <GetIcon iconName={guestIcon} source={guestSource} size={16} />
@@ -146,7 +146,7 @@ export default function ListBill({ navigation }) {
             <View >
                 <View style={styles.sectionContainer}>
                     <Text style={{ fontSize: 16 }} >{item.date.toString().substring(0, 15)}</Text>
-                    <Text style={{ fontSize: 16, color: '#27ae60' }}>{formatAmount.format(item.total)}</Text>
+                    <Text style={{ fontSize: 16, color: '#27ae60' }}>{formatAmount(item.total)}</Text>
                 </View>
                 <FlatList data={item.items}
                     renderItem={Bill}
@@ -205,7 +205,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.25,
         padding: 5,
         marginLeft: 20,
-        margin: 3
+        margin: 3,
+        borderRadius: 8
     },
     cellTbale: {
         borderColor: 'black',

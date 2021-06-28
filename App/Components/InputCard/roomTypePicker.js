@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { formatAmount } from '../../styles/globalStyles';
 import { GetIcon } from '../button';
 import Menu, { MenuDivider, MenuItem } from 'react-native-material-menu';
 import PriceCard from './priceCard';
@@ -93,7 +94,7 @@ export default function TypePicker({ setType }) {
                     <MenuDivider />
                 </Menu>
             </View>
-            <PriceCard value={value.price} />
+            <PriceCard value={formatAmount(value.price)} />
         </View>
     )
 }

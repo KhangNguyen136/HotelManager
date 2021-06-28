@@ -9,7 +9,7 @@ export default function PriceCard({ value }) {
             <GetIcon iconName={'price-tag'} size={26} source={'Entypo'} />
             <View style={styles.contentContainer} >
                 <Text style={styles.content} >Price: </Text>
-                <Text style={styles.content}>{value} vnđ</Text>
+                <Text style={styles.content}>{value}</Text>
             </View>
         </View>
     )

@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderBottomWidth: 0.25,
         // padding: 5
+        borderRadius: 3
     },
     cellTbale: {
         borderColor: 'black',

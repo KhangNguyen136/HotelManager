@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button, SafeAreaView } from 'react-native';
 import { globalStyles } from '../../styles/globalStyles';
-import { IconButton, SaveButton } from '../../Components/button';
+import { SaveButton } from '../../Components/button';
 import Card, { ContentCard } from '../../Components/card';
-// import Card from '../../Components/card';
+// import AmountInputCard from '../../Components/InputCard/amountInput';
 import TextInputCard from '../../Components/InputCard/TextInputCard'
 import { openDatabase } from 'expo-sqlite'
 import { useDispatch } from 'react-redux';

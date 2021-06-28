@@ -99,7 +99,7 @@ export default function RevenueStatistics({ navigation }) {
         return (
             <Card>
                 <ContentCard icon={'category'} source={'MaterialIcons'} size={22} title={'Room type: '} content={item.name} />
-                <ContentCard icon={'attach-money'} source={'MaterialIcons'} size={22} title={'Total revenue: '} content={formatAmount.format(item.total)} />
+                <ContentCard icon={'attach-money'} source={'MaterialIcons'} size={22} title={'Total revenue: '} content={formatAmount(item.total)} />
                 <ContentCard icon={'label-percent-outline'} source={'MaterialCommunityIcons'} size={22} title={'Percent: '} content={percent + " %"} />
             </Card>
         )
@@ -123,7 +123,7 @@ export default function RevenueStatistics({ navigation }) {
                 <Text style={{
                     textAlign: 'center',
                     fontSize: 18, fontWeight: '500'
-                }}> Total: {formatAmount.format(total)}</Text>
+                }}> Total: {formatAmount(total)}</Text>
             </Card>
 
             <FlatList renderItem={Item}

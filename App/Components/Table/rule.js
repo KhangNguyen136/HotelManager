@@ -45,7 +45,6 @@ export default function RuleTable({ navigation }) {
                     <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }} >
                         <Text style={styles.typeContent} >{title}</Text>
                         <Text style={styles.typeContent} >{value}</Text>
-
                     </View>
                     <IconButton iconName={'edit'} source={'Feather'} size={24} onPress={() => navigation.navigate('EditRule', { type: 'rule', ID: item.ruleID })} />
                 </View>

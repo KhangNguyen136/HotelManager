@@ -69,7 +69,7 @@ export default function RoomList() {
     }
     const RoomItem = ({ item }) => {
         var color = colorType(item.typeID)
-        const amount = formatAmount.format(item.price)
+        const amount = formatAmount(item.price, false)
         return (
             <TouchableOpacity style={{ ...Styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
@@ -168,7 +168,7 @@ const Styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderColor: 'black',
         padding: 5,
-        // borderRadius: 2
+        borderRadius: 4
     },
     cellTable: {
         borderColor: 'black',

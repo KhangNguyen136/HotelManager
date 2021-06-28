@@ -67,7 +67,6 @@ export default function ListSttRoom({ navigation, type, typeID, price }) {
         var iconColor = '#ecf0f1'
         var stt = 'Available'
         var title = 'Free Room'
-
         switch (item.infor.stateRoom) {
             case 'occupied':
                 var date = item.infor.date
@@ -127,7 +126,7 @@ export default function ListSttRoom({ navigation, type, typeID, price }) {
 
     return (
         <View style={styles.container} >
-            <Text style={{ fontSize: 18, fontWeight: '500', marginBottom: 5, marginLeft: 10 }} >Room type {type} - Price: {formatAmount.format(price)}</Text>
+            <Text style={{ fontSize: 18, fontWeight: '500', marginBottom: 5, marginLeft: 10 }} >Room type {type} - Price: {formatAmount(price)}</Text>
             <FlatList data={data}
                 renderItem={Item}
                 keyExtractor={item => item.infor.roomName}

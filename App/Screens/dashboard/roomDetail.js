@@ -4,30 +4,31 @@ import { View } from 'react-native';
 import Card from '../../Components/card'
 import { MyButton, MyIconButton } from '../../Components/button';
 import { formatAmount, globalStyles } from '../../styles/globalStyles';
-import { setListGuest, resetState } from '../../Actions/createFormActions';
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setRoom } from '../../Actions/createFormActions';
 import { changeStt } from '../../Model/roomService';
 import { CheckInputFailed, Success } from '../../Components/AlertMsg/messageAlert';
 import { updateListSttRoom } from '../../Actions/roomActions';
-import { setRoom } from '../../Actions/createFormActions';
 import { ContentCard } from '../../Components/card';
 
 
 export default function RoomDetail({ navigation, route }) {
     const data = route.params.data
     const dispatch = useDispatch()
+    const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const today = new Date()
     const startDate = new Date(data.infor.date)
     const diffTime = Math.abs(today - startDate)
     var diffDays = Math.ceil(diffTime / 86400000 - 0.05)
     diffDays = diffDays > 1 ? diffDays : 1
     const days = diffDays > 1 ? ' days' : ' day'
-    React.useEffect(() => {
-        // dispatch(setListGuest(data.guest))
-        return () => {
-            dispatch(resetState())
-        }
-    }, [])
+    // var firstFlag = true
+    // React.useEffect(() => {
+    //     if (!firstFlag)
+    //         navigation.goBack()
+    //     firstFlag = false
+
+    // }, [listRoomSttUpdated])
     React.useLayoutEffect(() => {
         navigation.setOptions({ title: data.infor.roomName })
     })
@@ -44,8 +45,9 @@ export default function RoomDetail({ navigation, route }) {
 
     const CreateRentalForm = () => {
         console.log('Create rental form')
-        // dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
-        // navigation.navigate('CreateFormStack')
+        navigation.goBack()
+        dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
+        navigation.navigate('CreateFormStack')
         // navigation.navigate('CreateForm')
     }
 
@@ -119,7 +121,7 @@ export default function RoomDetail({ navigation, route }) {
             <Card>
                 <ContentCard icon={'hotel'} source={'FontAwesome'} title={'Room: '} content={data.infor.roomName} />
                 <ContentCard icon={'category'} source={'MaterialIcons'} title={'Room type: '} content={data.infor.type} />
-                <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={formatAmount.format(data.infor.price)} />
+                <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={formatAmount(data.infor.price)} />
                 <ContentCard icon={'note'} source={'Octicons'} title={"Room note: "} content={data.infor.roomNote} />
 
                 <Content />

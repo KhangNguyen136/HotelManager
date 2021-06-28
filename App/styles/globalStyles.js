@@ -36,10 +36,16 @@ export const myHeaderStyle = {
     headerTitleAlgin: 'center',
 }
 
-export const formatAmount = new Intl.NumberFormat(
-    'en-US', {
-    style: 'currency',
-    currency: 'VND',
-    // currencyDisplay: 'code'
+export function formatAmount(number, haveUnit = true) {
+    var temp = String(number)
+    const n = temp.length
+    var newN = n
+    var end = n - 1
+    if (n < 4)
+        return haveUnit ? temp + " vnđ" : temp
+    for (let id = n - 3; id > 0; id = id - 3) {
+        temp = temp.substring(0, id) + '.' + temp.substring(id, newN)
+        newN++
+    }
+    return haveUnit ? temp + " vnđ" : temp
 }
-)
