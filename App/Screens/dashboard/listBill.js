@@ -14,7 +14,7 @@ export default function ListBill({ navigation }) {
     const [loading, setLoading] = React.useState(true)
     var tempData = []
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
-    const listRoomUpdated = useSelector(state => state.roomState.listRoomUpdated)
+    const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
 
     React.useEffect(() => {
@@ -37,7 +37,7 @@ export default function ListBill({ navigation }) {
                     setLoading(false)
             })
 
-    }, [listBillUpdated, listRoomUpdated, roomTypeUpdated])
+    }, [listBillUpdated, listRoomSttUpdated, roomTypeUpdated])
     const getListGuest = () => {
         for (let s = 0; s < tempData.length; s++) {
             const section = tempData[s]

@@ -55,7 +55,7 @@ function updateListGuest(newList, oldList, formID, success) {
 }
 
 export function deleteForm(values, success, fail) {
-    console.log('Values :', values)
+    // console.log('Values :', values)
     db.transaction(tx => {
         tx.executeSql(
             'delete from formTable where formID = ?', [values.formID],
@@ -73,7 +73,7 @@ export function deleteForm(values, success, fail) {
 }
 
 export function updateForm(values, listGuest, oldListGuest, success, fail) {
-    console.log({ values, listGuest, oldListGuest })
+    // console.log({ values, listGuest, oldListGuest })
     db.transaction(tx => {
         tx.executeSql(
             'update formTable set roomID = ?, date = ?, note = ? where formID = ? ',
@@ -90,7 +90,7 @@ export function updateForm(values, listGuest, oldListGuest, success, fail) {
                 'update roomTable set stateRoom = ? where roomID = ?', ['occupied', values.roomID]
             )
         }
-        updateListGuest(listGuest, oldListGuest, values.formID)
+        updateListGuest(listGuest, oldListGuest, values.formID, success)
     }, (error) => {
         console.log(error)
         fail(error.message)

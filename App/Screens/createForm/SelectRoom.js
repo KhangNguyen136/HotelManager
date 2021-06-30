@@ -14,7 +14,7 @@ export default function RoomPicker({ navigation, route }) {
     const [searchKey, setSearchKey] = React.useState('')
     const [listRoom, setListRoom] = React.useState([])
     const dispatch = useDispatch()
-    const listRoomUpdated = useSelector(state => state.roomState.listRoomUpdated)
+    const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const { selectedRoom, old } = route.params
     const setNote = useSelector(state => state.formState.setNote)
     React.useEffect(() => {
@@ -23,7 +23,7 @@ export default function RoomPicker({ navigation, route }) {
         else
             findRoom()
         // getListRoo
-    }, [searchKey, listRoomUpdated])
+    }, [searchKey, listRoomSttUpdated])
 
     const getListRoom = () => {
         console.log(old, selectedRoom)

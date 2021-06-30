@@ -9,6 +9,7 @@ import { ListGuestView } from '../../Components/Table/listGuest';
 import { BottomButton } from '../../Components/button';
 import { updateListForm } from '../../Actions/createFormActions'
 import { updateListBill } from '../../Actions/billActions';
+import { setFormID, setRoomID, resetState } from '../../Actions/updateActions';
 import { AddBill, deleteBill, UpdateBill } from '../../Model/billServices';
 import DateTimePicker from '../../Components/InputCard/dateTimePicker';
 import LoadingIndicator from '../../Components/loadingIndicator';
@@ -29,14 +30,17 @@ export default function CheckOut({ navigation, route }) {
     var diffDays = Math.ceil(diffTime / 86400000 - 0.02)
     diffDays = diffDays > 1 ? diffDays : 1
     const ruleUpated = useSelector(state => state.roomState.ruleUpated)
+    // const formUpdated = useSelector(state => state.updateState.formUpdated)
+    const isUpdated = useSelector(state => state.updateState.isUpdated)
     const isThreeGuest = data.guest.length == 3
     const haveForeignGuest = data.guest.findIndex(item => item.type == 'Foreign') != -1
     const [total, setTotal] = React.useState(0)
 
     React.useEffect(() => {
-        console.log("Load data")
         var temp1 = 1
         var temp2 = 1
+        setFormID(data.infor.formID)
+        setRoomID(data.infor.roomID)
         if (isEdit) {
             // setTotal(data.infor.totalAmount)
             setSurchargeThird(data.infor.surchargeThird)
@@ -71,6 +75,16 @@ export default function CheckOut({ navigation, route }) {
 
     }, [ruleUpated])
     React.useEffect(() => {
+        if (isUpdated) {
+            dispatch(resetState())
+            navigation.popToTop()
+            return
+        }
+        return () => {
+            dispatch(resetState())
+        }
+    }, [isUpdated])
+    React.useEffect(() => {
         const tempTotal = data.infor.price * diffDays * (1 + (surchargeForeign - 1) + (surchargeThird - 1))
         setTotal(tempTotal)
     }, [diffDays])
@@ -99,7 +113,6 @@ export default function CheckOut({ navigation, route }) {
             () => {
                 Success('Action successful')
                 dispatch(updateListSttRoom())
-                dispatch(updateListForm())
                 dispatch(updateListForm())
                 navigation.popToTop()
             }

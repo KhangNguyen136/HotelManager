@@ -18,12 +18,12 @@ export default function ListSttRoom({ navigation, type, typeID, price }) {
         tempData = []
         setLoading(true)
         db.transaction(tx => {
-            console.log('Get list stt room typeID: ' + type)
+            // console.log('Get list stt room typeID: ' + type)
             tx.executeSql(
                 "select r.roomID, r.roomName,r.stateRoom, r.note roomNote, t.typeID, t.type, t.price, f.formID, f.date, f.note formNote from roomTable r inner join roomTypeTable t on r.typeID = t.typeID left join formTable f on r.roomID = f.roomID AND f.isPaid = 0 where r.typeID = ?",
                 [typeID], (tx, formResults) => {
                     var n = formResults.rows.length
-                    console.log('Form: ', n)
+                    // console.log('Form: ', n)
                     for (let i = 0; i < n; i++) {
                         var tempItem = {
                             infor: {},

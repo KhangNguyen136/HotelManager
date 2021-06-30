@@ -9,7 +9,9 @@ import TypePicker from '../InputCard/roomTypePicker';
 import { addNewRoom, deleteRoom, updateRoom } from '../../Model/roomService';
 import LoadingIndicator from '../loadingIndicator';
 import { updateListRoom } from '../../Actions/roomActions';
-import { useDispatch } from 'react-redux'
+import { setRoom } from '../../Actions/createFormActions';
+import { updateState } from '../../Actions/updateActions'
+import { useDispatch, useSelector } from 'react-redux'
 import DatePickerCard from '../InputCard/datePicker';
 import { openDatabase } from 'expo-sqlite';
 const db = openDatabase('userDatabase.db');
@@ -17,6 +19,8 @@ const db = openDatabase('userDatabase.db');
 
 export default function AddNewRoomForm({ isEdit, item, navigation }) {
     const [loading, setLoading] = React.useState(false)
+    const roomObserve = useSelector(state => state.updateState.roomID)
+    const roomSelected = useSelector(state => state.formState.roomID)
     // const [initValue, setInitValue] = React.useState({ roomName: '', kind: 'A', note: '', price: 0, addDate: new Date() })
     const dispatch = useDispatch()
     React.useLayoutEffect(() => {
@@ -32,6 +36,11 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
         deleteRoom(item.roomID,
             () => {
                 navigation.goBack()
+                if (item.roomID == roomSelected) {
+                    dispatch(setRoom('Select room', -1, -1, 0))
+                }
+                if (item.roomID == roomObserve)
+                    dispatch(updateState())
                 setLoading(false)
                 Success('Deleted room successfully')
                 dispatch(updateListRoom())
@@ -49,6 +58,11 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
         updateRoom(item.roomID, values,
             () => {
                 navigation.goBack()
+                if (roomSelected == item.roomID) {
+                    dispatch(('Select room', -1, -1, 0))
+                }
+                if (item.roomID == roomObserve)
+                    dispatch(updateState())
                 setLoading(false)
                 Success('Updated room successfully')
                 dispatch(updateListRoom())

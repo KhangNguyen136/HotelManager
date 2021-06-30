@@ -66,10 +66,8 @@ export default function ListForm({ navigation }) {
             <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => {
                     {
-                        navigation.push('CreateForm', { isEdit: true, item: item })
-                        dispatch(setRoom(item.form.roomName, item.form.roomID, item.form.typeID, item.form.price))
-                        console.log('Go to form details')
-                        dispatch(setListGuest(item.guest))
+                        navigation.push('CreateForm', { isEdit: true, formID: item.form.formID })
+
                     }
                 }} >
                 <View style={{ ...styles.cellTbale, flex: 1 }} >

@@ -10,12 +10,13 @@ import { changeStt } from '../../Model/roomService';
 import { CheckInputFailed, Success } from '../../Components/AlertMsg/messageAlert';
 import { updateListSttRoom } from '../../Actions/roomActions';
 import { ContentCard } from '../../Components/card';
-
+import { setRoomID, setFormID, resetState } from '../../Actions/updateActions';
 
 export default function RoomDetail({ navigation, route }) {
     const data = route.params.data
     const dispatch = useDispatch()
-    const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
+    // const roomUpdated = useSelector(state => state.updateState.roomUpdated)
+    const isUpdated = useSelector(state => state.updateState.isUpdated)
     const today = new Date()
     const startDate = new Date(data.infor.date)
     const diffTime = Math.abs(today - startDate)
@@ -25,23 +26,39 @@ export default function RoomDetail({ navigation, route }) {
     React.useLayoutEffect(() => {
         navigation.setOptions({ title: data.infor.roomName })
     })
+    React.useEffect(() => {
+        dispatch(setRoomID(data.infor.roomID))
+        if (data.infor.stateRoom == 'occupied')
+            dispatch(setFormID(data.infor.formID))
+    }, [])
+    React.useEffect(() => {
+        if (isUpdated) {
+            dispatch(resetState())
+            navigation.goBack()
+            return
+        }
+        return () => {
+            dispatch(resetState())
+        }
+    }, [isUpdated])
+
     const checkOut = () => {
-        console.log('Check out')
         navigation.navigate('CheckOut', { data: data, diffDays: diffDays })
     }
 
     const editInfor = () => {
-        // navigation.navigate('CreateFormStack')
-        // navigation.navigate('CreateForm', { isEdit: true, item: data })
+        navigation.navigate('CreateFormStack', {
+            screen: 'CreateForm', params: {
+                isEdit: true,
+                formID: data.infor.formID
+            }
+        })
 
     }
 
     const CreateRentalForm = () => {
-        console.log('Create rental form')
-        // navigation.goBack()
-        // dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
-        // navigation.navigate('CreateFormStack')
-        // navigation.navigate('CreateForm')
+        dispatch(setRoom(data.infor.roomName, data.infor.roomID, data.infor.typeID, data.infor.price))
+        navigation.navigate('CreateFormStack', { screen: 'CreateForm' })
     }
 
     const changeStateRoom = (type) => {

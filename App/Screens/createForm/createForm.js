@@ -5,7 +5,7 @@ import { IconButton } from '../../Components/button';
 import Card from '../../Components/card';
 import CreateForm from '../../Components/InputForm/createForm';
 export default function CreateFormScreen({ navigation, route }) {
-    const { isEdit, item } = route.params
+    const { isEdit, formID } = route.params
     React.useLayoutEffect(() => {
         if (!isEdit)
             navigation.setOptions({
@@ -17,7 +17,7 @@ export default function CreateFormScreen({ navigation, route }) {
     })
     return (
         <SafeAreaView style={globalStyles.container}>
-            <CreateForm navigation={navigation} isEdit={isEdit} item={item} />
+            <CreateForm navigation={navigation} isEdit={isEdit} formID={formID} />
         </SafeAreaView>
     )
 }

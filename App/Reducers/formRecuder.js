@@ -43,12 +43,16 @@ const createFormReducer = (state = initalState, action) => {
             return { ...state, listGuest: newListGuest }
         case 'setListGuest':
             newListGuest = action.listGuest
-            console.log('Set list guest')
             return { ...state, listGuest: newListGuest }
 
         case 'resetForm':
-            console.log('reset form')
-            return initalState
+            // console.log('reset form')
+            newFormState.room = 'Select room'
+            newFormState.roomID = -1
+            newFormState.roomType = -1
+            newFormState.price = 0
+            newFormState.listGuest = []
+            return newFormState
     }
     return state;
 }

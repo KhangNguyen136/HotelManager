@@ -10,21 +10,27 @@ import PickerCard from '../InputCard/pickerCard';
 import DateTimePickerCard from '../InputCard/dateTimePicker';
 import ListGuest from '../Table/listGuest';
 import { addForm, deleteForm, updateForm } from '../../Model/formServices';
-import { resetState, setRoom, updateListForm } from '../../Actions/createFormActions';
+import { resetState, setRoom, updateListForm, setListGuest } from '../../Actions/createFormActions';
 import { updateListSttRoom } from '../../Actions/roomActions';
+import { updateState } from '../../Actions/updateActions'
 import PriceCard from '../InputCard/priceCard';
 import { formatAmount } from '../../styles/globalStyles';
+import { openDatabase } from 'expo-sqlite';
+const db = openDatabase('userDatabase.db');
 
-export default function CreateForm({ isEdit, item, navigation }) {
+export default function CreateForm({ isEdit, formID, navigation }) {
     const [loading, setLoading] = React.useState(false)
     const [note, setNote] = React.useState('')
     const [startDate, setStartDate] = React.useState(new Date())
     const dispatch = useDispatch()
+    const roomObserve = useSelector(state => state.updateState.roomID)
+    const formObserve = useSelector(state => state.updateState.formID)
     const roomName = useSelector(state => state.formState.room)
     const roomID = useSelector(state => state.formState.roomID)
     const price = useSelector(state => state.formState.price)
     const roomType = useSelector(state => state.formState.roomType)
     const listGuest = useSelector(state => state.formState.listGuest)
+    const [item, setItem] = React.useState({})
     React.useLayoutEffect(() => {
         if (isEdit) {
             navigation.setOptions({ title: 'Form details' })
@@ -32,14 +38,43 @@ export default function CreateForm({ isEdit, item, navigation }) {
     })
     React.useEffect(() => {
         if (isEdit) {
-            setNote(item.form.note)
-            setStartDate(new Date(item.form.date))
+            var temp = {
+                form: {},
+                guest: []
+            }
+            db.transaction(
+                tx => {
+                    tx.executeSql(
+                        'select f.formID , f.date, f.note, f.isPaid, r.roomID, r.roomName,t.typeID, t.price from formTable f inner join roomTable r on f.roomID = r.roomID inner join roomTypeTable t on r.typeID = t.typeID where f.formID = ?',
+                        [formID],
+                        (tx, result) => {
+                            temp.form = result.rows.item(0)
+                        }
+                    )
+                    tx.executeSql(
+                        'select * from guestTable where formID = ?', [formID],
+                        (tx, result) => {
+                            const n = result.rows.length
+                            for (let i = 0; i < n; i++)
+                                temp.guest.push(result.rows.item(i))
+                        }
+                    )
+                }, (error) => console.log(error.message),
+                () => {
+                    setNote(temp.form.note)
+                    setStartDate(new Date(temp.form.date))
+                    dispatch(setRoom(temp.form.roomName, temp.form.roomID, temp.form.typeID, temp.form.price))
+                    dispatch(setListGuest(temp.guest))
+                    setItem(temp)
+                }
+            )
+
         }
         return () => {
             dispatch(resetState())
-            dispatch(setRoom('Select room', -1, 0, 0))
         }
     }, [])
+
     const deleteItem = () => {
         setLoading(true)
         deleteForm(item.form,
@@ -47,6 +82,8 @@ export default function CreateForm({ isEdit, item, navigation }) {
                 setLoading(false)
                 dispatch(updateListForm())
                 dispatch(updateListSttRoom())
+                if (item.form.formID == formObserve || item.form.roomID == roomObserve)
+                    dispatch(updateState())
                 navigation.goBack()
                 Success('Deleted form')
             }, (msg) => {
@@ -66,6 +103,9 @@ export default function CreateForm({ isEdit, item, navigation }) {
         updateForm(values, listGuest, item.guest, () => {
             dispatch(updateListSttRoom())
             dispatch(updateListForm())
+            console.log({ roomObserve, formObserve })
+            if (values.formID == formObserve || values.roomID == roomObserve || values.oldRoomID == roomObserve)
+                dispatch(updateState())
             navigation.goBack()
             Success('Update form successful')
         }, (msg) => {
@@ -85,8 +125,11 @@ export default function CreateForm({ isEdit, item, navigation }) {
                 setLoading(false)
                 Success('Add form successful')
                 dispatch(resetState())
-                dispatch(setRoom('Select room', -1))
                 dispatch(updateListSttRoom())
+                console.log({ roomObserve, formObserve })
+                if (roomID == roomObserve)
+                    dispatch(updateState())
+
                 setNote('')
                 setStartDate(new Date())
             },
