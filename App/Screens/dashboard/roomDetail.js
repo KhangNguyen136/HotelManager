@@ -5,6 +5,7 @@ import Card from '../../Components/card'
 import { MyButton, MyIconButton } from '../../Components/button';
 import { formatAmount, globalStyles } from '../../styles/globalStyles';
 import { useSelector, useDispatch } from 'react-redux'
+import { StackActions } from '@react-navigation/native'
 import { setRoom } from '../../Actions/createFormActions';
 import { changeStt } from '../../Model/roomService';
 import { CheckInputFailed, Success } from '../../Components/AlertMsg/messageAlert';
@@ -15,7 +16,6 @@ import { setRoomID, setFormID, resetState } from '../../Actions/updateActions';
 export default function RoomDetail({ navigation, route }) {
     const data = route.params.data
     const dispatch = useDispatch()
-    // const roomUpdated = useSelector(state => state.updateState.roomUpdated)
     const isUpdated = useSelector(state => state.updateState.isUpdated)
     const today = new Date()
     const startDate = new Date(data.infor.date)
@@ -31,6 +31,7 @@ export default function RoomDetail({ navigation, route }) {
         if (data.infor.stateRoom == 'occupied')
             dispatch(setFormID(data.infor.formID))
     }, [])
+
     React.useEffect(() => {
         if (isUpdated) {
             dispatch(resetState())
@@ -47,12 +48,7 @@ export default function RoomDetail({ navigation, route }) {
     }
 
     const editInfor = () => {
-        navigation.navigate('CreateFormStack', {
-            screen: 'CreateForm', params: {
-                isEdit: true,
-                formID: data.infor.formID
-            }
-        })
+        navigation.push('EditForm', { formID: data.infor.formID })
 
     }
 
@@ -122,7 +118,6 @@ export default function RoomDetail({ navigation, route }) {
                             width={'69%'} iconSource={'MaterialCommunityIcons'} iconName={'clipboard-check-outline'} iconColor={'black'} />
                     </View>
                 )
-
         }
     }
 

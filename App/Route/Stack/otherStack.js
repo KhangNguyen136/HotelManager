@@ -10,7 +10,7 @@ function OtherStack({ navigation }) {
         <Stack.Navigator initialRouteName="Other" screenOptions={{
             headerTitleAlign: 'center'
         }}>
-            <Stack.Screen name="Other" component={Other} options={{ title: 'Other' }} />
+            <Stack.Screen name="Other" component={Other} options={{ title: 'Manage hotel' }} />
             <Stack.Screen name="NewRoom" component={AddRoom} options={{ title: 'New room' }} initialParams={{
                 isEdit: false
             }} />

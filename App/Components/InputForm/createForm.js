@@ -11,8 +11,10 @@ import DateTimePickerCard from '../InputCard/dateTimePicker';
 import ListGuest from '../Table/listGuest';
 import { addForm, deleteForm, updateForm } from '../../Model/formServices';
 import { resetState, setRoom, updateListForm, setListGuest } from '../../Actions/createFormActions';
+import { setFormObserve } from '../../Actions/editFormActions';
 import { updateListSttRoom } from '../../Actions/roomActions';
 import { updateState } from '../../Actions/updateActions'
+import { resetObserveState } from '../../Actions/editFormActions';
 import PriceCard from '../InputCard/priceCard';
 import { formatAmount } from '../../styles/globalStyles';
 import { openDatabase } from 'expo-sqlite';
@@ -30,12 +32,25 @@ export default function CreateForm({ isEdit, formID, navigation }) {
     const price = useSelector(state => state.formState.price)
     const roomType = useSelector(state => state.formState.roomType)
     const listGuest = useSelector(state => state.formState.listGuest)
+    const updated = useSelector(state => state.editFormState.observeUpdated)
+
     const [item, setItem] = React.useState({})
     React.useLayoutEffect(() => {
         if (isEdit) {
             navigation.setOptions({ title: 'Form details' })
         }
     })
+    React.useEffect(() => {
+        if (isEdit && updated) {
+            navigation.goBack()
+            dispatch(resetObserveState())
+            return
+        }
+        return () => {
+            dispatch(resetState())
+            dispatch(resetObserveState())
+        }
+    }, [updated])
     React.useEffect(() => {
         if (isEdit) {
             var temp = {
@@ -66,13 +81,12 @@ export default function CreateForm({ isEdit, formID, navigation }) {
                     dispatch(setRoom(temp.form.roomName, temp.form.roomID, temp.form.typeID, temp.form.price))
                     dispatch(setListGuest(temp.guest))
                     setItem(temp)
+                    dispatch(setFormObserve(temp.form.formID))
                 }
             )
 
         }
-        return () => {
-            dispatch(resetState())
-        }
+
     }, [])
 
     const deleteItem = () => {

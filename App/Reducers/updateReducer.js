@@ -20,7 +20,7 @@ const updateReducer = (state = initState, action) => {
         case 'setRoomID':
             newState.roomID = action.roomID
             return newState
-        case 'resetState':
+        case 'resetUpdateState':
             newState.roomID = -1
             newState.formID = -1
             newState.isUpdated = false

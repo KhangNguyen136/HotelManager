@@ -20,6 +20,6 @@ export const setRoomID = (roomID) => {
 
 export const resetState = () => {
     return {
-        type: 'resetState'
+        type: 'resetUpdateState'
     }
 }

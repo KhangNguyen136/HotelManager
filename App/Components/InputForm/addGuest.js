@@ -8,10 +8,12 @@ import { BottomButton } from '../button';
 import TypePicker from '../InputCard/guestTypePicker';
 import LoadingIndicator from '../loadingIndicator';
 import { addGuest, deleteGuest, updateGuest } from '../../Actions/createFormActions';
+import { addGuestEdit, updateGuestEdit, deleteGuestEdit } from '../../Actions/editFormActions'
 import { useDispatch } from 'react-redux'
 
 export default function AddGuest({ navigation, route }) {
-    const { isEdit, item } = route.params
+    const { isEdit, item, isDashboard } = route.params
+    // console.log(isDashboard)
     React.useLayoutEffect(() => {
         if (isEdit)
             navigation.setOptions({ title: 'Guest details' })
@@ -25,7 +27,10 @@ export default function AddGuest({ navigation, route }) {
 
     const deleteItem = () => {
         setLoading(true)
-        dispatch(deleteGuest(item.IC))
+        if (isDashboard)
+            dispatch(deleteGuestEdit(item.IC))
+        else
+            dispatch(deleteGuest(item.IC))
         navigation.goBack()
     }
 
@@ -34,37 +39,58 @@ export default function AddGuest({ navigation, route }) {
         const newGuest = {
             name: values.name, type: values.type, IC: values.IC, note: values.note
         }
-        dispatch(updateGuest(item, values,
-            () => {
-                Success('Update successful')
-                navigation.goBack()
-            },
-            () => {
-                CheckInputFailed("Same identity card")
-                setLoading(false)
-            }
-        ))
+        if (!isDashboard)
+            dispatch(updateGuest(item, values,
+                () => {
+                    Success('Update successful')
+                    navigation.goBack()
+                },
+                () => {
+                    CheckInputFailed("Same identity card")
+                    setLoading(false)
+                }
+            ))
+        else
+            dispatch(updateGuestEdit(item, values,
+                () => {
+                    Success('Update successful')
+                    navigation.goBack()
+                },
+                () => {
+                    CheckInputFailed("Same identity card")
+                    setLoading(false)
+                }
+            ))
     }
 
     return (
         <Formik initialValues={initValue}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values) => {
                 setLoading(true)
                 if (!checkInput(values)) {
                     setLoading(false)
                     return
                 }
-                dispatch(addGuest(values,
-                    () => {
-                        Success('Add guest successful')
-                        navigation.goBack()
-                    },
-                    () => {
-                        CheckInputFailed("Same identity card")
-                        setLoading(false)
-                    }))
-                // setLoading(false)
-
+                if (!isDashboard)
+                    dispatch(addGuest(values,
+                        () => {
+                            Success('Add guest successful')
+                            navigation.goBack()
+                        },
+                        () => {
+                            CheckInputFailed("Same identity card")
+                            setLoading(false)
+                        }))
+                else
+                    dispatch(addGuestEdit(values,
+                        () => {
+                            Success('Add guest successful')
+                            navigation.goBack()
+                        },
+                        () => {
+                            CheckInputFailed("Same identity card")
+                            setLoading(false)
+                        }))
             }} >
             {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
                 <View>

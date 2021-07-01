@@ -8,6 +8,7 @@ import { GetRoomTypeLogo, IsSelectedView, colorType } from '../../Components/Inp
 import SearchBox from '../../Components/InputCard/searchBox';
 import { GetIcon } from '../../Components/button';
 import { setRoom } from '../../Actions/createFormActions';
+import { setRoomEdit } from '../../Actions/editFormActions';
 const db = openDatabase('userDatabase.db')
 
 export default function RoomPicker({ navigation, route }) {
@@ -15,7 +16,7 @@ export default function RoomPicker({ navigation, route }) {
     const [listRoom, setListRoom] = React.useState([])
     const dispatch = useDispatch()
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
-    const { selectedRoom, old } = route.params
+    const { selectedRoom, old, isEdit } = route.params
     const setNote = useSelector(state => state.formState.setNote)
     React.useEffect(() => {
         if (searchKey == '')
@@ -74,7 +75,10 @@ export default function RoomPicker({ navigation, route }) {
                         navigation.goBack()
                         return
                     }
-                    dispatch(setRoom(item.roomName, item.roomID, item.typeID, item.price));
+                    if (isEdit)
+                        dispatch(setRoomEdit(item.roomName, item.roomID, item.typeID, item.price))
+                    else
+                        dispatch(setRoom(item.roomName, item.roomID, item.typeID, item.price));
                     // setNote('Form ' + item.roomName)
                     navigation.goBack()
 

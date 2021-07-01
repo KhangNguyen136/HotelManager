@@ -44,7 +44,7 @@ export const setRoom = (roomName, roomID, roomType, price) => {
 
 export const resetState = () => {
     return {
-        type: 'resetForm'
+        type: 'resetFormState'
     }
 }
 

@@ -35,6 +35,31 @@ export function addForm(values, success, fail) {
     )
 }
 
+export function updateForm(values, listGuest, oldListGuest, success, fail) {
+    // console.log({ values, listGuest, oldListGuest })
+    db.transaction(tx => {
+        tx.executeSql(
+            'update formTable set roomID = ?, date = ?, note = ? where formID = ? ',
+            [values.roomID, values.date.toString(), values.note, values.formID],
+            // (tx, results) => {
+            //     console.log(results.rowsAffected)
+            // }
+        )
+        if (values.roomID != values.oldRoomID) {
+            tx.executeSql(
+                'update roomTable set stateRoom = ? where roomID = ?', ['available', values.oldRoomID]
+            )
+            tx.executeSql(
+                'update roomTable set stateRoom = ? where roomID = ?', ['occupied', values.roomID]
+            )
+        }
+        updateListGuest(listGuest, oldListGuest, values.formID, success)
+    }, (error) => {
+        console.log(error)
+        fail(error.message)
+    })
+}
+
 function updateListGuest(newList, oldList, formID, success) {
     // console.log('list: ', newList, oldList)
     db.transaction(tx => {
@@ -72,27 +97,3 @@ export function deleteForm(values, success, fail) {
     }, success)
 }
 
-export function updateForm(values, listGuest, oldListGuest, success, fail) {
-    // console.log({ values, listGuest, oldListGuest })
-    db.transaction(tx => {
-        tx.executeSql(
-            'update formTable set roomID = ?, date = ?, note = ? where formID = ? ',
-            [values.roomID, values.date.toString(), values.note, values.formID],
-            // (tx, results) => {
-            //     console.log(results.rowsAffected)
-            // }
-        )
-        if (values.roomID != values.oldRoomID) {
-            tx.executeSql(
-                'update roomTable set stateRoom = ? where roomID = ?', ['available', values.oldRoomID]
-            )
-            tx.executeSql(
-                'update roomTable set stateRoom = ? where roomID = ?', ['occupied', values.roomID]
-            )
-        }
-        updateListGuest(listGuest, oldListGuest, values.formID, success)
-    }, (error) => {
-        console.log(error)
-        fail(error.message)
-    })
-}

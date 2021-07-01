@@ -8,6 +8,7 @@ import { openDatabase } from 'expo-sqlite';
 import TimeButton from '../../Components/TimeFilterButton'
 import NoDataComp from '../../Components/nodata';
 import moment from 'moment';
+import { parse } from 'react-native-svg';
 const db = openDatabase('userDatabase.db')
 
 export default function UsageDensityStatistics({ navigation }) {
@@ -89,10 +90,10 @@ export default function UsageDensityStatistics({ navigation }) {
                 <Text style={{ fontSize: 16, width: 110, textAlign: 'center' }} >{item.nday}</Text>
                 <View style={{
                     flex: 1.5, flexDirection: 'row',
-                    alignItems: 'center', justifyContent: 'space-evenly'
+                    alignItems: 'center', justifyContent: 'space-evenly',
                 }} >
                     <ProgressCircle percent={percent} radius={20} borderWidth={8} color={'#e67e22'} bgColor={color} shadowColor={'#95a5a6'} />
-                    <Text style={{ fontSize: 16 }}> {percent} %</Text>
+                    <Text style={{ fontSize: 16, flex: 1, textAlign: 'center' }}> {parseFloat(percent)} %</Text>
                 </View>
             </View>
         )

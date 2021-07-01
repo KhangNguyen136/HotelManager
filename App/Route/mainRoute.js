@@ -19,10 +19,10 @@ export default function BottomTab() {
                 activeTintColor: '#3399ff',
                 inactiveTintColor: 'black',
             }}>
-            <Tab.Screen name='DashboardStack' component={HomeStack} />
+            <Tab.Screen name='DashboardStack' component={HomeStack} options={{ title: 'Dashboard' }} />
             <Tab.Screen name='CreateFormStack' component={CreateFormStack} options={{ title: 'Create Form' }} />
             <Tab.Screen name='StatisticsStack' component={StatisticsStack} options={{ title: 'Statistics' }} />
-            <Tab.Screen name='OtherStack' component={OtherStack} options={{ title: 'Other' }} />
+            <Tab.Screen name='OtherStack' component={OtherStack} options={{ title: 'Manage hotel' }} />
         </Tab.Navigator>
     );
 }

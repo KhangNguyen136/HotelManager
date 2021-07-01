@@ -13,6 +13,7 @@ import { setFormID, setRoomID, resetState } from '../../Actions/updateActions';
 import { AddBill, deleteBill, UpdateBill } from '../../Model/billServices';
 import DateTimePicker from '../../Components/InputCard/dateTimePicker';
 import LoadingIndicator from '../../Components/loadingIndicator';
+import { updateObserve } from '../../Actions/editFormActions'
 import { Success, CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
 import { formatAmount } from '../../styles/globalStyles';
 
@@ -20,6 +21,7 @@ const db = openDatabase('userDatabase.db');
 export default function CheckOut({ navigation, route }) {
     const { data, isEdit } = route.params
     const dispatch = useDispatch()
+    const formObserve = useSelector(state => state.editFormState.formObserve)
     const [loading, setLoading] = React.useState(true)
     const [surchargeForeign, setSurchargeForeign] = React.useState(1)
     const [surchargeThird, setSurchargeThird] = React.useState(1)
@@ -84,6 +86,7 @@ export default function CheckOut({ navigation, route }) {
             dispatch(resetState())
         }
     }, [isUpdated])
+
     React.useEffect(() => {
         const tempTotal = data.infor.price * diffDays * (1 + (surchargeForeign - 1) + (surchargeThird - 1))
         setTotal(tempTotal)
@@ -114,6 +117,8 @@ export default function CheckOut({ navigation, route }) {
                 Success('Action successful')
                 dispatch(updateListSttRoom())
                 dispatch(updateListForm())
+                if (values.formID == formObserve)
+                    dispatch(updateObserve())
                 navigation.popToTop()
             }
         )

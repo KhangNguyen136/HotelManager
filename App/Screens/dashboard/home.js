@@ -36,21 +36,21 @@ export default function Home({ navigation }) {
     }, [roomTypeUpdated])
     React.useLayoutEffect(() => {
         navigation.setOptions({
-            // headerLeft: () => {
-            //     return (
-            //         <TouchableOpacity onPress={() => { navigation.navigate('Other') }}
-            //             style={{
-            //                 flexDirection: 'row',
-            //                 marginHorizontal: 10,
-            //                 flex: 1,
-            //                 alignItems: 'center'
-            //             }} >
-            //             <GetIcon iconName={'history'} source={'MaterialIcons'}
-            //             />
-            //             <Text style={{ fontSize: 14, fontWeight: '500' }} >Add room</Text>
-            //         </TouchableOpacity>
-            //     )
-            // },
+            headerLeft: () => {
+                return (
+                    <TouchableOpacity onPress={() => { navigation.push('AddRoom') }}
+                        style={{
+                            flexDirection: 'row',
+                            marginHorizontal: 10,
+                            flex: 1,
+                            alignItems: 'center'
+                        }} >
+                        <GetIcon iconName={'plus-square'} source={'Feather'} size={20}
+                        />
+                        <Text style={{ fontSize: 14, fontWeight: '500', marginLeft: 2 }} >Add room</Text>
+                    </TouchableOpacity>
+                )
+            },
             headerRight: () => {
                 return (
                     <TouchableOpacity onPress={() => { navigation.navigate('ListBill') }}
@@ -60,9 +60,9 @@ export default function Home({ navigation }) {
                             flex: 1,
                             alignItems: 'center'
                         }} >
-                        <GetIcon iconName={'history'} source={'MaterialIcons'}
+                        <GetIcon iconName={'history'} source={'MaterialIcons'} size={20}
                         />
-                        <Text style={{ fontSize: 14, fontWeight: '500' }} >List bill</Text>
+                        <Text style={{ fontSize: 14, fontWeight: '500', marginLeft: 2 }} >List bill</Text>
                     </TouchableOpacity>
                 )
             }

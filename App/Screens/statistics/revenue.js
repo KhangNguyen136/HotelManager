@@ -14,7 +14,7 @@ const db = openDatabase('userDatabase.db')
 export default function RevenueStatistics({ navigation }) {
     const [loading, setLoading] = React.useState(true)
     const [data, setData] = React.useState([])
-    console.log(data)
+    // console.log(data)
     const [total, setTotal] = React.useState(0)
     const [title, setTitle] = React.useState('')
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
