@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import Other from '../../Screens/other/other';
 import AddRoom from '../../Screens/other/addRoom'
+import SyncData from '../../Screens/other/syncData';
 import EditRule from '../../Screens/other/editRule'
 const Stack = createStackNavigator();
 
@@ -15,6 +16,8 @@ function OtherStack({ navigation }) {
                 isEdit: false
             }} />
             <Stack.Screen name="EditRule" component={EditRule} />
+            <Stack.Screen name="SyncData" component={SyncData} />
+
         </Stack.Navigator>
     );
 }

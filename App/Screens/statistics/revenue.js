@@ -72,9 +72,13 @@ export default function RevenueStatistics({ navigation }) {
             }
         )
     }
-    const CheckDate = (date) => {
+    const CheckDate = (dateStr) => {
         setTitle("This month's revenue")
-        return true
+        const date = new Date(dateStr)
+        const today = new Date()
+        if (date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear())
+            return true
+        return false
     }
     const Insert = (item) => {
         if (!CheckDate(item.paidTime))

@@ -31,17 +31,17 @@ export default function Login(props) {
                 CheckInputFailed('Logged in failed!', errorMessage)
             });
     }
-    const AsyncLogin = async (email, password, setAccount) => {
-        try {
-            const userCredential = await firebaseApp.auth().signInWithEmailAndPassword(email, password)
-            return userCredential
-        }
-        catch (error) {
-            // throw Error('Login failed!')
-            CheckInputFailed('Logged in failed!', error.message)
-            setLoading(false)
-        }
-
+    const forgetPassword = () => {
+        firebaseApp.auth().sendPasswordResetEmail(email)
+            .then(() => {
+                // Password reset email sent!
+                Success('An email had been sent to your email')
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                CheckInputFailed(errorMessage)
+            });
     }
     return (
         <SafeAreaView style={globalStyles.container}>

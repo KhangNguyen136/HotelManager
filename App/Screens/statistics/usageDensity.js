@@ -68,20 +68,20 @@ export default function UsageDensityStatistics({ navigation }) {
         // var diffTime
         if (startDate >= fdayOfMonth && endDate <= ldayOfMonth) {
             const diffTime = Math.abs(endDate - startDate)
-            return Math.ceil(diffTime / 86400000 - 0.05)
+            return Math.ceil(diffTime / 86400000)
         }
-        if (startDate >= fdayOfMonth && endDate > fdayOfMonth) {
+        if (startDate >= fdayOfMonth && endDate > ldayOfMonth && startDate <= ldayOfMonth) {
             const diffTime = Math.abs(ldayOfMonth - startDate)
-            return Math.ceil(diffTime / 86400000 - 0.05)
+            return Math.ceil(diffTime / 86400000)
         }
-        if (startDate < fdayOfMonth && endDate <= ldayOfMonth) {
+        if (startDate < fdayOfMonth && endDate <= ldayOfMonth && endDate >= fdayOfMonth) {
             const diffTime = Math.abs(endDate - fdayOfMonth)
-            return Math.ceil(diffTime / 86400000 - 0.05)
+            return Math.ceil(diffTime / 86400000)
         }
         return 0
     }
     const Item = ({ item }) => {
-        const percent = (item.nday / dayOfMonth * 100).toFixed(2)
+        const percent = parseFloat(item.nday / dayOfMonth * 100).toFixed(2)
         const color = colorType(item.typeID)
         return (
             <View style={{ ...styles.itemContainer, backgroundColor: color, alignItems: 'center' }} >

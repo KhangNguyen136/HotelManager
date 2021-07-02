@@ -23,14 +23,15 @@ export default function App() {
             } else {
                 // No user is signed in.
                 // console.log('Not log in')
-                setLogIn('notLogIn')
+                setNotLogIn()
             }
         });
     }, [])
-
     const success = () => {
         setLogIn('logIn')
-
+    }
+    const setNotLogIn = () => {
+        setLogIn('notLogIn')
     }
     switch (logIn) {
         case 'logIn':

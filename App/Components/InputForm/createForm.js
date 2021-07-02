@@ -117,7 +117,7 @@ export default function CreateForm({ isEdit, formID, navigation }) {
         updateForm(values, listGuest, item.guest, () => {
             dispatch(updateListSttRoom())
             dispatch(updateListForm())
-            console.log({ roomObserve, formObserve })
+            // console.log({ roomObserve, formObserve })
             if (values.formID == formObserve || values.roomID == roomObserve || values.oldRoomID == roomObserve)
                 dispatch(updateState())
             navigation.goBack()
@@ -140,7 +140,7 @@ export default function CreateForm({ isEdit, formID, navigation }) {
                 Success('Add form successful')
                 dispatch(resetState())
                 dispatch(updateListSttRoom())
-                console.log({ roomObserve, formObserve })
+                // console.log({ roomObserve, formObserve })
                 if (roomID == roomObserve)
                     dispatch(updateState())
 

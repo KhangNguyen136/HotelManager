@@ -5,6 +5,7 @@ import Card from '../../Components/card';
 import { useSelector } from 'react-redux';
 import { GetIcon } from '../../Components/button';
 import LoadingIndicator from '../../Components/loadingIndicator';
+import TimeButton from '../../Components/TimeFilterButton';
 import { colorType } from '../../Components/InputCard/roomTypePicker';
 import NoDataComp from '../../Components/nodata';
 import { openDatabase } from 'expo-sqlite';
@@ -110,6 +111,7 @@ export default function ListBill({ navigation }) {
         return (
             <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color }}
                 onPress={() => navigation.navigate('CheckOut', { isEdit: true, data: item, diffDays: item.infor.nday })}>
+
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', padding: 2, }}>
                     <View style={{ marginLeft: 5, flex: 2, flexDirection: 'row', alignItems: 'center' }} >
                         <GetIcon iconName={'room'} source={'Fontisto'} size={16} />
@@ -157,6 +159,7 @@ export default function ListBill({ navigation }) {
     }
     return (
         <SafeAreaView style={globalStyles.container}>
+            <TimeButton />
             <Card>
                 <FlatList data={data}
                     renderItem={Section}
@@ -170,25 +173,6 @@ export default function ListBill({ navigation }) {
                 <LoadingIndicator />
             }
         </SafeAreaView>
-    )
-}
-
-const Title = () => {
-    return (
-        <View style={{ ...styles.itemContainer, backgroundColor: '#ecf0f1' }} >
-            <View style={{ ...styles.cellTbale, flex: 1 }} >
-                <Text style={{ fontSize: 16 }} >Room</Text>
-            </View>
-            <View style={{ ...styles.cellTbale, flex: 1 }} >
-                <Text style={{ fontSize: 16 }}>Paid time</Text>
-            </View>
-            <View style={{ ...styles.cellTbale, flex: 2 }} >
-                <Text style={{ fontSize: 16 }}>Amount</Text>
-            </View>
-            <View style={{ ...styles.cellTbale, flex: 1 }} >
-                <Text style={{ fontSize: 16 }}>Note</Text>
-            </View>
-        </View>
     )
 }
 

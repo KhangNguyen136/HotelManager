@@ -10,6 +10,7 @@ import { setListGuest, setRoom } from '../../Actions/createFormActions';
 const db = openDatabase('userDatabase.db');
 
 export default function ListForm({ navigation }) {
+    const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const listFormUpdated = useSelector(state => state.formState.listFormUpdated)
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(false)
@@ -40,7 +41,7 @@ export default function ListForm({ navigation }) {
             }
         )
 
-    }, [listFormUpdated])
+    }, [listFormUpdated, listRoomSttUpdated])
     const getListGuest = () => {
         db.transaction(tx => {
             for (let i = 0; i < tempData.length; i++)

@@ -17,7 +17,6 @@ export default function RoomPicker({ navigation, route }) {
     const dispatch = useDispatch()
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const { selectedRoom, old, isEdit } = route.params
-    const setNote = useSelector(state => state.formState.setNote)
     React.useEffect(() => {
         if (searchKey == '')
             getListRoom()

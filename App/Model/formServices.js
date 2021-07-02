@@ -9,7 +9,6 @@ export function addForm(values, success, fail) {
             [values.roomID, values.startDate.toString(), values.note, 0],
             (tx, results) => {
                 const formID = results.insertId
-                console.log(formID)
                 const listGuest = values.listGuest
                 for (let i = 0; i < listGuest.length; i++) {
                     const item = listGuest[i]

@@ -9,7 +9,7 @@ import NoDataComp from '../nodata';
 import { formatAmount } from '../../styles/globalStyles';
 const db = openDatabase('userDatabase.db');
 
-export default function ListSttRoom({ navigation, type, typeID, price }) {
+export default function ListSttRoom({ navigation, type, typeID, price, searchKey }) {
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(false)
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
@@ -41,7 +41,7 @@ export default function ListSttRoom({ navigation, type, typeID, price }) {
                 setLoading(false)
             }
         )
-    }, [listRoomSttUpdated])
+    }, [listRoomSttUpdated, searchKey])
     const getListGuest = () => {
         db.transaction(tx => {
             for (let i = 0; i < tempData.length; i++)
@@ -55,10 +55,32 @@ export default function ListSttRoom({ navigation, type, typeID, price }) {
                     )
         }, (error) => console.log(error),
             () => {
-                setData(tempData)
+                // setData(tempData)
+                filter()
                 // console.log(tempData)
             }
         )
+    }
+    const filter = () => {
+        var result = []
+        for (let i = 0; i < tempData.length; i++) {
+            const temp = tempData[i]
+            const roomName = temp.infor.roomName.toLowerCase()
+            const formNote = temp.infor.formNote == null ? '' : temp.infor.formNote.toLowerCase()
+            if (searchKey == '' || roomName.includes(searchKey) || formNote.includes(searchKey)) {
+                result.push(temp)
+                continue
+            }
+            for (let j = 0; j < temp.guest.length; j++) {
+                const guestName = temp.guest[j].name.toLowerCase()
+                if (guestName.includes(searchKey)) {
+                    result.push(temp)
+                    break;
+                }
+
+            }
+        }
+        setData(result)
     }
     const Item = ({ item }) => {
         var color = '#2ecc71'

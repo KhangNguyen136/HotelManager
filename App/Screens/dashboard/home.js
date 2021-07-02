@@ -1,18 +1,19 @@
 import React from 'react';
 import { FlatList, SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { GetIcon } from '../../Components/button';
+import HeaderButton from '../../Components/headerButton';
 import { useSelector } from 'react-redux'
 import ListSttRoom from '../../Components/Table/listSttRoom';
 import { openDatabase } from 'expo-sqlite';
 import { CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
+import SearchBox from '../../Components/InputCard/searchBox';
 import LoadingIndicator from '../../Components/loadingIndicator'
 const db = openDatabase('userDatabase.db');
 // import SearchBox from 
 export default function Home({ navigation }) {
     const [source, setSource] = React.useState(initRoomType)
     const [loading, setLoading] = React.useState(true)
+    const [searchKey, setSearchKey] = React.useState('')
     const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
-    const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     React.useEffect(() => {
         const temp = []
         db.transaction(tx => {
@@ -38,32 +39,14 @@ export default function Home({ navigation }) {
         navigation.setOptions({
             headerLeft: () => {
                 return (
-                    <TouchableOpacity onPress={() => { navigation.push('AddRoom') }}
-                        style={{
-                            flexDirection: 'row',
-                            marginHorizontal: 10,
-                            flex: 1,
-                            alignItems: 'center'
-                        }} >
-                        <GetIcon iconName={'plus-square'} source={'Feather'} size={20}
-                        />
-                        <Text style={{ fontSize: 14, fontWeight: '500', marginLeft: 2 }} >Add room</Text>
-                    </TouchableOpacity>
+                    <HeaderButton iconName={'plus-square'} source={'Feather'}
+                        title={'Add room'} onPress={() => { navigation.push('AddRoom') }} />
                 )
             },
             headerRight: () => {
                 return (
-                    <TouchableOpacity onPress={() => { navigation.navigate('ListBill') }}
-                        style={{
-                            flexDirection: 'row',
-                            marginHorizontal: 10,
-                            flex: 1,
-                            alignItems: 'center'
-                        }} >
-                        <GetIcon iconName={'history'} source={'MaterialIcons'} size={20}
-                        />
-                        <Text style={{ fontSize: 14, fontWeight: '500', marginLeft: 2 }} >List bill</Text>
-                    </TouchableOpacity>
+                    <HeaderButton iconName={'history'} source={'MaterialIcons'}
+                        title={'List bill'} onPress={() => { navigation.navigate('ListBill') }} />
                 )
             }
         })
@@ -71,20 +54,28 @@ export default function Home({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            {!loading &&
+            {/* {!loading && */}
+            <View style={{ flex: 1 }} >
+                <SearchBox value={searchKey} textChange={setSearchKey} placeholder={'Search by room name, guest name or form note'} />
+                {/* {
+                    searchKey == '' && */}
                 <View style={{ flex: 1 }} >
-
                     <View style={styles.listContainer}>
-                        <ListSttRoom navigation={navigation} type={source[0].type} typeID={source[0].typeID} price={source[0].price} />
+                        <ListSttRoom navigation={navigation} type={source[0].type}
+                            typeID={source[0].typeID} price={source[0].price} searchKey={searchKey.toLowerCase()} />
                     </View>
                     <View style={styles.listContainer}>
-                        <ListSttRoom navigation={navigation} type={source[1].type} typeID={source[1].typeID} price={source[1].price} />
+                        <ListSttRoom navigation={navigation} type={source[1].type}
+                            typeID={source[1].typeID} price={source[1].price} searchKey={searchKey.toLowerCase()} />
                     </View>
                     <View style={styles.listContainer}>
-                        <ListSttRoom navigation={navigation} type={source[2].type} typeID={source[2].typeID} price={source[2].price} />
+                        <ListSttRoom navigation={navigation} type={source[2].type}
+                            typeID={source[2].typeID} price={source[2].price} searchKey={searchKey.toLowerCase()} />
                     </View>
                 </View>
-            }
+                {/* } */}
+            </View>
+            {/* } */}
             {loading &&
                 <LoadingIndicator />
             }
@@ -100,8 +91,8 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red'
     },
     listContainer: {
-        height: '33%',
-        // flex: 1,
+        // height: '33%',
+        flex: 1,
         // maxHeight: '33%',
         borderRadius: 8,
         backgroundColor: '#fff',

@@ -51,12 +51,12 @@ export default function RoomList() {
         var temp = 0
         db.transaction(tx => {
             tx.executeSql(
-                'select * from roomTable', [],
+                'select * from roomTable r inner join roomTypeTable t on r.typeID = t.typeID', [],
                 (tx, results) => {
                     for (let i = 0; i < results.rows.length; i++) {
                         const item = results.rows.item(i)
 
-                        if (item.roomName.toLowerCase().includes(searchKey) || item.note.toLowerCase().includes(searchKey)) {
+                        if (item.roomName.toLowerCase().includes(searchKey.toLowerCase()) || item.note.toLowerCase().includes(searchKey.toLowerCase())) {
                             result.push(item)
                             temp++
                         }
