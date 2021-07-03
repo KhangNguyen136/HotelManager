@@ -17,9 +17,10 @@ export default function App() {
         //else send to Home Screen
         firebaseApp.auth().onAuthStateChanged(function (user) {
             if (user) {
+                const uid = user.uid
                 // User is signed in.
                 // console.log('Log in')
-                initDatabase(success)
+                initDatabase(uid, success)
             } else {
                 // No user is signed in.
                 // console.log('Not log in')

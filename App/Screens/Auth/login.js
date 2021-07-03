@@ -60,7 +60,7 @@ export default function Login(props) {
                 {({ values, handleChange, handleSubmit, handleBlur }) => (
                     <View style={{ padding: 20 }} >
                         <View style={{ alignSelf: 'center' }} >
-                            <Image source={require('../../source/logo.png')} />
+                            <Image source={require('../../source/logo.png')} style={{ width: 200, height: 200 }} />
                         </View>
                         <TextInputCard placeholder={'Phone number or Email'} value={values.email} onChangeValue={handleChange('email')} onBlur={handleBlur('email')} />
                         <View style={{ height: 10 }} />

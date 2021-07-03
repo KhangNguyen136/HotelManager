@@ -19,15 +19,15 @@ export default function SignUpInputForm(props) {
                 // Signed in 
                 var user = userCredential.user;
                 setLoading(false);
-                Success('Signed up successfully', 'Login your account to use app.')
+                Success('Signed up successfully', 'Auto login after signed up.')
                 resetForm()
-                firebaseApp.auth().signOut().then(() => {
-                    // Sign-out successful.
-                    console.log('Logged out after sign up successfully!')
-                }).catch((error) => {
-                    // An error happened.
-                    console.log('Logged out after sign up failed!')
-                });
+                // firebaseApp.auth().signOut().then(() => {
+                //     // Sign-out successful.
+                //     console.log('Logged out after sign up successfully!')
+                // }).catch((error) => {
+                //     // An error happened.
+                //     console.log('Logged out after sign up failed!')
+                // });
                 // ...
             })
             .catch((error) => {

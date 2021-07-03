@@ -3,12 +3,22 @@ import { TouchableOpacity, Text, SafeAreaView, StyleSheet, View } from 'react-na
 import { GetIcon } from '../../Components/button';
 import Card from '../../Components/card';
 import { openDatabase } from 'expo-sqlite';
+import { CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
 const db = openDatabase('userDatabase.db');
 
 export default function SyncData(navigation) {
-    const [lastSync, setLastSync] = React.useState('2123123')
+    const [lastSync, setLastSync] = React.useState('')
+    const [userID, setUserID] = React.useState('')
     React.useState(() => {
-
+        db.transaction(tx => {
+            tx.executeSql(
+                'select * from userInforTable', [],
+                (tx, result) => {
+                    setLastSync(result.rows.item(0).lastSync)
+                    setUserID(result.rows.item(0).userID)
+                }
+            )
+        }, (error) => CheckInputFailed('Get data failed', error.message))
     })
     return (
         <SafeAreaView>
@@ -19,7 +29,7 @@ export default function SyncData(navigation) {
                         <Text style={styles.content}>Sync data</Text>
                         {
                             lastSync != '' &&
-                            <Text style={{ fontSize: 16, textAlign: 'center' }} >Last sync at: {lastSync.substring(0, 21)}</Text>
+                            <Text style={{ fontSize: 16, textAlign: 'center' }} >Last sync at: {lastSync}</Text>
                         }
                     </View>
                     <GetIcon iconName={'caretright'} source={'AntDesign'} size={26} />
@@ -36,6 +46,7 @@ export default function SyncData(navigation) {
                     <GetIcon iconName={'caretright'} source={'AntDesign'} size={26} />
 
                 </TouchableOpacity>
+                <Text style={{ fontSize: 18 }} >User ID: {userID}</Text>
             </Card>
         </SafeAreaView>
     )

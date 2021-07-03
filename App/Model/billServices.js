@@ -1,4 +1,5 @@
 import { openDatabase } from 'expo-sqlite';
+import { deleteForm } from './formServices';
 const db = openDatabase('userDatabase.db');
 
 export function AddBill(values, fail, success) {
@@ -33,12 +34,19 @@ export function UpdateBill(values, fail, success) {
     )
 }
 
-export function deleteBill(ID, fail, success) {
+export function deleteBill(ID, formID, fail, success) {
     db.transaction(
         tx => {
             tx.executeSql(
                 'delete from billTable where ID = ?', [ID]
             )
+            tx.executeSql(
+                'delete from guestTable where formID = ?', [formID]
+            )
+            tx.executeSql(
+                'delete from formTable where formID = ?', [formID],
+            )
+
         }, (error) => fail(error.message)
         , success
     )

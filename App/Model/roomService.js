@@ -41,13 +41,17 @@ export function deleteRoom(ID, success, fail) {
                 const n = result.rows.length
                 for (let i = 0; i < n; i++) {
                     const formID = result.rows.item(i).formID
-                    console.log(formID)
                     tx.executeSql(
-                        'delete from formTable where formID = ?', [formID],
+                        'delete from billTable where formID =?', [formID]
                     )
                     tx.executeSql(
                         'delete from guestTable where formID = ?', [formID]
                     )
+                    tx.executeSql(
+                        'delete from formTable where formID = ?', [formID],
+                    )
+
+
                 }
             }
         )

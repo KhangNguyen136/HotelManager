@@ -82,15 +82,20 @@ export function deleteForm(values, success, fail) {
     // console.log('Values :', values)
     db.transaction(tx => {
         tx.executeSql(
+            'delete from billTable where formID =?', [values.formID]
+        )
+        tx.executeSql(
+            'delete from guestTable where formID = ?', [values.formID]
+        )
+        tx.executeSql(
             'delete from formTable where formID = ?', [values.formID],
         )
         if (values.isPaid == 0)
             tx.executeSql(
                 'update roomTable set stateRoom =  ? where roomID = ? ', ['available', values.roomID]
             )
-        tx.executeSql(
-            'delete from guestTable where formID = ?', [values.formID]
-        )
+
+
     }, (error) => {
         fail(error.message)
     }, success)

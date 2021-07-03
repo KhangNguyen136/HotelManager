@@ -3,7 +3,7 @@ const db = openDatabase('userDatabase.db');
 import * as Files from 'expo-file-system'
 import { documentDirectory } from 'expo-file-system';
 
-export default async function (success) {
+export default async function (uid, success) {
     db.transaction(tx => {
         // tx.executeSql('drop table if exists roomTable')
         // tx.executeSql('drop table if exists formTable')
@@ -12,11 +12,11 @@ export default async function (success) {
 
         // create roomType table
         tx.executeSql(
-            'create table if not exists roomTypeTable(typeID integer primary key autoincrement, type text, price real, imgURL text)'
+            'create table if not exists roomTypeTable(typeID integer primary key, type text, price real, imgURL text)'
         )
         // create rule table
         tx.executeSql(
-            'create table if not exists ruleTable(ruleID integer primary key autoincrement, ruleName text, value real)'
+            'create table if not exists ruleTable(ruleID integer primary key, ruleName text, value real)'
         )
         //create tables
         tx.executeSql(
@@ -31,16 +31,18 @@ export default async function (success) {
         tx.executeSql(
             'create table if not exists billTable(ID integer primary key autoincrement, formID integer not null, paidTime text,nday integer,surchargeThird real,surchargeForeign real, totalAmount real, note text, foreign key(formID) references formTable(ID))'
         )
-
+        tx.executeSql(
+            'create table if not exists userInforTable(ID integer primary key autoincrement,userID text, lastSync text)'
+        )
 
     }, (error) => {
         console.log(error.message);
     }, () => {
-        initData(success)
+        initData(uid, success)
     })
 }
 
-function initData(success) {
+function initData(uid, success) {
     db.transaction(
         tx => {
             //check roomType
@@ -50,13 +52,13 @@ function initData(success) {
                     if (result.rows.length == 0) {
                         //add init data for roomType table
                         tx.executeSql(
-                            'insert into roomTypeTable(type,price) values (?,?)', ['A', 150000]
+                            'insert into roomTypeTable(typeID,type,price) values (?,?,?)', [1, 'A', 150000]
                         )
                         tx.executeSql(
-                            'insert into roomTypeTable(type,price) values (?,?)', ['B', 170000]
+                            'insert into roomTypeTable(typeID,type,price) values (?,?,?)', [2, 'B', 170000]
                         )
                         tx.executeSql(
-                            'insert into roomTypeTable(type,price) values (?,?)', ['C', 200000]
+                            'insert into roomTypeTable(typeID,type,price) values (?,?,?)', [3, 'C', 200000]
                         )
                     }
                 }
@@ -67,10 +69,20 @@ function initData(success) {
                     if (result.rows.length == 0) {
                         //add init data for rule table
                         tx.executeSql(
-                            'insert into ruleTable(ruleName,value) values (?,?)', ['surcharge', 1.25]
+                            'insert into ruleTable(ruleID,ruleName,value) values (?,?,?)', [1, 'surcharge', 1.25]
                         )
                         tx.executeSql(
-                            'insert into ruleTable(ruleName,value) values (?,?)', ['foreign', 1.5]
+                            'insert into ruleTable(ruleID,ruleName,value) values (?,?,?)', [2, 'foreign', 1.5]
+                        )
+                    }
+                }
+            )
+            tx.executeSql(
+                'select * from userInforTable', [],
+                (tx, result) => {
+                    if (result.rows.length == 0) {
+                        tx.executeSql(
+                            'insert into userInforTable(userID,lastSync) values (?,?)', [uid, 'not Sync yet']
                         )
                     }
                 }

@@ -143,7 +143,7 @@ export default function CheckOut({ navigation, route }) {
     }
 
     const onDelete = () => {
-        deleteBill(data.infor.ID,
+        deleteBill(data.infor.ID, data.infor.formID,
             (msg) => {
                 CheckInputFailed('Delete fail', msg)
                 setLoading(false)

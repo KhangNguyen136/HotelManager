@@ -5,6 +5,7 @@ import ListRoom from '../../Components/Table/listRoom';
 import HeaderButton from '../../Components/headerButton';
 import RoomTypeTable from '../../Components/Table/roomType';
 import RuleTable from '../../Components/Table/rule';
+import { DeleteAll } from '../../Model/userData';
 import { Success, CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
 import firebaseApp from '../../firebaseConfig';
 export default function Other({ navigation }) {
@@ -20,7 +21,7 @@ export default function Other({ navigation }) {
 
     const logOut = () => {
         firebaseApp.auth().signOut().then(() => {
-            Success('Log out successful')
+            DeleteAll(() => Success('Log out successful'))
         }).catch((error) => {
             CheckInputFailed('Log out failed', error.message)
         })
