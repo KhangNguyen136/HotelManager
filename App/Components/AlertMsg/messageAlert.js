@@ -8,7 +8,8 @@ export function CheckInputFailed(title, message) {
             text1: title,
             text2: message,
             topOffset: 50,
-            visibilityTime: 0.1
+            visibilityTime: 2000
+            // autoHide: false
         })
     )
 }
@@ -20,7 +21,8 @@ export function Success(title, message) {
             text1: title,
             text2: message,
             topOffset: 50,
-            visibilityTime: 0.0
+            visibilityTime: 1000,
+
         })
     )
 }

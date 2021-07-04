@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Alert, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import TextInputCard from '../InputCard/TextInputCard';
 import { Success, CheckInputFailed } from '../AlertMsg/messageAlert'
@@ -13,6 +13,7 @@ import { setRoom } from '../../Actions/createFormActions';
 import { updateState } from '../../Actions/updateActions'
 import { useDispatch, useSelector } from 'react-redux'
 import DatePickerCard from '../InputCard/datePicker';
+import confirmDelete from '../AlertMsg/confirmDelete';
 import { openDatabase } from 'expo-sqlite';
 const db = openDatabase('userDatabase.db');
 
@@ -31,6 +32,11 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
 
     if (isEdit)
         initValue = { ...item, addDate: new Date(item.addDate) }
+    const clickDelete = () => {
+        const title = 'Confirm delete'
+        const message = "Delete room will also delete form and bill of this room. Deleted data can't be recovered if you haven't sync yet. Do you want to continue?"
+        confirmDelete(title, message, deleteItem, () => { })
+    }
     const deleteItem = () => {
         setLoading(true)
         deleteRoom(item.roomID,
@@ -104,7 +110,7 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
                         <DatePickerCard title={'Add date: '} date={values.addDate} onChangeDate={(value) => setFieldValue('addDate', value)} />
                         <TextInputCard value={values.note} onChangeValue={handleChange('note')} onBlur={handleBlur('note')} placeholder={"Note"} />
                         {/* <SaveButton onPress={handleSubmit} /> */}
-                        <BottomButton isEditMode={isEdit} onSave={handleSubmit} onDelete={deleteItem} onUpdate={() => update(values)} />
+                        <BottomButton isEditMode={isEdit} onSave={handleSubmit} onDelete={clickDelete} onUpdate={() => update(values)} />
                     </Card>
                     {loading &&
                         <LoadingIndicator />}

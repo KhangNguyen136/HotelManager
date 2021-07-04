@@ -24,7 +24,7 @@ export default function ListForm({ navigation }) {
                 "select f.formID , f.date, f.note, f.isPaid, r.roomID, r.roomName,t.typeID, t.price from formTable f inner join roomTable r on f.roomID = r.roomID inner join roomTypeTable t on r.typeID = t.typeID where f.isPaid = 0",
                 [], (tx, formResults) => {
                     var n = formResults.rows.length
-                    console.log('Form: ', n)
+                    // console.log('Form: ', n)
                     for (let i = 0; i < n; i++) {
                         var tempItem = {
                             form: {},

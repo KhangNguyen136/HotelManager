@@ -26,6 +26,10 @@ export default function TextInputCard({ value, placeholder, onChangeValue, onBlu
             iconName = 'user-circle-o'
             source = 'FontAwesome'
             break;
+        case 'Your email':
+            iconName = 'email'
+            source = 'Entypo'
+            break;
         // case 'Enter room name':
         //     iconName =
         //     source = 

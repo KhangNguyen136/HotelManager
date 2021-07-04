@@ -26,7 +26,7 @@ export default function RoomPicker({ navigation, route }) {
     }, [searchKey, listRoomSttUpdated])
 
     const getListRoom = () => {
-        console.log(old, selectedRoom)
+        // console.log(old, selectedRoom)
         var result = []
         db.transaction(tx => {
             tx.executeSql(

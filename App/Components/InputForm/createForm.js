@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import TextInputCard from '../../Components/InputCard/TextInputCard';
 import { Success, CheckInputFailed } from '../AlertMsg/messageAlert'
 import Card from '../card';
-import { BottomButton, SaveButton } from '../button';
+import { BottomButton } from '../button';
 import LoadingIndicator from '../loadingIndicator';
 import { useDispatch, useSelector } from 'react-redux'
 import PickerCard from '../InputCard/pickerCard';
@@ -15,6 +15,7 @@ import { setFormObserve } from '../../Actions/editFormActions';
 import { updateListSttRoom } from '../../Actions/roomActions';
 import { updateState } from '../../Actions/updateActions'
 import { resetObserveState } from '../../Actions/editFormActions';
+import confirmDelete from '../AlertMsg/confirmDelete';
 import PriceCard from '../InputCard/priceCard';
 import { formatAmount } from '../../styles/globalStyles';
 import { openDatabase } from 'expo-sqlite';
@@ -88,7 +89,11 @@ export default function CreateForm({ isEdit, formID, navigation }) {
         }
 
     }, [])
-
+    const clickDelete = () => {
+        const title = 'Confirm delete'
+        const message = "Delete form will also bill of this room. Deleted data can't be recovered if you haven't sync yet. Do you want to continue?"
+        confirmDelete(title, message, deleteItem, () => { })
+    }
     const deleteItem = () => {
         setLoading(true)
         deleteForm(item.form,
@@ -169,7 +174,7 @@ export default function CreateForm({ isEdit, formID, navigation }) {
                 <DateTimePickerCard date={startDate} title={'Start date: '} onChangeDate={setStartDate} />
                 <TextInputCard value={note} onChangeValue={setNote} placeholder={"Note"} />
                 <ListGuest navigation={navigation} data={listGuest} />
-                <BottomButton isEditMode={isEdit} onSave={save} onDelete={deleteItem} onUpdate={update} />
+                <BottomButton isEditMode={isEdit} onSave={save} onDelete={clickDelete} onUpdate={update} />
             </Card>
             {loading &&
                 <LoadingIndicator />}

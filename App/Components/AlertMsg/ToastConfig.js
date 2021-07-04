@@ -6,7 +6,7 @@ import { GetIcon } from '../button';
 const toastConfig = {
     missingInfor: ({ text1, text2, props, ...rest }) => (
         <View style={styles.container}>
-            <GetIcon iconName={'warning'} source={'AntDesign'} size={30} color={'white'} />
+            <GetIcon iconName={'warning'} source={'AntDesign'} size={30} color={'#f1c40f'} />
             <View style={styles.textContainer} >
                 <Text style={styles.title} >{text1}</Text>
                 <Text style={styles.content} >{text2}</Text>
@@ -22,22 +22,28 @@ export default toastConfig;
 const styles = StyleSheet.create({
     container: {
         // width: '69%',
-        borderRadius: 20,
-        backgroundColor: 'orange',
-        padding: 10,
+        minWidth: '50%',
+        borderRadius: 10,
+        backgroundColor: '#95a5a6',
+        paddingVertical: 8,
+        paddingHorizontal: 15,
         flexDirection: 'row',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        alignItems: 'center'
     },
     textContainer: {
-        marginHorizontal: 5,
+        marginHorizontal: 10,
+        // flex: 1,
     },
     title: {
         fontSize: 18,
         fontWeight: '600',
-        color: 'white'
+        // color: 'white',
+        textAlign: 'center'
     },
     content: {
-        color: 'white',
+        // color: 'white',
+        fontSize: 16,
         fontWeight: '500',
 
     }

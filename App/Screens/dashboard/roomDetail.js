@@ -1,18 +1,17 @@
 import React from 'react';
-import { SafeAreaView, Text, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import Card from '../../Components/card'
-import { MyButton, MyIconButton } from '../../Components/button';
+import { MyIconButton } from '../../Components/button';
 import { formatAmount, globalStyles } from '../../styles/globalStyles';
 import { useSelector, useDispatch } from 'react-redux'
-import { StackActions } from '@react-navigation/native'
 import { setRoom } from '../../Actions/createFormActions';
 import { changeStt } from '../../Model/roomService';
 import { CheckInputFailed, Success } from '../../Components/AlertMsg/messageAlert';
 import { updateListSttRoom } from '../../Actions/roomActions';
 import { ContentCard } from '../../Components/card';
 import { setRoomID, setFormID, resetState } from '../../Actions/updateActions';
-
+import { ListGuestView } from '../../Components/Table/listGuest';
 export default function RoomDetail({ navigation, route }) {
     const data = route.params.data
     const dispatch = useDispatch()
@@ -76,8 +75,8 @@ export default function RoomDetail({ navigation, route }) {
                         {/* <ContentCard icon={'room'} source={'Fontisto'} content={'Occupied'} /> */}
                         <ContentCard icon={'note'} source={'Octicons'} title={'Note: '} content={data.infor.formNote} />
                         <ContentCard icon={'calendar'} source={'AntDesign'} title={'Start date: '} content={data.infor.date.substring(0, 15)} />
-                        <ContentCard icon={guestIcon.icon} source={guestIcon.source} title={'Number of guest: '} content={data.guest.length} />
-
+                        {/* <ContentCard icon={guestIcon.icon} source={guestIcon.source} title={'Number of guest: '} content={data.guest.length} /> */}
+                        <ListGuestView data={data.guest} />
                         <ContentCard icon={'clockcircleo'} source={'AntDesign'} title={'Number of day: '} content={diffDays + days} />
                         <View style={styles.ButtonContainer} >
                             <MyIconButton title={'Check out'} onPress={checkOut} width={'33%'}

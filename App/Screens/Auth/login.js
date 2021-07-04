@@ -72,7 +72,7 @@ export default function Login(props) {
                             justifyContent: 'space-between',
                             // paddingHorizontal: 10
                         }} >
-                            <TouchableOpacity onPress={() => console.log('forgot password')} >
+                            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} >
                                 <Text style={{ fontSize: 14, fontWeight: '500', color: '#3399ff' }} >FORGOT PASSWORD</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => navigation.navigate('SignUp')} >
@@ -106,7 +106,7 @@ function checkPassword(pass) {
     return true
 }
 
-function validateEmail(email) {
+export function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }

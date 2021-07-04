@@ -4,7 +4,7 @@ import TextInputCard from '../../Components/InputCard/TextInputCard';
 import { updateListSttRoom } from '../../Actions/roomActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { openDatabase } from 'expo-sqlite';
-import Card, { ContentCard, FlexCard } from '../../Components/card';
+import { ContentCard, FlexCard } from '../../Components/card';
 import { ListGuestView } from '../../Components/Table/listGuest';
 import { BottomButton } from '../../Components/button';
 import { updateListForm } from '../../Actions/createFormActions'
@@ -16,7 +16,7 @@ import LoadingIndicator from '../../Components/loadingIndicator';
 import { updateObserve } from '../../Actions/editFormActions'
 import { Success, CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
 import { formatAmount } from '../../styles/globalStyles';
-
+import confirmDelete from '../../Components/AlertMsg/confirmDelete';
 const db = openDatabase('userDatabase.db');
 export default function CheckOut({ navigation, route }) {
     const { data, isEdit } = route.params
@@ -39,6 +39,10 @@ export default function CheckOut({ navigation, route }) {
     const [total, setTotal] = React.useState(0)
 
     React.useEffect(() => {
+        const tempTotal = data.infor.price * diffDays * (1 + (surchargeForeign - 1) + (surchargeThird - 1))
+        setTotal(tempTotal)
+    }, [diffDays])
+    React.useEffect(() => {
         var temp1 = 1
         var temp2 = 1
         setFormID(data.infor.formID)
@@ -49,6 +53,8 @@ export default function CheckOut({ navigation, route }) {
             setSurchargeForeign(data.infor.surchargeForeign)
             setPaidTime(new Date(data.infor.paidTime))
             setNote(data.infor.note)
+            const tempTotal = data.infor.price * diffDays * (1 + (data.infor.surchargeForeign - 1) + (data.infor.surchargeThird - 1))
+            setTotal(tempTotal)
             setLoading(false)
         }
         else
@@ -72,6 +78,8 @@ export default function CheckOut({ navigation, route }) {
                     // setTotal(temp)
                     setSurchargeForeign(temp1)
                     setSurchargeThird(temp2)
+                    const tempTotal = data.infor.price * diffDays * (1 + (temp1 - 1) + (temp2 - 1))
+                    setTotal(tempTotal)
                     setLoading(false)
                 })
 
@@ -87,10 +95,7 @@ export default function CheckOut({ navigation, route }) {
         }
     }, [isUpdated])
 
-    React.useEffect(() => {
-        const tempTotal = data.infor.price * diffDays * (1 + (surchargeForeign - 1) + (surchargeThird - 1))
-        setTotal(tempTotal)
-    }, [diffDays])
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             // headerRight: () => <IconButton iconName={'notifications'}
@@ -141,7 +146,11 @@ export default function CheckOut({ navigation, route }) {
                 navigation.goBack()
             })
     }
-
+    const clickDelete = () => {
+        const title = 'Confirm delete'
+        const message = "Delete bill will also delete form of this bill. Deleted data can't be recovered if you haven't sync yet. Do you want to continue?"
+        confirmDelete(title, message, onDelete, () => { })
+    }
     const onDelete = () => {
         deleteBill(data.infor.ID, data.infor.formID,
             (msg) => {
@@ -180,7 +189,7 @@ export default function CheckOut({ navigation, route }) {
                 <TextInputCard value={note} placeholder={'Note'} onChangeValue={setNote} />
             </ScrollView>
             <ContentCard icon={'money-bill'} source={'FontAwesome5'} title={'Total: '} content={formatAmount(total)} />
-            <BottomButton saveTitle={'Paid'} onSave={save} onUpdate={update} onDelete={onDelete} isEditMode={isEdit} />
+            <BottomButton saveTitle={'Paid'} onSave={save} onUpdate={update} onDelete={clickDelete} isEditMode={isEdit} />
             {
                 loading &&
                 <LoadingIndicator />

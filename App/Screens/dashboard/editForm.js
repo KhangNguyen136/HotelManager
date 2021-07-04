@@ -17,6 +17,7 @@ import { updateListSttRoom } from '../../Actions/roomActions';
 import { setFormID, resetState, setRoomID } from '../../Actions/updateActions';
 import PriceCard from '../../Components/InputCard/priceCard';
 import { formatAmount } from '../../styles/globalStyles';
+import confirmDelete from '../../Components/AlertMsg/confirmDelete';
 import { openDatabase } from 'expo-sqlite';
 const db = openDatabase('userDatabase.db');
 
@@ -83,7 +84,11 @@ export default function EditForm({ route, navigation }) {
         )
 
     }, [])
-
+    const clickDelete = () => {
+        const title = 'Confirm delete'
+        const message = "Deleted data can't be recovered if you haven't sync yet. Do you want to continue?"
+        confirmDelete(title, message, deleteItem, () => { })
+    }
     const deleteItem = () => {
         setLoading(true)
         deleteForm(item.form,
@@ -140,7 +145,7 @@ export default function EditForm({ route, navigation }) {
                 <DateTimePickerCard date={startDate} title={'Start date: '} onChangeDate={setStartDate} />
                 <TextInputCard value={note} onChangeValue={setNote} placeholder={"Note"} />
                 <ListGuest navigation={navigation} data={listGuest} />
-                <BottomButton isEditMode={true} onDelete={deleteItem} onUpdate={update} />
+                <BottomButton isEditMode={true} onDelete={clickDelete} onUpdate={update} />
             </Card>
             {loading &&
                 <LoadingIndicator />}
