@@ -3,7 +3,9 @@ import React from 'react';
 import Other from '../../Screens/other/other';
 import AddRoom from '../../Screens/other/addRoom'
 import SyncData from '../../Screens/other/syncData';
-import EditRule from '../../Screens/other/editRule'
+import EditRule from '../../Screens/other/editRule';
+import AccountActions from '../../Screens/other/accountActions';
+import ChangePassword from '../../Screens/other/changePassword';
 const Stack = createStackNavigator();
 
 function OtherStack({ navigation }) {
@@ -16,7 +18,11 @@ function OtherStack({ navigation }) {
                 isEdit: false
             }} />
             <Stack.Screen name="EditRule" component={EditRule} />
-            <Stack.Screen name="SyncData" component={SyncData} />
+            <Stack.Screen name="SyncData" component={SyncData} options={{ title: 'Data' }} />
+            <Stack.Screen name="AccountActions" component={AccountActions} options={{ title: 'Account' }} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ title: 'Change password' }} />
+
+
 
         </Stack.Navigator>
     );

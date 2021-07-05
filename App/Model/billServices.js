@@ -22,6 +22,15 @@ export function AddBill(values, fail, success) {
     )
 }
 
+export function insertBill(values) {
+    db.transaction(tx => {
+        tx.executeSql(
+            'insert into billTable(ID, formID,paidTime, nday, surchargeThird,surchargeForeign,totalAmount, note) Values(?,?,?,?,?,?,?,?)',
+            [values.ID, values.formID, values.paidTime, values.nday, values.surchargeThird, values.surchargeForeign, values.totalAmount, values.note]
+        )
+    })
+}
+
 export function UpdateBill(values, fail, success) {
     db.transaction(
         tx => {

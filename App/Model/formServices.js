@@ -34,6 +34,24 @@ export function addForm(values, success, fail) {
     )
 }
 
+export function insertForm(values) {
+    db.transaction(tx => {
+        tx.executeSql(
+            'insert into formTable(formID,roomID ,date, note, isPaid) values (?,?,?,?,?)',
+            [values.formID, values.roomID, values.date, values.note, values.isPaid]
+        )
+    })
+}
+
+export function insertGuest(values) {
+    db.transaction(tx => {
+        tx.executeSql(
+            'insert into guestTable(guestID,formID, name, type, IC, address) values (?,?,?,?,?,?)'
+            , [values.guestID, values.formID, values.name, values.type, values.IC, values.address]
+        )
+    })
+}
+
 export function updateForm(values, listGuest, oldListGuest, success, fail) {
     // console.log({ values, listGuest, oldListGuest })
     db.transaction(tx => {

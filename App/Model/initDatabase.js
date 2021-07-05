@@ -42,7 +42,7 @@ export default async function (uid, success) {
     })
 }
 
-function initData(uid, success) {
+export function initData(uid, success) {
     db.transaction(
         tx => {
             //check roomType

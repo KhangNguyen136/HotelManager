@@ -19,6 +19,15 @@ export function addNewRoom(values, success, fail) {
         }, success)
 }
 
+export function insertRoom(values) {
+    db.transaction(tx => {
+        tx.executeSql(
+            'insert into roomTable(roomID,roomName, typeID, note, addDate,stateRoom) values (?,?,?,?,?,?)',
+            [values.roomID, values.roomName, values.typeID, values.note, values.addDate, values.stateRoom]
+        )
+    })
+}
+
 export function updateRoom(ID, values, success, fail) {
     console.log(values)
     db.transaction(tx => {
