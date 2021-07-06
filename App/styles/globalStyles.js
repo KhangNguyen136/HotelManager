@@ -8,7 +8,7 @@ export const globalStyles = StyleSheet.create(
             width: '99%',
             flexDirection: 'column',
             // paddingBottom: 
-            // backgroundColor: '#efeff5',
+            // backgroundColor: '#fff',
         },
         SaveButton: {
             width: '80%',

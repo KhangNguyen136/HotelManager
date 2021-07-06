@@ -6,7 +6,7 @@ import { GetIcon } from '../button';
 const toastConfig = {
     missingInfor: ({ text1, text2, props, ...rest }) => (
         <View style={styles.container}>
-            <GetIcon iconName={'warning'} source={'AntDesign'} size={30} color={'#f1c40f'} />
+            <GetIcon iconName={'warning'} source={'AntDesign'} size={40} color={'#f1c40f'} />
             <View style={styles.textContainer} >
                 <Text style={styles.title} >{text1}</Text>
                 <Text style={styles.content} >{text2}</Text>

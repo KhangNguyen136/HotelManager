@@ -82,7 +82,7 @@ export function initData(uid, success) {
                 (tx, result) => {
                     if (result.rows.length == 0) {
                         tx.executeSql(
-                            'insert into userInforTable(userID,lastSync) values (?,?)', [uid, 'not Sync yet']
+                            'insert into userInforTable(userID,lastSync) values (?,?)', [uid, 'not sync yet']
                         )
                     }
                 }
@@ -91,7 +91,7 @@ export function initData(uid, success) {
             console.log("Init data failed: " + error.message);
         },
         () => {
-            console.log('Init database successfully!')
+            console.log('Init database successful')
             Files.getInfoAsync(`${documentDirectory}SQLite/userDatabase.db`).then(result => console.log(result.uri))
             success()
         }

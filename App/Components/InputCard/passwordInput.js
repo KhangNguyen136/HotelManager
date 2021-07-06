@@ -5,10 +5,11 @@ import { GetIcon, IconButton } from '../button';
 export default function PasswordTextInput({ value, placeholder, onChangeValue, onBlur }) {
     const [show, setShow] = React.useState(false)
     var showIcon = show ? 'eye' : 'eye-with-line'
-    var iconName = placeholder == 'Password' ? 'key' : 'Safety'
+    var source = placeholder != 'Confirm new password' ? 'AntDesign' : 'MaterialIcons'
+    var iconName = placeholder != 'Confirm new password' ? 'key' : 'confirmation-num'
     return (
         <View style={styles.container} >
-            <GetIcon iconName={iconName} size={26} source={'AntDesign'} />
+            <GetIcon iconName={iconName} size={26} source={source} />
             <View style={styles.contentArea}>
                 <TextInput style={styles.content}
                     value={value}

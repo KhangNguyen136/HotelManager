@@ -27,9 +27,6 @@ export function DeleteData(success) {
     db.transaction(
         tx => {
             tx.executeSql(
-                'delete from userInforTable'
-            )
-            tx.executeSql(
                 'delete from billTable'
             )
             tx.executeSql(
@@ -47,6 +44,9 @@ export function DeleteData(success) {
             tx.executeSql(
                 'delete from ruleTable'
             )
+            tx.executeSql(
+                'delete from userInforTable'
+            )
         }, (error) => {
             Error('Action failed', error.message)
         },
@@ -55,7 +55,7 @@ export function DeleteData(success) {
 }
 
 
-export async function syncData(userID, success) {
+export async function syncData(userID, success, endLoading) {
     const today = new Date()
     const todayStr = today.toString().substring(0, 21)
     const userRef = firebaseApp.database().ref(userID)
@@ -154,11 +154,11 @@ export async function syncData(userID, success) {
         )
     } catch (error) {
         CheckInputFailed('Action failed', error.message)
-        success()
+        endLoading()
     }
 }
 
-export async function reloadData(userID, success) {
+export async function reloadData(userID, success, endLoading) {
     try {
         console.log('Begin reload')
         const userRef = firebaseApp.database().ref(userID)
@@ -216,20 +216,24 @@ export async function reloadData(userID, success) {
                     // console.log(child)
                     insertBill(child.val())
                 })
+            Success('Reload data successful')
+            success()
         })
-        success()
-        Success('Reload data successful')
+
     }
     catch (error) {
         CheckInputFailed('Reload failed', error.message)
-        success()
+        endLoading()
     }
 }
 
-export function resetData(userID, success) {
+export function resetData(userID, success, endLoading) {
     const userRef = firebaseApp.database().ref(userID).set(null).then(
         DeleteAll(() => initDatabase(userID, success))
-    ).catch(error => CheckInputFailed('Action failed', error.message))
+    ).catch(error => {
+        endLoading()
+        CheckInputFailed('Action failed', error.message)
+    })
 }
 
 const emptyFunc = () => {

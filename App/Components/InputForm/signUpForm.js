@@ -6,7 +6,7 @@ import firebaseApp from '../../firebaseConfig';
 import { Success, CheckInputFailed } from '../AlertMsg/messageAlert';
 import { LoginButton } from '../button';
 import TextInputCard from '../InputCard/TextInputCard';
-import PasswordTextInput from '../InputCard/password';
+import PasswordTextInput from '../InputCard/passwordInput';
 import LoadingIndicator from '../loadingIndicator';
 import { useNavigation } from '@react-navigation/native'
 

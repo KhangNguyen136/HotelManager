@@ -5,14 +5,11 @@ import { Formik } from 'formik';
 import firebaseApp from '../../firebaseConfig';
 import { Success, CheckInputFailed } from '../../Components/AlertMsg/messageAlert';
 import TextInputCard from '../../Components/InputCard/TextInputCard';
-import PasswordTextInput from '../../Components/InputCard/password';
+import PasswordTextInput from '../../Components/InputCard/passwordInput';
 import { LoginButton } from '../../Components/button';
-import { useDispatch } from 'react-redux';
-// import { setUser } from '../../Actions/userActions';
 import LoadingIndicator from '../../Components/loadingIndicator';
 
 export default function Login(props) {
-    const dispatch = useDispatch()
     const [loading, setLoading] = React.useState(false)
     const { navigation } = props
 
@@ -31,18 +28,6 @@ export default function Login(props) {
                 CheckInputFailed('Logged in failed!', errorMessage)
             });
     }
-    const forgetPassword = () => {
-        firebaseApp.auth().sendPasswordResetEmail(email)
-            .then(() => {
-                // Password reset email sent!
-                Success('An email had been sent to your email')
-            })
-            .catch((error) => {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                CheckInputFailed(errorMessage)
-            });
-    }
     return (
         <SafeAreaView style={globalStyles.container}>
             <Formik initialValues={{ email: '', pass: '' }}
@@ -58,9 +43,9 @@ export default function Login(props) {
                     //     .catch(error => { setLoading(false); console.log(error) })
                 }}>
                 {({ values, handleChange, handleSubmit, handleBlur }) => (
-                    <View style={{ padding: 20 }} >
+                    <View style={{ padding: 20, backgroundColor: 'white' }} >
                         <View style={{ alignSelf: 'center' }} >
-                            <Image source={require('../../source/logo.png')} style={{ width: 200, height: 200 }} />
+                            <Image source={require('../../source/logo.png')} style={{ width: 200, height: 200, borderRadius: 60 }} />
                         </View>
                         <TextInputCard placeholder={'Phone number or Email'} value={values.email} onChangeValue={handleChange('email')} onBlur={handleBlur('email')} />
                         <View style={{ height: 10 }} />

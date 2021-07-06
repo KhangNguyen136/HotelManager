@@ -56,45 +56,67 @@ export default function SyncData(navigation) {
     const clickSync = () => {
         // CheckInputFailed('Unfinish function','Comming soon!')
         setLoading(true)
+        NetInfo.fetch().then(state => {
+            if (state.isConnected) {
+                syncData(userID, () => {
+                    setUpdated(!updated)
+                    setLoading(false)
+                }, () => setLoading(false))
+            }
+            else {
+                setLoading(false)
+                CheckInputFailed('No connection', 'Check your internet and try again!')
 
-        syncData(userID, () => {
-            setUpdated(!updated)
-            setLoading(false)
+            }
         })
+
     }
     const clickReload = () => {
-        // CheckInputFailed('Unfinish function', 'Comming soon!')
         setLoading(true)
+        NetInfo.fetch().then(state => {
+            if (state.isConnected) {
 
-        confirmDelete('Reload data',
-            'This action will delete all current data in this device and reload data under your account on server. Do you want to continue?',
-            () => {
-                DeleteData(reloadDataProgress)
-            },
-            () => setLoading(false))
-
-
+                confirmDelete('Reload data',
+                    'This action will delete all current data in this device and reload data under your account on server. Do you want to continue?',
+                    () => {
+                        DeleteData(reloadDataProgress)
+                    },
+                    () => setLoading(false))
+            }
+            else {
+                setLoading(false)
+                CheckInputFailed('No connection', 'Check your internet and try again!')
+            }
+        })
 
     }
     const reloadDataProgress = () => {
         reloadData(userID, () => {
             updateApp()
             setLoading(false)
-        })
+        }, () => setLoading(false))
     }
 
     const clickReset = () => {
         setLoading(true)
+        NetInfo.fetch().then(state => {
+            if (state.isConnected) {
+                confirmDelete('Reset data', 'This action will delete all data in this device and on server. Do you want to continue?',
+                    () => {
+                        resetData(userID, () => {
+                            Success('Reset all data')
+                            updateApp()
+                            setLoading(false)
+                        }, () => setLoading(false))
+                    }, () => setLoading(false)
+                )
+            }
+            else {
+                setLoading(false)
+                CheckInputFailed('No connection', 'Check your internet and try again!')
+            }
+        })
 
-        confirmDelete('Reset data', 'This action will delete all data in this device and on server. Do you want to continue?',
-            () => {
-                resetData(userID, () => {
-                    Success('Reset all data')
-                    updateApp()
-                    setLoading(false)
-                })
-            }, () => setLoading(false)
-        )
 
 
     }
