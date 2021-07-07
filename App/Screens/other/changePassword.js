@@ -74,7 +74,7 @@ export default function ChangePassword({ navigation }) {
     return (
         <SafeAreaView style={styles.container} >
             <FlexCard>
-                <Text style={styles.title} >Change password</Text>
+                {/* <Text style={styles.title} >Change password</Text> */}
                 <Text style={styles.content}>Your new password must be different from previous password.</Text>
                 <PasswordTextInput value={password} placeholder={'Current password'} onChangeValue={setPassword} />
                 <PasswordTextInput value={newPassword} placeholder={'New password'} onChangeValue={setNewPassword} />

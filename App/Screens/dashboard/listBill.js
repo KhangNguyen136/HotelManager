@@ -9,11 +9,14 @@ import TimeButton from '../../Components/TimeFilterButton';
 import { colorType } from '../../Components/InputCard/roomTypePicker';
 import NoDataComp from '../../Components/nodata';
 import { openDatabase } from 'expo-sqlite';
+import SearchBox from '../../Components/InputCard/searchBox';
 const db = openDatabase('userDatabase.db')
 export default function ListBill({ navigation }) {
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(true)
-    var tempData = []
+    const [searchKey, setSearchKey] = React.useState('')
+    var tempData
+    // var [tempData, setTempData] = React.useState([])
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
@@ -26,69 +29,72 @@ export default function ListBill({ navigation }) {
                     'select b.ID, b.paidTime, b.nday, b.totalAmount, b.note, b.surchargeThird, b.surchargeForeign, f.date, f.formID, r.roomID, r.roomName, r.typeID, t.type, t.price from billTable b inner join formTable f on b.formID = f.formID inner join roomTable r on r.roomID = f.roomID inner join roomTypeTable t on r.typeID = t.typeID', [],
                     (tx, result) => {
                         const n = result.rows.length
-                        for (let i = 0; i < n; i++)
-                            insertIntoTemp(result.rows.item(i))
+                        for (let i = 0; i < n; i++) {
+                            const tempItem = {
+                                infor: result.rows.item(i),
+                                guest: []
+                            }
+                            tx.executeSql(
+                                'select * from guestTable where guestID = ?', [tempItem.infor.formID],
+                                (tx, guests) => {
+                                    const nGuest = guests.rows.length
+                                    for (let j = 0; j < nGuest; j++)
+                                        tempItem.guest.push(guests.rows.item(j))
+                                    insertIntoTemp(tempItem)
+                                }
+                            )
+                        }
                     }
                 )
             }, (error) => console.log(error.message),
             () => {
-                if (tempData.length != 0)
-                    getListGuest()
-                else
-                    setLoading(false)
+
+                setData(tempData)
+                setLoading(false)
             })
 
-    }, [listBillUpdated, listRoomSttUpdated, roomTypeUpdated])
-    const getListGuest = () => {
-        for (let s = 0; s < tempData.length; s++) {
-            const section = tempData[s]
-            for (let id = 0; id < section.items.length; id++) {
-                const item = section.items[id]
-                db.transaction(
-                    tx => {
-                        tx.executeSql(
-                            'select * from guestTable where formID = ?', [item.infor.formID],
-                            (tx, result) => {
-                                const n = result.rows.length
-                                for (let i = 0; i < n; i++)
-                                    item.guest.push(result.rows.item(i))
-                            }
-                        )
-                    }, (error) => console.log(error.message)
-                    , () => {
-                        setData(tempData)
-                        // console.log(tempData)
-                        setLoading(false)
-                    }
-                )
-            }
-        }
-    }
+    }, [listBillUpdated, listRoomSttUpdated, roomTypeUpdated, searchKey])
+
     const checkDate = () => {
         return true
     }
-    const insertIntoTemp = (item) => {
-        const tempItem = {
-            infor: item, guest: []
+    const search = (item) => {
+        const infor = item.infor
+        const key = searchKey.toLowerCase()
+        if (key == '')
+            return true
+        if (infor.roomName.toLowerCase().includes(key) || infor.note.toLowerCase().includes(key))
+            return true
+        const guest = item.guest
+        const nGuest = guest.length
+        for (let i = 0; i < nGuest; i++) {
+            if (guest[i].name.toLowerCase().includes(key))
+                return true
         }
-        const itemDate = new Date(item.paidTime)
+        return false
+    }
+    const insertIntoTemp = (tempItem) => {
+        if (!search(tempItem))
+            return
+        const infor = tempItem.infor
+        const itemDate = new Date(infor.paidTime)
         const itemDateString = itemDate.toString().substring(0, 15)
         for (let i = 0; i < tempData.length; i++) {
             const tempDateString = tempData[i].date.toString().substring(0, 15)
             if (tempDateString == itemDateString) {
                 tempData[i].items.push(tempItem)
-                tempData[i].total += item.totalAmount
+                tempData[i].total += infor.totalAmount
                 return
             }
             else if (tempData[i].date > itemDate) {
                 tempData.splice(i, 0, {
-                    date: itemDate, total: item.totalAmount, items: [tempItem]
+                    date: itemDate, total: infor.totalAmount, items: [tempItem]
                 })
                 return
             }
         }
         tempData.push({
-            date: itemDate, total: item.totalAmount,
+            date: itemDate, total: infor.totalAmount,
             items: [tempItem]
         })
 
@@ -161,6 +167,7 @@ export default function ListBill({ navigation }) {
         <SafeAreaView style={globalStyles.container}>
             <TimeButton />
             <Card>
+                <SearchBox value={searchKey} textChange={setSearchKey} placeholder={'Search by room name, bill note or guest name'} />
                 <FlatList data={data}
                     renderItem={Section}
                     keyExtractor={item => item.date.toString()}

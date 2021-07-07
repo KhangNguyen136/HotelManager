@@ -5,7 +5,12 @@ import InputForm from '../../Components/InputForm/signUpForm'
 
 export default function SignUp() {
     return (
-        <SafeAreaView style={globalStyles.container}>
+        <SafeAreaView style={{
+            flex: 1,
+            backgroundColor: 'white',
+            width: '99%',
+            alignSelf: 'center'
+        }}>
             <InputForm />
         </SafeAreaView>
     )

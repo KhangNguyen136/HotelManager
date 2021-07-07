@@ -148,7 +148,10 @@ export default function ListSttRoom({ navigation, type, typeID, price, searchKey
 
     return (
         <View style={styles.container} >
-            <Text style={{ fontSize: 18, fontWeight: '500', marginBottom: 5, marginLeft: 10 }} >Room type {type} - Price: {formatAmount(price)}</Text>
+            <Text style={{
+                fontSize: 18, fontWeight: '500',
+                marginBottom: 5, marginLeft: 10,
+            }} >Room type {type} - Price: {formatAmount(price)}</Text>
             <FlatList data={data}
                 renderItem={Item}
                 keyExtractor={item => item.infor.roomName}

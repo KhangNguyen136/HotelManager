@@ -53,14 +53,18 @@ export default function SignUpInputForm(props) {
                     <View style={{ alignSelf: 'center' }} >
                         <Image source={require('../../source/logo.png')} />
                     </View>
-                    <TextInputCard placeholder={'Phone number or Email'} value={values.email} onChangeValue={handleChange('email')} onBlur={handleBlur('email')} />
-                    <View style={{ height: 10 }} />
+                    <TextInputCard placeholder={'Your Email'} value={values.email} onChangeValue={handleChange('email')} onBlur={handleBlur('email')} />
+                    {/* <View style={{ height: 5 }} /> */}
                     <PasswordTextInput placeholder={'Password'} value={values.pass} onChangeValue={handleChange('pass')} onBlur={handleBlur('pass')} />
-                    <View style={{ height: 10 }} />
+
+                    <Text style={{ paddingLeft: 10 }}>Must be contain at least 6 characters.</Text>
+                    {/* <View style={{ height: 5 }} /> */}
                     <PasswordTextInput placeholder={'Confirm password'} value={values.pass2} onChangeValue={handleChange('pass2')} onBlur={handleBlur('pass2')} />
-                    <View style={{ height: 10 }} />
+                    <Text style={{ paddingLeft: 10 }}>Must be the same as password.</Text>
+
+                    {/* <View style={{ height: 5 }} /> */}
                     <TextInputCard placeholder={'Display name'} value={values.displayName} onChangeValue={handleChange('displayName')} onBlur={handleBlur('displayName')} />
-                    <View style={{ height: 10 }} />
+                    <View style={{ height: 20 }} />
                     <LoginButton onPress={handleSubmit} title={'Sign up'} />
                     <View style={{
                         flexDirection: 'row',
