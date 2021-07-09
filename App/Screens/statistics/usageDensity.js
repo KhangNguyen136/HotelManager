@@ -9,13 +9,16 @@ import TimeButton from '../../Components/TimeFilterButton'
 import NoDataComp from '../../Components/nodata';
 import moment from 'moment';
 import { parse } from 'react-native-svg';
+import SearchBox from '../../Components/InputCard/searchBox';
 const db = openDatabase('userDatabase.db')
 
 export default function UsageDensityStatistics({ navigation }) {
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(true)
+    const [searchKey, setSearchKey] = React.useState('')
     const today = new Date()
     const dayOfMonth = moment().daysInMonth(today.getMonth())
+    const filterTime = useSelector(state => state.filterState.filterUsageDensity)
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
     var tempData
@@ -92,8 +95,8 @@ export default function UsageDensityStatistics({ navigation }) {
                     flex: 1.5, flexDirection: 'row',
                     alignItems: 'center', justifyContent: 'space-evenly',
                 }} >
-                    <ProgressCircle percent={percent} radius={20} borderWidth={8} color={'#e67e22'} bgColor={color} shadowColor={'#95a5a6'} />
-                    <Text style={{ fontSize: 16, flex: 1, textAlign: 'center' }}> {parseFloat(percent)} %</Text>
+                    <ProgressCircle percent={parseFloat(percent)} radius={20} borderWidth={8} color={'#e67e22'} bgColor={color} shadowColor={'#95a5a6'} />
+                    <Text style={{ fontSize: 16, flex: 1, textAlign: 'center' }}> {percent} %</Text>
                 </View>
             </View>
         )
@@ -110,9 +113,10 @@ export default function UsageDensityStatistics({ navigation }) {
         )
     }
     return (
-        <SafeAreaView style={styles.container}>
-            <TimeButton />
+        <View style={styles.container}>
+            <TimeButton value={filterTime} />
             <View style={styles.listContainer} >
+                <SearchBox value={searchKey} textChange={setSearchKey} placeholder={'Search by room name'} />
                 <FlatList data={data}
                     renderItem={Item}
                     ListHeaderComponent={Title}
@@ -123,15 +127,17 @@ export default function UsageDensityStatistics({ navigation }) {
                 loading &&
                 <LoadingIndicator />
             }
-        </SafeAreaView>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         // flex: 'row',
-        justifyContent: 'space-between',
-        padding: 5,
+        // justifyContent: 'space-between',
+        // padding: 5,
+        // alignSelf: 'center'
+        flex: 1
 
     },
     listContainer: {

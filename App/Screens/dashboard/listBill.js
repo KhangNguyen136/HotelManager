@@ -20,7 +20,7 @@ export default function ListBill({ navigation }) {
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
-
+    const filterTime = useSelector(state => state.filterState.filterBill)
     React.useEffect(() => {
         tempData = []
         db.transaction(
@@ -35,7 +35,7 @@ export default function ListBill({ navigation }) {
                                 guest: []
                             }
                             tx.executeSql(
-                                'select * from guestTable where guestID = ?', [tempItem.infor.formID],
+                                'select * from guestTable where formID = ?', [tempItem.infor.formID],
                                 (tx, guests) => {
                                     const nGuest = guests.rows.length
                                     for (let j = 0; j < nGuest; j++)
@@ -53,10 +53,12 @@ export default function ListBill({ navigation }) {
                 setLoading(false)
             })
 
-    }, [listBillUpdated, listRoomSttUpdated, roomTypeUpdated, searchKey])
+    }, [listBillUpdated, listRoomSttUpdated, roomTypeUpdated, searchKey, filterTime])
 
-    const checkDate = () => {
-        return true
+    const checkDate = (date) => {
+        if (date.getMonth() == filterTime.getMonth() && date.getFullYear() == filterTime.getFullYear())
+            return true
+        return false
     }
     const search = (item) => {
         const infor = item.infor
@@ -78,6 +80,8 @@ export default function ListBill({ navigation }) {
             return
         const infor = tempItem.infor
         const itemDate = new Date(infor.paidTime)
+        if (!checkDate(itemDate))
+            return
         const itemDateString = itemDate.toString().substring(0, 15)
         for (let i = 0; i < tempData.length; i++) {
             const tempDateString = tempData[i].date.toString().substring(0, 15)
@@ -165,7 +169,7 @@ export default function ListBill({ navigation }) {
     }
     return (
         <SafeAreaView style={globalStyles.container}>
-            <TimeButton />
+            <TimeButton value={filterTime} onpress={() => navigation.navigate('FilterTime', { selectedValue: filterTime.toString(), type: 'listBill' })} />
             <Card>
                 <SearchBox value={searchKey} textChange={setSearchKey} placeholder={'Search by room name, bill note or guest name'} />
                 <FlatList data={data}

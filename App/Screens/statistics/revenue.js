@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, TouchableOpacity, Text, SafeAreaView, Dimensions, FlatList, View } from 'react-native';
 import { GetIcon } from '../../Components/button';
 import Card, { ContentCard } from '../../Components/card';
@@ -16,7 +16,7 @@ export default function RevenueStatistics({ navigation }) {
     const [data, setData] = React.useState([])
     // console.log(data)
     const [total, setTotal] = React.useState(0)
-    const [title, setTitle] = React.useState('')
+    const filterTime = useSelector(state => state.filterState.filterRevenue)
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
     const roomTypeUpdated = useSelector(state => state.roomState.roomTypeUpdated)
     var tempData
@@ -46,7 +46,7 @@ export default function RevenueStatistics({ navigation }) {
             GetData
         )
 
-    }, [listBillUpdated, roomTypeUpdated]
+    }, [listBillUpdated, roomTypeUpdated, filterTime]
     )
     const GetData = () => {
         db.transaction(
@@ -72,11 +72,11 @@ export default function RevenueStatistics({ navigation }) {
             }
         )
     }
+
     const CheckDate = (dateStr) => {
-        setTitle("This month's revenue")
         const date = new Date(dateStr)
-        const today = new Date()
-        if (date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear())
+        // const today = new Date()
+        if (date.getMonth() == filterTime.getMonth() && date.getFullYear() == filterTime.getFullYear())
             return true
         return false
     }
@@ -111,13 +111,14 @@ export default function RevenueStatistics({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TimeButton title={'This month'} />
+            <TimeButton value={filterTime} onpress={() => {
+                navigation.navigate('FilterTime', { selectedValue: filterTime.toString(), type: 'revenue' })
+            }} />
             <Card>
                 <PieChart data={data}
                     width={Dimensions.get('window').width}
                     height={200}
                     accessor={'total'}
-
                     backgroundColor={'transparent'}
                     avoidFalseZero={true}
                     chartConfig={chartConfig}
@@ -134,6 +135,7 @@ export default function RevenueStatistics({ navigation }) {
                 data={data}
                 keyExtractor={item => item.name}
             />
+
             {
                 loading &&
                 <LoadingIndicator />

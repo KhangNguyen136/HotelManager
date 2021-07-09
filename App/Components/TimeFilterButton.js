@@ -1,10 +1,13 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { GetIcon } from './button';
-export default function TimeButton({ title, onpress }) {
+import { listMonthName } from '../Screens/filterTime';
+export default function TimeButton({ value, onpress }) {
+    const month = value.getMonth()
+    const year = value.getFullYear().toString()
     return (
-        <TouchableOpacity style={styles.container} onpress={onpress} >
-            <Text style={styles.content}>This month</Text>
+        <TouchableOpacity style={styles.container} onPress={onpress} >
+            <Text style={styles.content}>{listMonthName[month]} {year}</Text>
             <GetIcon iconName={'right'} source={'AntDesign'} size={18} />
         </TouchableOpacity>
     )

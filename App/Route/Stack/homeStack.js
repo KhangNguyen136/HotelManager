@@ -8,6 +8,7 @@ import EditForm from '../../Screens/dashboard/editForm';
 import AddRoom from '../../Screens/other/addRoom';
 import SelectRoom from '../../Screens/createForm/SelectRoom';
 import AddGuest from '../../Screens/createForm/addGuest';
+import FilterTime from '../../Screens/filterTime';
 const Stack = createStackNavigator();
 
 function HomeStack({ navigation }) {
@@ -23,6 +24,7 @@ function HomeStack({ navigation }) {
             <Stack.Screen name="AddRoom" component={AddRoom} options={{ title: 'New room' }} initialParams={{ isEdit: false }} />
             <Stack.Screen name="SelectRoom" component={SelectRoom} options={{ title: 'Select room' }} initialParams={{ isEdit: true }} />
             <Stack.Screen name="AddGuest" component={AddGuest} options={{ title: 'Add guest' }} initialParams={{ isDashboard: true }} />
+            <Stack.Screen name="FilterTime" component={FilterTime} options={{ title: 'Data setting' }} initialParams={{ isDashboard: true }} />
 
         </Stack.Navigator>
     );
