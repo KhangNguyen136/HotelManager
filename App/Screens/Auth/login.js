@@ -8,6 +8,7 @@ import TextInputCard from '../../Components/InputCard/TextInputCard';
 import PasswordTextInput from '../../Components/InputCard/passwordInput';
 import { LoginButton } from '../../Components/button';
 import LoadingIndicator from '../../Components/loadingIndicator';
+import { FlexCard } from '../../Components/card';
 
 export default function Login(props) {
     const [loading, setLoading] = React.useState(false)
@@ -43,7 +44,7 @@ export default function Login(props) {
                     //     .catch(error => { setLoading(false); console.log(error) })
                 }}>
                 {({ values, handleChange, handleSubmit, handleBlur }) => (
-                    <View style={{ padding: 20, backgroundColor: 'white' }} >
+                    <FlexCard style={{ padding: 20, backgroundColor: 'white' }} >
                         <View style={{ alignSelf: 'center' }} >
                             <Image source={require('../../source/logo.png')} style={{ width: 200, height: 200, borderRadius: 60 }} />
                         </View>
@@ -67,7 +68,7 @@ export default function Login(props) {
                         {loading &&
                             <LoadingIndicator />
                         }
-                    </View>
+                    </FlexCard>
                 )}
             </Formik>
         </SafeAreaView>)

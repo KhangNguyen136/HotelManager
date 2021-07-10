@@ -21,7 +21,6 @@ function StatisticsTab({ navigation }) {
             inactiveTintColor: 'gray',
         }} >
             <Tab.Screen name="Revenue" component={RevenueStatistics} options={{ title: 'Revenue' }} />
-
             <Tab.Screen name="UsageDensity" component={UsageDensityStatistics} options={{ title: 'Usage density' }} />
         </Tab.Navigator>
     );

@@ -155,16 +155,19 @@ export default function ListBill({ navigation }) {
     }
     const Section = ({ item }) => {
         return (
-            <View >
+            <Card >
                 <View style={styles.sectionContainer}>
-                    <Text style={{ fontSize: 16 }} >{item.date.toString().substring(0, 15)}</Text>
+                    <View style={{ flexDirection: 'row' }} >
+                        <View style={{ width: 4, backgroundColor: 'black', marginRight: 10 }} />
+                        <Text style={{ fontSize: 16 }} >{item.date.toString().substring(0, 15)}</Text>
+                    </View>
                     <Text style={{ fontSize: 16, color: '#27ae60' }}>{formatAmount(item.total)}</Text>
                 </View>
                 <FlatList data={item.items}
                     renderItem={Bill}
                     keyExtractor={item => String(item.infor.ID)}
                 />
-            </View>
+            </Card>
         )
     }
     return (
@@ -172,13 +175,14 @@ export default function ListBill({ navigation }) {
             <TimeButton value={filterTime} onpress={() => navigation.navigate('FilterTime', { selectedValue: filterTime.toString(), type: 'listBill' })} />
             <Card>
                 <SearchBox value={searchKey} textChange={setSearchKey} placeholder={'Search by room name, bill note or guest name'} />
-                <FlatList data={data}
-                    renderItem={Section}
-                    keyExtractor={item => item.date.toString()}
-                    ListEmptyComponent={NoDataComp}
-                // ListHeaderComponent={Title}
-                />
             </Card>
+
+            <FlatList data={data}
+                renderItem={Section}
+                keyExtractor={item => item.date.toString()}
+                ListEmptyComponent={NoDataComp}
+            // ListHeaderComponent={Title}
+            />
             {
                 loading &&
                 <LoadingIndicator />

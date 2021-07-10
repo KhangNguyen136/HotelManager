@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import TextInputCard from '../../Components/InputCard/TextInputCard';
 import { Success, CheckInputFailed } from '../AlertMsg/messageAlert'
-import Card from '../card';
+import { FlexCard } from '../card';
 import { BottomButton } from '../button';
 import LoadingIndicator from '../loadingIndicator';
 import { useDispatch, useSelector } from 'react-redux'
@@ -160,8 +160,8 @@ export default function CreateForm({ isEdit, formID, navigation }) {
 
     return (
 
-        <View>
-            <Card>
+        <FlexCard>
+            <View style={{ flex: 1 }} >
                 <PickerCard value={roomName} placeholder={'Select room'} type={roomType} onPress={() => {
                     const oldRoomID = item.form != undefined ? item.form.roomID : -1
                     // dispatch(setNote(setNote))
@@ -174,11 +174,11 @@ export default function CreateForm({ isEdit, formID, navigation }) {
                 <DateTimePickerCard date={startDate} title={'Start date: '} onChangeDate={setStartDate} />
                 <TextInputCard value={note} onChangeValue={setNote} placeholder={"Note"} />
                 <ListGuest navigation={navigation} data={listGuest} />
-                <BottomButton isEditMode={isEdit} onSave={save} onDelete={clickDelete} onUpdate={update} />
-            </Card>
+            </View>
+            <BottomButton isEditMode={isEdit} onSave={save} onDelete={clickDelete} onUpdate={update} />
             {loading &&
                 <LoadingIndicator />}
-        </View>
+        </FlexCard>
 
     )
 }

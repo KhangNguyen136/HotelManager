@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import TextInputCard from '../../Components/InputCard/TextInputCard'
 import { CheckInputFailed, Success } from '../../Components/AlertMsg/messageAlert';
-import Card from '../../Components/card';
+import Card, { FlexCard } from '../../Components/card';
 import { BottomButton } from '../../Components/button';
 import { globalStyles } from '../../styles/globalStyles'
 import LoadingIndicator from '../../Components/loadingIndicator';
@@ -133,7 +133,7 @@ export default function EditForm({ route, navigation }) {
     return (
 
         <View style={globalStyles.container} >
-            <Card>
+            <FlexCard>
                 <PickerCard value={roomName} placeholder={'Select room'} type={roomType} onPress={() => {
                     const oldRoomID = item.form != undefined ? item.form.roomID : -1
                     navigation.navigate('SelectRoom', { selectedRoom: roomName, old: oldRoomID })
@@ -145,8 +145,9 @@ export default function EditForm({ route, navigation }) {
                 <DateTimePickerCard date={startDate} title={'Start date: '} onChangeDate={setStartDate} />
                 <TextInputCard value={note} onChangeValue={setNote} placeholder={"Note"} />
                 <ListGuest navigation={navigation} data={listGuest} />
-                <BottomButton isEditMode={true} onDelete={clickDelete} onUpdate={update} />
-            </Card>
+            </FlexCard>
+            <BottomButton isEditMode={true} onDelete={clickDelete} onUpdate={update} />
+
             {loading &&
                 <LoadingIndicator />}
         </View>

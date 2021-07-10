@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import Card from '../../Components/card'
+import Card, { FlexCard } from '../../Components/card'
 import { MyIconButton } from '../../Components/button';
 import { formatAmount, globalStyles } from '../../styles/globalStyles';
 import { useSelector, useDispatch } from 'react-redux'
@@ -122,14 +122,14 @@ export default function RoomDetail({ navigation, route }) {
 
     return (
         <SafeAreaView style={globalStyles.container} >
-            <Card>
+            <FlexCard>
                 <ContentCard icon={'hotel'} source={'FontAwesome'} title={'Room: '} content={data.infor.roomName} />
                 <ContentCard icon={'category'} source={'MaterialIcons'} title={'Room type: '} content={data.infor.type} />
                 <ContentCard icon={'price-tag'} source={'Entypo'} title={'Price: '} content={formatAmount(data.infor.price)} />
                 <ContentCard icon={'note'} source={'Octicons'} title={"Room note: "} content={data.infor.roomNote} />
 
                 <Content />
-            </Card>
+            </FlexCard>
         </SafeAreaView >
     )
 }

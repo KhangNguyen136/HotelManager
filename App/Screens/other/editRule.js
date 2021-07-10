@@ -113,7 +113,7 @@ export default function EditRule({ navigation, route }) {
         <SafeAreaView style={globalStyles.container}>
             {type == 'roomType' &&
                 <Card>
-                    <TextInputCard value={name} onChangeValue={setName} onBlur={setName} placeholder={'Enter room type'} />
+                    <TextInputCard value={name} onChangeValue={setName} placeholder={'Enter room type'} />
                     <TextInputCard value={value.toString()} onChangeValue={setValue} placeholder={'Enter price'} keyboardType={'decimal-pad'} />
                 </Card>
             }

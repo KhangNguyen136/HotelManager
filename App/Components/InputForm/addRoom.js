@@ -3,7 +3,7 @@ import { View, Alert, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import TextInputCard from '../InputCard/TextInputCard';
 import { Success, CheckInputFailed } from '../AlertMsg/messageAlert'
-import Card from '../card';
+import Card, { FlexCard } from '../card';
 import { BottomButton } from '../button';
 import TypePicker from '../InputCard/roomTypePicker';
 import { addNewRoom, deleteRoom, updateRoom } from '../../Model/roomService';
@@ -99,8 +99,8 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
                     })
             }} >
             {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
-                <View>
-                    <Card>
+                <FlexCard>
+                    <View style={{ flex: 1 }} >
                         <TextInputCard value={values.roomName} onChangeValue={handleChange('roomName')} onBlur={handleBlur('roomName')} placeholder={"Room's name"} />
 
                         <TypePicker
@@ -110,11 +110,12 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
                         <DatePickerCard title={'Add date: '} date={values.addDate} onChangeDate={(value) => setFieldValue('addDate', value)} />
                         <TextInputCard value={values.note} onChangeValue={handleChange('note')} onBlur={handleBlur('note')} placeholder={"Note"} />
                         {/* <SaveButton onPress={handleSubmit} /> */}
-                        <BottomButton isEditMode={isEdit} onSave={handleSubmit} onDelete={clickDelete} onUpdate={() => update(values)} />
-                    </Card>
+                    </View>
+                    <BottomButton isEditMode={isEdit} onSave={handleSubmit} onDelete={clickDelete} onUpdate={() => update(values)} />
+
                     {loading &&
                         <LoadingIndicator />}
-                </View>
+                </FlexCard>
             )}
         </Formik>
     )

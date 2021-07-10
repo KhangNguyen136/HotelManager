@@ -134,10 +134,11 @@ export default function RoomList() {
                 style={{
                     flexDirection: 'row', padding: 5, marginTop: 5,
                     alignSelf: 'flex-end', borderRadius: 5,
-                    borderColor: 'black', backgroundColor: '#2ecc71',
+                    borderColor: 'black', backgroundColor: '#81ecec',
                     shadowOffset: { width: 1, height: 1 },
                     shadowColor: '#333',
                     shadowOpacity: 0.3, shadowRadius: 2,
+                    alignItems: 'center'
                 }} onPress={() => navigation.navigate('NewRoom')} >
 
                 <GetIcon iconName={'pluscircleo'} source={'AntDesign'} size={24} />

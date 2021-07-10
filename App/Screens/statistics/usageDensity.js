@@ -7,8 +7,6 @@ import { useSelector } from 'react-redux';
 import { openDatabase } from 'expo-sqlite';
 import TimeButton from '../../Components/TimeFilterButton'
 import NoDataComp from '../../Components/nodata';
-import moment from 'moment';
-import { parse } from 'react-native-svg';
 import SearchBox from '../../Components/InputCard/searchBox';
 const db = openDatabase('userDatabase.db')
 
@@ -16,9 +14,8 @@ export default function UsageDensityStatistics({ navigation }) {
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(true)
     const [searchKey, setSearchKey] = React.useState('')
-    const today = new Date()
-    const dayOfMonth = moment().daysInMonth(today.getMonth())
     const filterTime = useSelector(state => state.filterState.filterUsageDensity)
+    const dayOfMonth = filterTime.getDate()
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
     var tempData
@@ -31,7 +28,8 @@ export default function UsageDensityStatistics({ navigation }) {
                     (tx, result) => {
                         const n = result.rows.length
                         for (let i = 0; i < n; i++)
-                            tempData.push({ ...result.rows.item(i), nday: 0 })
+                            if (result.rows.item(i).roomName.toLowerCase().includes(searchKey.toLowerCase()))
+                                tempData.push({ ...result.rows.item(i), nday: 0 })
                     }
                 )
             }, (error) => console.log(error.message)
@@ -40,7 +38,7 @@ export default function UsageDensityStatistics({ navigation }) {
                 getUsage()
             }
         )
-    }, [listRoomSttUpdated, listBillUpdated])
+    }, [listRoomSttUpdated, listBillUpdated, filterTime, searchKey])
     const getUsage = () => {
         db.transaction(
             tx => {
@@ -58,16 +56,28 @@ export default function UsageDensityStatistics({ navigation }) {
                 }
             }, (error) => console.log(error.message)
             , () => {
-                setData(tempData)
+                // setData(tempData)
+                outPut(tempData)
                 setLoading(false)
             }
         )
     }
+    const compare = (a, b) => {
+        if (a.nday < b.nday) return 1
+        if (b.nday < a.nday) return -1
+        return 0
+    }
+    const outPut = (listItem) => {
+        listItem.sort(compare)
+        setData(listItem)
+    }
+    const month = filterTime.getMonth()
+    const year = filterTime.getFullYear()
     const getNday = (start, end) => {
         const startDate = new Date(start)
         const endDate = new Date(end)
-        const fdayOfMonth = moment().clone().startOf('month').toDate()
-        const ldayOfMonth = moment().clone().endOf('month').toDate()
+        var fdayOfMonth = new Date(year, month, 2)
+        var ldayOfMonth = new Date(year, month + 1, 1)
         // var diffTime
         if (startDate >= fdayOfMonth && endDate <= ldayOfMonth) {
             const diffTime = Math.abs(endDate - startDate)
@@ -114,7 +124,7 @@ export default function UsageDensityStatistics({ navigation }) {
     }
     return (
         <View style={styles.container}>
-            <TimeButton value={filterTime} />
+            <TimeButton value={filterTime} onpress={() => navigation.navigate('FilterTime', { selectedValue: filterTime.toString(), type: 'usageDensity' })} />
             <View style={styles.listContainer} >
                 <SearchBox value={searchKey} textChange={setSearchKey} placeholder={'Search by room name'} />
                 <FlatList data={data}
@@ -151,6 +161,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 4,
         marginVertical: 4,
         padding: 5,
+        flex: 1
     },
     ButtonContainer: {
         width: '60%',
