@@ -6,6 +6,7 @@ import { GetIcon } from '../../Components/button';
 import RevenueStatistics from '../../Screens/statistics/revenue';
 import UsageDensityStatistics from '../../Screens/statistics/usageDensity';
 import FilterTime from '../../Screens/filterTime';
+import HistoryBill from '../../Screens/statistics/historyBill';
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator()
 
@@ -22,6 +23,7 @@ function StatisticsTab({ navigation }) {
         }} >
             <Tab.Screen name="Revenue" component={RevenueStatistics} options={{ title: 'Revenue' }} />
             <Tab.Screen name="UsageDensity" component={UsageDensityStatistics} options={{ title: 'Usage density' }} />
+
         </Tab.Navigator>
     );
 }
@@ -31,6 +33,8 @@ function StatisticsStack({ navigation }) {
         <Stack.Navigator initialRouteName={'Statistics'} >
             <Stack.Screen name='Statistics' component={StatisticsTab} options={{}} />
             <Stack.Screen name='FilterTime' component={FilterTime} options={{ title: 'Data setting' }} />
+            <Tab.Screen name="HistoryBill" component={HistoryBill} options={{ title: 'List bill' }} initialParams={{ roomID: -1, typeID: -1 }} />
+
         </Stack.Navigator>
     )
 }

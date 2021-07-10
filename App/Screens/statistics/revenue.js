@@ -34,6 +34,7 @@ export default function RevenueStatistics({ navigation }) {
                             const item = result.rows.item(i)
                             tempData.data.push({
                                 name: item.type,
+                                typeID: item.typeID,
                                 total: 0,
                                 color: colorType(item.typeID),
                                 legendFontColor: "#7F7F7F",
@@ -90,12 +91,6 @@ export default function RevenueStatistics({ navigation }) {
             }
         }
     }
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            // headerRight: () => <IconButton iconName={'notifications'}
-            // onPress={() => { navigation.navigate('Notification') }} />
-        })
-    })
     const Item = ({ item }) => {
         var percent = parseFloat(item.total / total * 100).toFixed(2)
         if (percent == 'NaN')
@@ -105,7 +100,12 @@ export default function RevenueStatistics({ navigation }) {
                 <ContentCard icon={'category'} source={'MaterialIcons'} size={22} title={'Room type: '} content={item.name} />
                 <ContentCard icon={'attach-money'} source={'MaterialIcons'} size={22} title={'Total revenue: '} content={formatAmount(item.total)} />
                 <ContentCard icon={'label-percent-outline'} source={'MaterialCommunityIcons'} size={22} title={'Percent: '} content={percent + " %"} />
-            </Card>
+                <TouchableOpacity style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}
+                    onPress={() => navigation.navigate('HistoryBill', { type: 'revenue', typeID: item.typeID, time: filterTime.toString(), typeName: item.name })}>
+                    <Text style={{ fontSize: 16, fontWeight: '500', marginRight: 5 }}>Detail </Text>
+                    <GetIcon iconName={'right'} source={'AntDesign'} size={18} />
+                </TouchableOpacity>
+            </Card >
         )
     }
 

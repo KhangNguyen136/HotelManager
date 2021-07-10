@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import ProgressCircle from 'react-native-progress-circle'
 import { colorType } from '../../Components/InputCard/roomTypePicker';
 import LoadingIndicator from '../../Components/loadingIndicator'
@@ -76,8 +76,6 @@ export default function UsageDensityStatistics({ navigation }) {
     const ldayOfMonth = new Date(year, month + 1, 1)
     const ldayOfMonth1 = new Date(year, month + 1, 0)
     const dayOfMonth = ldayOfMonth1.getDate()
-    console.log({ dayOfMonth, fdayOfMonth, ldayOfMonth, ldayOfMonth1 })
-
     const getNday = (start, end) => {
         const startDate = new Date(start)
         const endDate = new Date(end)
@@ -98,10 +96,13 @@ export default function UsageDensityStatistics({ navigation }) {
         return 0
     }
     const Item = ({ item }) => {
-        const percent = parseFloat(item.nday / dayOfMonth * 100).toFixed(2)
+        var percent = parseFloat(item.nday / dayOfMonth * 100).toFixed(2)
+        if (percent > 100)
+            percent = 100
         const color = colorType(item.typeID)
         return (
-            <View style={{ ...styles.itemContainer, backgroundColor: color, alignItems: 'center' }} >
+            <TouchableOpacity style={{ ...styles.itemContainer, backgroundColor: color, alignItems: 'center' }}
+                onPress={() => navigation.navigate('HistoryBill', { type: 'usageDensity', roomID: item.roomID, time: filterTime.toString(), roomName: item.roomName })} >
                 <Text style={{ fontSize: 16, width: 30, marginLeft: 5 }} >{item.roomID}</Text>
                 <Text style={{ fontSize: 16, flex: 1, textAlign: 'center' }} >{item.roomName}</Text>
                 <Text style={{ fontSize: 16, width: 110, textAlign: 'center' }} >{item.nday}</Text>
@@ -112,7 +113,7 @@ export default function UsageDensityStatistics({ navigation }) {
                     <ProgressCircle percent={parseFloat(percent)} radius={20} borderWidth={8} color={'#e67e22'} bgColor={color} shadowColor={'#95a5a6'} />
                     <Text style={{ fontSize: 16, flex: 1, textAlign: 'center' }}> {percent} %</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
     const Title = () => {
