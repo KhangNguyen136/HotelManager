@@ -15,7 +15,6 @@ export default function UsageDensityStatistics({ navigation }) {
     const [loading, setLoading] = React.useState(true)
     const [searchKey, setSearchKey] = React.useState('')
     const filterTime = useSelector(state => state.filterState.filterUsageDensity)
-    const dayOfMonth = filterTime.getDate()
     const listRoomSttUpdated = useSelector(state => state.roomState.listRoomSttUpdated)
     const listBillUpdated = useSelector(state => state.billState.listBillUpdated)
     var tempData
@@ -73,11 +72,16 @@ export default function UsageDensityStatistics({ navigation }) {
     }
     const month = filterTime.getMonth()
     const year = filterTime.getFullYear()
+    const fdayOfMonth = new Date(year, month, 2)
+    const ldayOfMonth = new Date(year, month + 1, 1)
+    const ldayOfMonth1 = new Date(year, month + 1, 0)
+    const dayOfMonth = ldayOfMonth1.getDate()
+    console.log({ dayOfMonth, fdayOfMonth, ldayOfMonth, ldayOfMonth1 })
+
     const getNday = (start, end) => {
         const startDate = new Date(start)
         const endDate = new Date(end)
-        var fdayOfMonth = new Date(year, month, 2)
-        var ldayOfMonth = new Date(year, month + 1, 1)
+
         // var diffTime
         if (startDate >= fdayOfMonth && endDate <= ldayOfMonth) {
             const diffTime = Math.abs(endDate - startDate)
