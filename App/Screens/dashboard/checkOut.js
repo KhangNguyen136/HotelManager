@@ -45,8 +45,8 @@ export default function CheckOut({ navigation, route }) {
     React.useEffect(() => {
         var temp1 = 1
         var temp2 = 1
-        setFormID(data.infor.formID)
-        setRoomID(data.infor.roomID)
+        // setFormID(data.infor.formID)
+        // setRoomID(data.infor.roomID)
         if (isEdit) {
             // setTotal(data.infor.totalAmount)
             setSurchargeThird(data.infor.surchargeThird)
@@ -88,20 +88,10 @@ export default function CheckOut({ navigation, route }) {
         if (isUpdated) {
             dispatch(resetState())
             navigation.popToTop()
+            dispatch(resetState())
             return
         }
-        return () => {
-            dispatch(resetState())
-        }
     }, [isUpdated])
-
-
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            // headerRight: () => <IconButton iconName={'notifications'}
-            // onPress={() => { navigation.navigate('Notification') }} />
-        })
-    })
 
     const save = () => {
         const values = {
@@ -125,6 +115,7 @@ export default function CheckOut({ navigation, route }) {
                 if (values.formID == formObserve)
                     dispatch(updateObserve())
                 navigation.popToTop()
+                dispatch(resetState())
             }
         )
 

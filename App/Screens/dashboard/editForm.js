@@ -43,11 +43,10 @@ export default function EditForm({ route, navigation }) {
         if (isUpdated) {
             dispatch(resetState())
             navigation.popToTop()
+            dispatch(resetState())
             return
         }
-        return () => {
-            dispatch(resetState())
-        }
+
     }, [isUpdated])
     React.useEffect(() => {
         var temp = {
@@ -78,8 +77,8 @@ export default function EditForm({ route, navigation }) {
                 dispatch(setRoomEdit(temp.form.roomName, temp.form.roomID, temp.form.typeID, temp.form.price))
                 dispatch(setListGuest(temp.guest))
                 setItem(temp)
-                dispatch(setFormID(temp.form.formID))
-                dispatch(setRoomID(temp.form.roomID))
+                // dispatch(setFormID(temp.form.formID))
+                // dispatch(setRoomID(temp.form.roomID))
             }
         )
 
@@ -99,6 +98,7 @@ export default function EditForm({ route, navigation }) {
                 if (item.form.formID == formObserve)
                     dispatch(updateObserve())
                 navigation.popToTop()
+                dispatch(resetState())
                 Success('Deleted form')
             }, (msg) => {
                 CheckInputFailed(msg)
@@ -122,6 +122,7 @@ export default function EditForm({ route, navigation }) {
             if (values.formID == formObserve)
                 dispatch(updateObserve())
             navigation.popToTop()
+            dispatch(resetState())
             Success('Update form successful')
         }, (msg) => {
             setLoading(false)

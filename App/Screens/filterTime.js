@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, FlatList, SafeAreaView, StyleSheet, Button } from 'react-native';
+import { TouchableOpacity, View, Text, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
 import { IsSelectedView } from '../Components/InputCard/roomTypePicker';
 import { FlexCard } from '../Components/card';
@@ -114,6 +114,9 @@ export default function FilterTime({ navigation, route }) {
             </TouchableOpacity>
         )
     }
+    // const Month = ({item}) => {
+
+    // }
     return (
         <SafeAreaView style={styles.container} >
             <FlexCard>
@@ -172,6 +175,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 10,
         flexWrap: 'wrap',
+        // flex: 1
+        // alignSelf: 'center'
     },
     item: {
         borderBottomColor: 'gray',

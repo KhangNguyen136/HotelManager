@@ -47,7 +47,7 @@ export default function RoomDetail({ navigation, route }) {
     }
 
     const editInfor = () => {
-        navigation.push('EditForm', { formID: data.infor.formID })
+        navigation.navigate('EditForm', { formID: data.infor.formID })
 
     }
 
