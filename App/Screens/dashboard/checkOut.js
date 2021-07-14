@@ -64,7 +64,7 @@ export default function CheckOut({ navigation, route }) {
                     (tx, result) => {
                         for (let i = 0; i < 2; i++) {
                             const temp = result.rows.item(i)
-                            console.log(temp)
+                            // console.log(temp)
                             if (temp.ruleName == 'foreign')
                                 temp1 = haveForeignGuest ? temp.value : 1
                             else

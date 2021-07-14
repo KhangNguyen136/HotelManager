@@ -65,7 +65,7 @@ export default function AddNewRoomForm({ isEdit, item, navigation }) {
             () => {
                 navigation.goBack()
                 if (roomSelected == item.roomID) {
-                    dispatch(('Select room', -1, -1, 0))
+                    dispatch(setRoom('Select room', -1, -1, 0))
                 }
                 if (item.roomID == roomObserve)
                     dispatch(updateState())

@@ -1,11 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, FlatList, SafeAreaView, StyleSheet } from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
 import { IsSelectedView } from '../Components/InputCard/roomTypePicker';
 import { FlexCard } from '../Components/card';
 import { GetIcon, MyButton } from '../Components/button';
 import { useDispatch } from 'react-redux';
-import HeaderButton from '../Components/headerButton';
 import Menu, { MenuItem } from 'react-native-material-menu';
 import { setFilterBill, setFilterRevenue, setFilterUsageDensity } from '../Actions/filterActions'
 const today = new Date()
@@ -53,18 +51,6 @@ export default function FilterTime({ navigation, route }) {
         setListMonth(result)
     }
 
-    var monthMenu = null
-    const setMonthMenuRef = ref => {
-        monthMenu = ref
-    };
-    const hideMonthMenu = () => {
-        if (monthMenu != null)
-            monthMenu.hide();
-    };
-    const showMonthMenu = () => {
-        // if (menu != null)
-        monthMenu.show();
-    };
     var yearMenu = null
     const setYearMenuRef = ref => {
         yearMenu = ref
@@ -78,10 +64,6 @@ export default function FilterTime({ navigation, route }) {
         yearMenu.show();
     };
 
-    const didSelectMonth = (value) => {
-        setMonth(value)
-        hideMonthMenu()
-    }
     const didSelectYear = (value) => {
         setYear(value)
         if (value == today.getFullYear() && month > today.getMonth()) {
@@ -114,21 +96,17 @@ export default function FilterTime({ navigation, route }) {
             </TouchableOpacity>
         )
     }
-    // const Month = ({item}) => {
-
-    // }
+    const Month = ({ item }) => {
+        return (
+            <TouchableOpacity style={styles.monthContainer} onPress={() => setMonth(item.value)} >
+                <Text style={{ fontSize: 20, flex: 1, textAlign: 'center' }} >{item.label}</Text>
+                <IsSelectedView isChoosen={item.value == month} iconSize={24} />
+            </TouchableOpacity>
+        )
+    }
     return (
         <SafeAreaView style={styles.container} >
             <FlexCard>
-                <View style={styles.section}>
-                    <Text style={styles.title}>Month: </Text>
-                    <Menu ref={setMonthMenuRef} button={<Content title={listMonthName[month]} onPress={showMonthMenu} />}
-                    >
-                        <FlatList data={listMonth}
-                            keyExtractor={item => item.label}
-                            renderItem={({ item }) => <MenuItem style={styles.item} onPress={() => didSelectMonth(item.value)} >{item.label}</MenuItem>} />
-                    </Menu>
-                </View>
                 <View style={styles.section}>
                     <Text style={styles.title}>Year: </Text>
                     <Menu ref={setYearMenuRef} button={<Content title={year.toString()} onPress={showYearMenu} />}
@@ -138,7 +116,11 @@ export default function FilterTime({ navigation, route }) {
                             renderItem={({ item }) => <MenuItem style={styles.item} onPress={() => didSelectYear(item.value)} >{item.label}</MenuItem>} />
                     </Menu>
                 </View>
-                {/* <View style={{ height: 40 }} /> */}
+                <Text style={styles.title}>Month: </Text>
+                <FlatList data={listMonth}
+                    renderItem={Month}
+                    keyExtractor={item => item.label}
+                />
 
             </FlexCard>
             <MyButton title={'Done'} onPress={done} />
@@ -157,7 +139,10 @@ const styles = StyleSheet.create({
     },
     section: {
         flexDirection: 'row',
+        alignContent: 'center',
         alignItems: 'center',
+        // alignSelf: 'center',
+        justifyContent: 'center',
         margin: 10
     },
     title: {
@@ -183,6 +168,15 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         backgroundColor: '#55efc4',
         fontSize: 18
+    },
+    monthContainer: {
+        flexDirection: 'row',
+        // alignContent: 'center',
+        alignItems: 'center',
+        padding: 5,
+        margin: 5,
+        borderBottomWidth: 0.25,
+        borderColor: 'gray',
     }
 })
 

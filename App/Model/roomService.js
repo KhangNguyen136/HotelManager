@@ -29,7 +29,6 @@ export function insertRoom(values) {
 }
 
 export function updateRoom(ID, values, success, fail) {
-    console.log(values)
     db.transaction(tx => {
         tx.executeSql(
             'update roomTable set roomName = ?, typeID =?, note = ?, addDate =?  where roomID = ? ',
@@ -39,7 +38,8 @@ export function updateRoom(ID, values, success, fail) {
             // }
         )
     }, (error) => fail(error.message),
-        success)
+        success
+    )
 }
 
 export function deleteRoom(ID, success, fail) {
